@@ -1,340 +1,512 @@
-<!doctype html>
-<html lang="en" data-bs-theme="auto">
-  <head><script src="/docs/5.3/assets/js/color-modes.js"></script>
-
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scholarship Application</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.122.0">
-    <title>Pricing example · Bootstrap v5.3</title>
-
-    <!-- Favicons -->
-<link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-<link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-<link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">
-<link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
-<link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
-<meta name="theme-color" content="#712cf9">
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        width: 100%;
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .btn-bd-primary {
-        --bd-violet-bg: #712cf9;
-        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-        --bs-btn-font-weight: 600;
-        --bs-btn-color: var(--bs-white);
-        --bs-btn-bg: var(--bd-violet-bg);
-        --bs-btn-border-color: var(--bd-violet-bg);
-        --bs-btn-hover-color: var(--bs-white);
-        --bs-btn-hover-bg: #6528e0;
-        --bs-btn-hover-border-color: #6528e0;
-        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-        --bs-btn-active-color: var(--bs-btn-hover-color);
-        --bs-btn-active-bg: #5a23c8;
-        --bs-btn-active-border-color: #5a23c8;
-      }
-
-      .bd-mode-toggle {
-        z-index: 1500;
-      }
-
-      .bd-mode-toggle .dropdown-menu .active .bi {
-        display: block !important;
-      }
-    </style>
-
-    
-    <!-- Custom styles for this template -->
-    <link href="pricing.css" rel="stylesheet">
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-      <symbol id="check2" viewBox="0 0 16 16">
-        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-      </symbol>
-      <symbol id="circle-half" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
-      </symbol>
-      <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
-      </symbol>
-      <symbol id="sun-fill" viewBox="0 0 16 16">
-        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
-      </symbol>
-    </svg>
+    <div class="container my-5">
+      <!-- Header and Instructions -->
+      <h1 class="text-center mb-4">Sitka Tribe of Alaska Higher Education Scholarship Application</h1>
+      <div class="alert alert-info">
+        <strong>Application Deadlines:</strong>
+        <ul>
+          <li><strong>April 1</strong> (First Time Applicants)</li>
+          <li><strong>May 1</strong> (Renewing Applicants)</li>
+          <li><strong>October 1</strong> (Partial Academic Year Applicants)</li>
+        </ul>
+        <p>
+          SUBMIT COMPLETED APPLICATIONS: On website
+          <br>
+          Sitka Tribe of Alaska<br>
+          204 Siginaka Way, Suite 300<br>
+          Sitka, AK 99835<br>
+          E-mail for any questions: <a href="mailto:scholarship.applicant@sitkatribe-nsn.gov"><strong>scholarship.applicant@sitkatribe-nsn.gov</strong></a><br>
+        </p>
+      </div>
 
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
-              id="bd-theme"
-              type="button"
-              aria-expanded="false"
-              data-bs-toggle="dropdown"
-              aria-label="Toggle theme (auto)">
-        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
-            Light
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
-            Dark
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
-            Auto
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-      </ul>
-    </div>
-
-    
-<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-  <symbol id="check" viewBox="0 0 16 16">
-    <title>Check</title>
-    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-  </symbol>
-</svg>
-
-<div class="container py-3">
-  <header>
-    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img"><title>Bootstrap</title><path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z" fill="currentColor"></path></svg>
-        <span class="fs-4">Pricing example</span>
-      </a>
-
-      <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Features</a>
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Enterprise</a>
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Support</a>
-        <a class="py-2 link-body-emphasis text-decoration-none" href="#">Pricing</a>
-      </nav>
-    </div>
-
-    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-      <h1 class="display-4 fw-normal text-body-emphasis">Pricing</h1>
-      <p class="fs-5 text-body-secondary">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
-    </div>
-  </header>
-
-  <main>
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-          <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Free</h4>
+      
+      <%= form_with url: "#", local: true, html: { class: "needs-validation" } do |f| %>
+        <!-- Section: Applicant Information -->
+        <h2 class="mt-4">Applicant Information</h2>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <%= f.label :last_name, "Last Name" %>
+            <%= f.text_field :last_name, class: "form-control", required: true %>
           </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">$0<small class="text-body-secondary fw-light">/mo</small></h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>10 users included</li>
-              <li>2 GB of storage</li>
-              <li>Email support</li>
-              <li>Help center access</li>
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button>
+          <div class="col-md-4">
+            <%= f.label :first_name, "First Name" %>
+            <%= f.text_field :first_name, class: "form-control", required: true %>
+          </div>
+          <div class="col-md-2">
+            <%= f.label :middle_initial, "Middle Initial" %>
+            <%= f.text_field :middle_initial, class: "form-control" %>
+          </div>
+          <div class="col-md-2">
+            <%= f.label :previous_maiden_name, "Previous/Maiden Name" %>
+            <%= f.text_field :previous_maiden_name, class: "form-control" %>
           </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-          <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Pro</h4>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <%= f.label :student_id, "Student Identification Number" %>
+            <%= f.text_field :student_id, class: "form-control" %>
           </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">$15<small class="text-body-secondary fw-light">/mo</small></h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>20 users included</li>
-              <li>10 GB of storage</li>
-              <li>Priority email support</li>
-              <li>Help center access</li>
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
+          <div class="col-md-3">
+            <%= f.label :date_of_birth, "Date of Birth" %>
+            <%= f.date_field :date_of_birth, class: "form-control" %>
+          </div>
+          <div class="col-md-3">
+            <%= f.label :place_of_birth, "Place of Birth" %>
+            <%= f.text_field :place_of_birth, class: "form-control" %>
           </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm border-primary">
-          <div class="card-header py-3 text-bg-primary border-primary">
-            <h4 class="my-0 fw-normal">Enterprise</h4>
+        <div class="mt-3">
+          <%= f.label :marital_status, "Marital Status" %><br>
+          <% ["Married", "Divorced", "Single", "Widowed", "Separated"].each_with_index do |status, index| %>
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :marital_status, status, id: "status_#{index}" %>
+              <%= f.label "status_#{index}", status, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <%= f.label :number_of_dependents, "Number of Dependents" %>
+            <%= f.number_field :number_of_dependents, class: "form-control", min: 0 %>
           </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">$29<small class="text-body-secondary fw-light">/mo</small></h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>30 users included</li>
-              <li>15 GB of storage</li>
-              <li>Phone and email support</li>
-              <li>Help center access</li>
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+          <div class="col-md-4">
+            <%= f.label :tribe_enrolled, "Tribe Currently Enrolled With" %>
+            <%= f.text_field :tribe_enrolled, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :previous_scholarship, "Previously Received Scholarship from STA?" %><br>
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :previous_scholarship, "Yes", id: "prev_yes" %>
+              <%= f.label "prev_yes", "Yes", class: "form-check-label" %>
+            </div>
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :previous_scholarship, "No", id: "prev_no" %>
+              <%= f.label "prev_no", "No", class: "form-check-label" %>
+            </div>
           </div>
         </div>
-      </div>
+        <div class="mt-3">
+          <%= f.label :previous_scholarship_year, "If Yes, Year:" %>
+          <%= f.text_field :previous_scholarship_year, class: "form-control" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :preferred_contact, "Preferred Contact" %><br>
+          <% ["E-Mail", "Phone", "Mail"].each_with_index do |contact, index| %>
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :preferred_contact, contact, id: "contact_#{index}" %>
+              <%= f.label "contact_#{index}", contact, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :email_address, "E-mail Address(es)" %>
+          <%= f.email_field :email_address, class: "form-control" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :mailing_address_permanent, "Mailing Address - Permanent Residence and Summer Address" %>
+          <%= f.text_field :mailing_address_permanent, class: "form-control" %>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <%= f.label :city, "City" %>
+            <%= f.text_field :city, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :state, "State" %>
+            <%= f.text_field :state, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :zip_code, "Zip Code" %>
+            <%= f.text_field :zip_code, class: "form-control" %>
+          </div>
+        </div>
+        <div class="mt-3">
+          <%= f.label :mailing_address_school, "Mailing Address - While Attending School" %>
+          <%= f.text_field :mailing_address_school, class: "form-control" %>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <%= f.label :city_school, "City" %>
+            <%= f.text_field :city_school, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :state_school, "State" %>
+            <%= f.text_field :state_school, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :zip_code_school, "Zip Code" %>
+            <%= f.text_field :zip_code_school, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <%= f.label :permanent_phone, "Permanent Phone Number / Summer Contact" %>
+            <%= f.telephone_field :permanent_phone, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :school_phone, "Phone Number While at School" %>
+            <%= f.telephone_field :school_phone, class: "form-control" %>
+          </div>
+        </div>
+
+        <!-- Section: Education History -->
+        <h2 class="mt-5">Education History</h2>
+        <div class="mt-3">
+          <p>Please indicate if you earned a High School Diploma or GED:</p>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :education_earned, "High School Diploma", id: "hs_diploma" %>
+            <%= f.label "hs_diploma", "High School Diploma", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :education_earned, "GED", id: "ged" %>
+            <%= f.label "ged", "GED", class: "form-check-label" %>
+          </div>
+        </div>
+        <div class="mt-3">
+          <%= f.label :school_name, "Name of School" %>
+          <%= f.text_field :school_name, class: "form-control" %>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <%= f.label :school_city, "City/State" %>
+            <%= f.text_field :school_city, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :school_earned_in, "Earned In (Month/Year)" %>
+            <%= f.text_field :school_earned_in, class: "form-control" %>
+          </div>
+        </div>
+
+        <!-- Section: Education Plan -->
+        <h2 class="mt-5">Education Plan</h2>
+        <div class="mt-3">
+          <%= f.label :college_name, "Name of College/University" %>
+          <%= f.text_field :college_name, class: "form-control" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :college_financial_aid_office, "College Financial Aid Office" %>
+          <%= f.text_field :college_financial_aid_office, class: "form-control" %>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <%= f.label :college_phone, "Phone Number" %>
+            <%= f.telephone_field :college_phone, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :college_fax, "Fax Number" %>
+            <%= f.text_field :college_fax, class: "form-control" %>
+          </div>
+        </div>
+        <div class="mt-3">
+          <%= f.label :college_financial_aid_mailing_address, "Financial Aid Office Mailing Address" %>
+          <%= f.text_field :college_financial_aid_mailing_address, class: "form-control" %>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <%= f.label :college_city, "City" %>
+            <%= f.text_field :college_city, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :college_state, "State" %>
+            <%= f.text_field :college_state, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :college_zip_code, "Zip Code" %>
+            <%= f.text_field :college_zip_code, class: "form-control" %>
+          </div>
+        </div>
+        <div class="mt-3">
+          <%= f.label :college_term_type, "College/University Term Type" %><br>
+          <% ["Quarter", "Trimester", "Semester"].each_with_index do |term, index| %>
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :college_term_type, term, id: "term_#{index}" %>
+              <%= f.label "term_#{index}", term, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :deadline_fee_payments, "Deadline for Fee Payments (Fall, Winter, Spring, Summer)" %>
+          <%= f.text_field :deadline_fee_payments, class: "form-control", placeholder: "Enter deadlines separated by commas" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :credits_taking, "Number of Credits Taking (Fall, Winter, Spring, Summer)" %>
+          <%= f.text_field :credits_taking, class: "form-control", placeholder: "Enter number of credits for each term" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :current_degree_program, "Current Degree Program" %><br>
+          <% ["Associates", "Bachelors (B.S./B.A.)", "Masters", "Doctorate", "Juris Doctorate", "Other"].each_with_index do |degree, index| %>
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :current_degree_program, degree, id: "degree_#{index}" %>
+              <%= f.label "degree_#{index}", degree, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :expected_graduation_date, "Expected Date of Graduation" %>
+          <%= f.date_field :expected_graduation_date, class: "form-control" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :class_standing, "Class Standing for Next Academic Year" %><br>
+          <% ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"].each_with_index do |standing, index| %>
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :class_standing, standing, id: "standing_#{index}" %>
+              <%= f.label "standing_#{index}", standing, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <%= f.label :field_of_study, "Field of Study/Major" %>
+            <%= f.text_field :field_of_study, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :minor, "Minor" %>
+            <%= f.text_field :minor, class: "form-control" %>
+          </div>
+        </div>
+
+        <!-- Section: Educational Goals -->
+        <h2 class="mt-5">Educational Goals</h2>
+        <div class="mt-3">
+          <%= f.label :educational_goals, "Please State Your Educational Objective" %>
+          <%= f.text_area :educational_goals, class: "form-control", rows: 5 %>
+        </div>
+        <div class="mt-3">
+          <p class="fw-bold">Certification:</p>
+          <div class="form-check">
+            <%= f.check_box :certify_information, class: "form-check-input", id: "certify_information" %>
+            <%= f.label :certify_information, "I certify that all the information given by me is true, complete, and correct to the best of my knowledge. I understand that any false information will disqualify me from this scholarship program.", class: "form-check-label" %>
+          </div>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <%= f.label :signature, "Student Signature" %>
+            <%= f.text_field :signature, class: "form-control", placeholder: "Type your name as signature" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :date, "Date" %>
+            <%= f.date_field :date, class: "form-control" %>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="form-check">
+            <%= f.check_box :certify_not_defaulting, class: "form-check-input", id: "certify_not_defaulting" %>
+            <%= f.label :certify_not_defaulting, "I certify that I am not defaulting on any Federal or State loans.", class: "form-check-label" %>
+          </div>
+        </div>
+
+        <!-- Section: Budget Forecast -->
+        <h2 class="mt-5">Budget Forecast</h2>
+        <p>Please complete the following for your anticipated expenses for the entire Academic Year.</p>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <%= f.label :tuition, "Tuition" %>
+            <%= f.number_field :tuition, class: "form-control", step: "0.01" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :fees, "Fees" %>
+            <%= f.number_field :fees, class: "form-control", step: "0.01" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :room_board, "Room/Board" %>
+            <%= f.number_field :room_board, class: "form-control", step: "0.01" %>
+          </div>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <%= f.label :books, "Books" %>
+            <%= f.number_field :books, class: "form-control", step: "0.01" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :transportation, "Transportation" %>
+            <%= f.number_field :transportation, class: "form-control", step: "0.01" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :personal_expenses, "Personal Expenses" %>
+            <%= f.number_field :personal_expenses, class: "form-control", step: "0.01" %>
+          </div>
+        </div>
+        <div class="mt-3">
+          <%= f.label :other_expenses, "Other (please describe)" %>
+          <%= f.text_field :other_expenses, class: "form-control" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :resources_college_expenses, "Resources for College - Expenses (e.g., Student/Parent Contributions, etc.)" %>
+          <%= f.text_area :resources_college_expenses, class: "form-control", rows: 5 %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :amount_requested, "Amount Requested" %>
+          <%= f.number_field :amount_requested, class: "form-control", step: "0.01" %>
+        </div>
+
+        <!-- Section: Release of Information -->
+        <h2 class="mt-5">Release of Information</h2>
+        <p>I give my permission to the Sitka Tribe of Alaska Cultural Resources, Education, and Employment Department to verify any academic or financial information needed to determine my eligibility for funding.</p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <%= f.label :release_signature, "Student Signature" %>
+            <%= f.text_field :release_signature, class: "form-control", placeholder: "Type your name as signature" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :release_date, "Date" %>
+            <%= f.date_field :release_date, class: "form-control" %>
+          </div>
+        </div>
+
+        <!-- Section: Enrollment Verification -->
+        <h2 class="mt-5">Enrollment Verification</h2>
+        <p>Please verify Tribal Enrollment or Indian Blood Degree:</p>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <%= f.label :enrollment_last_name, "Last Name" %>
+            <%= f.text_field :enrollment_last_name, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :enrollment_first_name, "First Name" %>
+            <%= f.text_field :enrollment_first_name, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :enrollment_middle_name, "Middle Name" %>
+            <%= f.text_field :enrollment_middle_name, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <%= f.label :enrollment_date_of_birth, "Date of Birth" %>
+            <%= f.date_field :enrollment_date_of_birth, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :enrollment_sex, "Sex" %>
+            <%= f.select :enrollment_sex, options_for_select([["Male", "Male"], ["Female", "Female"], ["Other", "Other"]]), {}, class: "form-select" %>
+          </div>
+        </div>
+        <div class="mt-3">
+          <%= f.label :enrollment_phone, "Phone Number" %>
+          <%= f.telephone_field :enrollment_phone, class: "form-control" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :enrollment_place_of_birth, "Place of Birth" %>
+          <%= f.text_field :enrollment_place_of_birth, class: "form-control" %>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <%= f.label :enrollment_mailing_city, "Mailing City" %>
+            <%= f.text_field :enrollment_mailing_city, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :enrollment_mailing_state, "Mailing State" %>
+            <%= f.text_field :enrollment_mailing_state, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.label :enrollment_mailing_zip, "Mailing Zip Code" %>
+            <%= f.text_field :enrollment_mailing_zip, class: "form-control" %>
+          </div>
+        </div>
+
+        <!-- Section: Financial Needs Analysis -->
+        <h2 class="mt-5">Financial Needs Analysis</h2>
+        <p>Student: Please complete the top section only, and submit to your school’s Financial Aid Office.</p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <%= f.label :financial_student_name, "Student Name" %>
+            <%= f.text_field :financial_student_name, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :financial_student_id, "Student Identification Number" %>
+            <%= f.text_field :financial_student_id, class: "form-control" %>
+          </div>
+        </div>
+        <p class="mt-3">TO BE COMPLETED BY THE FINANCIAL AID OFFICE</p>
+        <div class="mt-3">
+          <%= f.label :financial_aid_status, "Financial Aid Status" %>
+          <%= f.text_field :financial_aid_status, class: "form-control" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :budget_period, "Budget Period (From - To)" %>
+          <%= f.text_field :budget_period, class: "form-control", placeholder: "e.g., Fall 2023 - Spring 2024" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :student_resources, "Student Resources/Awards Budget" %>
+          <%= f.text_area :student_resources, class: "form-control", rows: 4 %>
+        </div>
+
+        <!-- Section: Photo Release Form -->
+        <h2 class="mt-5">Photo Release Form</h2>
+        <p>
+          I authorize the Sitka Tribe of Alaska, Cultural Resources, Education, and Employment Department to use the information I provide to be shared in an Education Edition Newsletter published by the Sitka Tribe of Alaska and for recruitment purposes.
+        </p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <%= f.label :photo_release_signature, "Student Signature" %>
+            <%= f.text_field :photo_release_signature, class: "form-control", placeholder: "Type your name as signature" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :photo_release_date, "Date" %>
+            <%= f.date_field :photo_release_date, class: "form-control" %>
+          </div>
+        </div>
+
+        <!-- Section: Parental/Spousal Release Form (Optional) -->
+        <h2 class="mt-5">Parental/Spousal Release Form (Optional)</h2>
+        <p>
+          I authorize Sitka Tribe of Alaska’s Cultural Resources, Education, and Employment Department to release information regarding my scholarship application (including but not limited to enrollment information and academic progress) to the person(s) listed.
+        </p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <%= f.label :parental_release_signature, "Student Signature" %>
+            <%= f.text_field :parental_release_signature, class: "form-control", placeholder: "Type your name as signature" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :parental_release_date, "Date" %>
+            <%= f.date_field :parental_release_date, class: "form-control" %>
+          </div>
+        </div>
+
+        <!-- Section: ARPA Higher Education Scholarship -->
+        <h2 class="mt-5">ARPA Higher Education Scholarship</h2>
+        <p>
+          Sitka Tribe of Alaska’s ARPA Higher Education Scholarship is an additional funding opportunity for eligible students. Complete the section below to be considered.
+        </p>
+        <div class="mt-3">
+          <%= f.label :arpa_student_name, "Student Name" %>
+          <%= f.text_field :arpa_student_name, class: "form-control" %>
+        </div>
+        <div class="mt-3">
+          <%= f.label :arpa_authorization, "I authorize Sitka Tribe of Alaska’s Cultural Resources, Education, and Employment Department to utilize this scholarship application for the ARPA Higher Education Scholarship." %>
+          <div class="form-check">
+            <%= f.check_box :arpa_authorization, class: "form-check-input", id: "arpa_authorization" %>
+            <%= f.label "arpa_authorization", "I authorize", class: "form-check-label" %>
+          </div>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <%= f.label :arpa_signature, "Student Signature" %>
+            <%= f.text_field :arpa_signature, class: "form-control", placeholder: "Type your name as signature" %>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :arpa_date, "Date" %>
+            <%= f.date_field :arpa_date, class: "form-control" %>
+          </div>
+        </div>
+
+        <!-- Submit Button (non-functional placeholder) -->
+        <div class="mt-5">
+          <%= f.submit "Submit Application", class: "btn btn-primary" %>
+        </div>
+      <% end %>
     </div>
 
-    <h2 class="display-6 text-center mb-4">Compare plans</h2>
-
-    <div class="table-responsive">
-      <table class="table text-center">
-        <thead>
-          <tr>
-            <th style="width: 34%;"></th>
-            <th style="width: 22%;">Free</th>
-            <th style="width: 22%;">Pro</th>
-            <th style="width: 22%;">Enterprise</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row" class="text-start">Public</th>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-          </tr>
-          <tr>
-            <th scope="row" class="text-start">Private</th>
-            <td></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-          </tr>
-        </tbody>
-
-        <tbody>
-          <tr>
-            <th scope="row" class="text-start">Permissions</th>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-          </tr>
-          <tr>
-            <th scope="row" class="text-start">Sharing</th>
-            <td></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-          </tr>
-          <tr>
-            <th scope="row" class="text-start">Unlimited members</th>
-            <td></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-          </tr>
-          <tr>
-            <th scope="row" class="text-start">Extra security</th>
-            <td></td>
-            <td></td>
-            <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
-
-  <footer class="pt-4 my-md-5 pt-md-5 border-top">
-    <div class="row">
-      <div class="col-12 col-md">
-        <img class="mb-2" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="24" height="19">
-        <small class="d-block mb-3 text-body-secondary">&copy; 2017–2024</small>
-      </div>
-      <div class="col-6 col-md">
-        <h5>Features</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-md">
-        <h5>Resources</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-md">
-        <h5>About</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
-        </ul>
-      </div>
-    </div>
-  </footer>
-</div>
-<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    </body>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
