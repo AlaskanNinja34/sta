@@ -308,112 +308,182 @@
         <!-- Section: Budget Forecast -->
         <h2 class="mt-5">Budget Forecast</h2>
         <p>Please complete the following for your anticipated expenses for the entire Academic Year.</p>
-      <div data-controller="budget-forecast">
-        <table>
-          <thead>
-            <tr>
-              <th>Resources for College</th>
-              <th>College Expenses</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>Student Contribution: <%= f.number_field :student_contribution, step: 0.01 %></td>
-              <td><label>Tuition: </label><br>
-              <%= f.number_field :tuition, step: 0.01 %></td>
-            </tr>
-            <tr>
-              <td>Parent Contribution: <%= f.number_field :parent_contribution, step: 0.01 %></td>
-              <td><label>Fees: </label><br>
-              <%= f.number_field :fees, step: 0.01 %></td>
-            </tr>
-            <tr>
-              <td>Spouse Contribution: <%= f.number_field :spouse_contribution, step: 0.01 %></td>
-              <td>Room/Board: <%= f.number_field :room_board, step: 0.01 %></td>
-            </tr>
-            <tr>
-              <td>Native Corporation Grant 1: <%= f.number_field :native_corporation_grant_1, step: 0.01 %></td>
-              <td>Books/Supplies: <%= f.number_field :books_supplies, step: 0.01 %></td>
-            </tr>
-            <tr>
-              <td>Native Corporation Grant 2: <%= f.number_field :native_corporation_grant_2, step: 0.01 %></td>
-              <td>Local Transportation: <%= f.number_field :local_transportation, step: 0.01 %></td>
-            </tr>
-            <tr>
-              <td>ANB/ANS Grant: <%= f.number_field :anb_ans_grant, step: 0.01 %></td>
-              <td>Personal Expenses: <%= f.number_field :personal_expenses, step: 0.01 %></td>
-            </tr>
-            <tr>
-              <td>Pell Grant: <%= f.number_field :pell_grant, step: 0.01 %></td>
-              <td>Other Expenses 1: <%= f.number_field :other_expenses_1, step: 0.01 %></td>
-            </tr>
-            <tr>
-              <td>Tuition Exemption: <%= f.number_field :tuition_exemption, step: 0.01 %></td>
-              <td>Other Expenses 2: <%= f.number_field :other_expenses_2, step: 0.01 %></td>
-            </tr>
-            <tr>
-              <td>College Work-Study: <%= f.number_field :college_work_study, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>College Scholarship: <%= f.number_field :college_scholarship, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Alaska Student Loan: <%= f.number_field :alaska_student_loan, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Stafford Loan: <%= f.number_field :stafford_loan, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Alaska Supplemental Loan: <%= f.number_field :alaska_supplemental_loan, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Alaska Family Education Loan: <%= f.number_field :alaska_family_education_loan, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Supplemental Educational Opportunity Grant: <%= f.number_field :supplemental_educational_opportunity_grant, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Parent Plus Loan: <%= f.number_field :parent_plus_loan, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Government Aid: <%= f.number_field :government_aid, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Veteran's Assistance: <%= f.number_field :veterans_assistance, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Other Resources 1: <%= f.number_field :other_resources_1, step: 0.01 %></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Other Resources 2: <%= f.number_field :other_resources_2, step: 0.01 %></td>
-              <td></td>
-            </tr>
-
-            <tr>
-              <td><strong>Total Resources:</strong> <input id="total_resources" type="number" readonly></td>
-              <td><strong>Total Expenses:</strong> <input id="total_expenses" type="number" readonly></td>
-            </tr>
-
-            <tr>
-              <td colspan="2">
-                <strong>Remaining Unmet Need:</strong> <input id="remaining_unmet_need" type="number" readonly>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              <table>
+            <thead>
+              <tr>
+                <th>Resources for College</th>
+                <th>College Expenses</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <%= f.label :student_contribution, "Student Contribution:" , for: "scholarship_application_student_contribution" %><br>
+                  <%= f.number_field :student_contribution, step: 0.01, value: (@scholarship_application.student_contribution || 0), id: "scholarship_application_student_contribution" %>
+                </td>
+                <td>
+                  <%= f.label :tuition, "Tuition:" , for: "scholarship_application_tuition" %><br>
+                  <%= f.number_field :tuition, step: 0.01, value: (@scholarship_application.tuition || 0), id: "scholarship_application_tuition" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :parent_contribution, "Parent Contribution:" , for: "scholarship_application_parent_contribution" %><br>
+                  <%= f.number_field :parent_contribution, step: 0.01, value: (@scholarship_application.parent_contribution || 0), id: "scholarship_application_parent_contribution" %>
+                </td>
+                <td>
+                  <%= f.label :fees, "Fees:" , for: "scholarship_application_fees" %><br>
+                  <%= f.number_field :fees, step: 0.01, value: (@scholarship_application.fees || 0), id: "scholarship_application_fees" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :spouse_contribution, "Spouse Contribution:" , for: "scholarship_application_spouse_contribution" %><br>
+                  <%= f.number_field :spouse_contribution, step: 0.01, value: (@scholarship_application.spouse_contribution || 0), id: "scholarship_application_spouse_contribution" %>
+                </td>
+                <td>
+                  <%= f.label :room_board, "Room/Board:" , for: "scholarship_application_room_board" %><br>
+                  <%= f.number_field :room_board, step: 0.01, value: (@scholarship_application.room_board || 0), id: "scholarship_application_room_board" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :native_corporation_grant_1, "Native Corporation Grant 1:" , for: "scholarship_application_native_corporation_grant_1" %><br>
+                  <%= f.number_field :native_corporation_grant_1, step: 0.01, value: (@scholarship_application.native_corporation_grant_1 || 0), id: "scholarship_application_native_corporation_grant_1" %>
+                </td>
+                <td>
+                  <%= f.label :books_supplies, "Books/Supplies:" , for: "scholarship_application_books_supplies" %><br>
+                  <%= f.number_field :books_supplies, step: 0.01, value: (@scholarship_application.books_supplies || 0), id: "scholarship_application_books_supplies" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :native_corporation_grant_2, "Native Corporation Grant 2:" , for: "scholarship_application_native_corporation_grant_2" %><br>
+                  <%= f.number_field :native_corporation_grant_2, step: 0.01, value: (@scholarship_application.native_corporation_grant_2 || 0), id: "scholarship_application_native_corporation_grant_2" %>
+                </td>
+                <td>
+                  <%= f.label :local_transportation, "Local Transportation:" , for: "scholarship_application_local_transportation" %><br>
+                  <%= f.number_field :local_transportation, step: 0.01, value: (@scholarship_application.local_transportation || 0), id: "scholarship_application_local_transportation" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :anb_ans_grant, "ANB/ANS Grant:" , for: "scholarship_application_anb_ans_grant" %><br>
+                  <%= f.number_field :anb_ans_grant, step: 0.01, value: (@scholarship_application.anb_ans_grant || 0), id: "scholarship_application_anb_ans_grant" %>
+                </td>
+                <td>
+                  <%= f.label :personal_expenses, "Personal Expenses:" , for: "scholarship_application_personal_expenses" %><br>
+                  <%= f.number_field :personal_expenses, step: 0.01, value: (@scholarship_application.personal_expenses || 0), id: "scholarship_application_personal_expenses" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :pell_grant, "Pell Grant:" , for: "scholarship_application_pell_grant" %><br>
+                  <%= f.number_field :pell_grant, step: 0.01, value: (@scholarship_application.pell_grant || 0), id: "scholarship_application_pell_grant" %>
+                </td>
+                <td>
+                  <%= f.label :other_expenses_1, "Other Expenses 1:" , for: "scholarship_application_other_expenses_1" %><br>
+                  <%= f.number_field :other_expenses_1, step: 0.01, value: (@scholarship_application.other_expenses_1 || 0), id: "scholarship_application_other_expenses_1" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :tuition_exemption, "Tuition Exemption:" , for: "scholarship_application_tuition_exemption" %><br>
+                  <%= f.number_field :tuition_exemption, step: 0.01, value: (@scholarship_application.tuition_exemption || 0), id: "scholarship_application_tuition_exemption" %>
+                </td>
+                <td>
+                  <%= f.label :other_expenses_2, "Other Expenses 2:" , for: "scholarship_application_other_expenses_2" %><br>
+                  <%= f.number_field :other_expenses_2, step: 0.01, value: (@scholarship_application.other_expenses_2 || 0), id: "scholarship_application_other_expenses_2" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :college_work_study, "College Work-Study:" , for: "scholarship_application_college_work_study" %><br>
+                  <%= f.number_field :college_work_study, step: 0.01, value: (@scholarship_application.college_work_study || 0), id: "scholarship_application_college_work_study" %>
+                </td>
+                <td>
+                  <%= f.label :college_scholarship, "College Scholarship:" , for: "scholarship_application_college_scholarship" %><br>
+                  <%= f.number_field :college_scholarship, step: 0.01, value: (@scholarship_application.college_scholarship || 0), id: "scholarship_application_college_scholarship" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :alaska_student_loan, "Alaska Student Loan:" , for: "scholarship_application_alaska_student_loan" %><br>
+                  <%= f.number_field :alaska_student_loan, step: 0.01, value: (@scholarship_application.alaska_student_loan || 0), id: "scholarship_application_alaska_student_loan" %>
+                </td>
+                <td>
+                  <%= f.label :stafford_loan, "Stafford Loan:" , for: "scholarship_application_stafford_loan" %><br>
+                  <%= f.number_field :stafford_loan, step: 0.01, value: (@scholarship_application.stafford_loan || 0), id: "scholarship_application_stafford_loan" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :alaska_supplemental_loan, "Alaska Supplemental Loan:" , for: "scholarship_application_alaska_supplemental_loan" %><br>
+                  <%= f.number_field :alaska_supplemental_loan, step: 0.01, value: (@scholarship_application.alaska_supplemental_loan || 0), id: "scholarship_application_alaska_supplemental_loan" %>
+                </td>
+                <td>
+                  <%= f.label :alaska_family_education_loan, "Alaska Family Education Loan:" , for: "scholarship_application_alaska_family_education_loan" %><br>
+                  <%= f.number_field :alaska_family_education_loan, step: 0.01, value: (@scholarship_application.alaska_family_education_loan || 0), id: "scholarship_application_alaska_family_education_loan" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :supplemental_educational_opportunity_grant, "Supplemental Educational Opportunity Grant:" , for: "scholarship_application_supplemental_educational_opportunity_grant" %><br>
+                  <%= f.number_field :supplemental_educational_opportunity_grant, step: 0.01, value: (@scholarship_application.supplemental_educational_opportunity_grant || 0), id: "scholarship_application_supplemental_educational_opportunity_grant" %>
+                </td>
+                <td>
+                  <%= f.label :parent_plus_loan, "Parent Plus Loan:" , for: "scholarship_application_parent_plus_loan" %><br>
+                  <%= f.number_field :parent_plus_loan, step: 0.01, value: (@scholarship_application.parent_plus_loan || 0), id: "scholarship_application_parent_plus_loan" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :government_aid, "Government Aid:" , for: "scholarship_application_government_aid" %><br>
+                  <%= f.number_field :government_aid, step: 0.01, value: (@scholarship_application.government_aid || 0), id: "scholarship_application_government_aid" %>
+                </td>
+                <td>
+                  <%= f.label :veterans_assistance, "Veteran's Assistance:" , for: "scholarship_application_veterans_assistance" %><br>
+                  <%= f.number_field :veterans_assistance, step: 0.01, value: (@scholarship_application.veterans_assistance || 0), id: "scholarship_application_veterans_assistance" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :other_resources_1, "Other Resources 1:" , for: "scholarship_application_other_resources_1" %><br>
+                  <%= f.number_field :other_resources_1, step: 0.01, value: (@scholarship_application.other_resources_1 || 0), id: "scholarship_application_other_resources_1" %>
+                </td>
+                <td>
+                  <%= f.label :other_expenses_1, "Other Expenses 1:" , for: "scholarship_application_other_expenses_1" %><br>
+                  <%= f.number_field :other_expenses_1, step: 0.01, value: (@scholarship_application.other_expenses_1 || 0), id: "scholarship_application_other_expenses_1" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :other_resources_2, "Other Resources 2:" , for: "scholarship_application_other_resources_2" %><br>
+                  <%= f.number_field :other_resources_2, step: 0.01, value: (@scholarship_application.other_resources_2 || 0), id: "scholarship_application_other_resources_2" %>
+                </td>
+                <td>
+                  <%= f.label :other_expenses_2, "Other Expenses 2:" , for: "scholarship_application_other_expenses_2" %><br>
+                  <%= f.number_field :other_expenses_2, step: 0.01, value: (@scholarship_application.other_expenses_2 || 0), id: "scholarship_application_other_expenses_2" %>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%= f.label :total_resources, "Total Resources:" %><br>
+                  <input id="total_resources" type="number" readonly>
+                </td>
+                <td>
+                  <%= f.label :total_expenses, "Total Expenses:" %><br>
+                  <input id="total_expenses" type="number" readonly>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <%= f.label :remaining_unmet_need, "Remaining Unmet Need:" %><br>
+                  <input id="remaining_unmet_need" type="number" readonly>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
         <!-- Section: Release of Information -->
