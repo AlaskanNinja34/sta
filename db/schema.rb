@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_17_190026) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_19_130005) do
   create_table "scholarship_applications", force: :cascade do |t|
     t.string "last_name"
     t.string "first_name"
@@ -97,5 +97,32 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_17_190026) do
     t.date "arpa_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "student_contribution"
+    t.decimal "parent_contribution"
+    t.decimal "spouse_contribution"
+    t.decimal "native_corporation_grant_1"
+    t.decimal "native_corporation_grant_2"
+    t.decimal "anb_ans_grant"
+    t.decimal "pell_grant"
+    t.decimal "tuition_exemption"
+    t.decimal "college_work_study"
+    t.decimal "college_scholarship"
+    t.decimal "alaska_student_loan"
+    t.decimal "stafford_loan"
+    t.decimal "alaska_supplemental_loan"
+    t.decimal "alaska_family_education_loan"
+    t.decimal "supplemental_educational_opportunity_grant"
+    t.decimal "parent_plus_loan"
+    t.decimal "government_aid"
+    t.decimal "veterans_assistance"
+    t.decimal "other_resources_1"
+    t.decimal "other_resources_2"
+    t.decimal "books_supplies"
+    t.decimal "local_transportation"
+    t.decimal "other_expenses_1"
+    t.decimal "other_expenses_2"
+    t.decimal "total_resources"
+    t.decimal "total_expenses"
+    t.decimal "remaining_unmet_need"
   end
 end
