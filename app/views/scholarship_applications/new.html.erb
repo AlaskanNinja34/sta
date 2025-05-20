@@ -1,0 +1,495 @@
+<div class="container my-5">
+  <!-- Header and Instructions -->
+  <h1 class="text-center mb-4">Sitka Tribe of Alaska Higher Education Scholarship Application</h1>
+  <div class="alert alert-info">
+    <strong>Application Deadlines:</strong>
+    <ul>
+      <li><strong>April 1</strong> (First Time Applicants)</li>
+      <li><strong>May 1</strong> (Renewing Applicants)</li>
+      <li><strong>October 1</strong> (Partial Academic Year Applicants)</li>
+    </ul>
+    <p>
+      SUBMIT COMPLETED APPLICATIONS: On website
+      <br>
+      Sitka Tribe of Alaska<br>
+      204 Siginaka Way, Suite 300<br>
+      Sitka, AK 99835<br>
+      E-mail for any questions: <a href="mailto:scholarship.applicant@sitkatribe-nsn.gov"><strong>scholarship.applicant@sitkatribe-nsn.gov</strong></a><br>
+    </p>
+  </div>
+
+  <%= form_with model: @application, url: scholarship_applications_path, local: true, html: { class: "needs-validation" } do |f| %>
+    <!-- Section: Applicant Information -->
+    <h2 class="mt-4">Applicant Information</h2>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <%= f.label :last_name, "Last Name" %>
+        <%= f.text_field :last_name, class: "form-control", required: true %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :first_name, "First Name" %>
+        <%= f.text_field :first_name, class: "form-control", required: true %>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :middle_initial, "Middle Initial" %>
+        <%= f.text_field :middle_initial, class: "form-control" %>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :previous_maiden_name, "Previous/Maiden Name" %>
+        <%= f.text_field :previous_maiden_name, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <%= f.label :student_id, "Student Identification Number" %>
+        <%= f.text_field :student_id, class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= f.label :date_of_birth, "Date of Birth" %>
+        <%= f.date_field :date_of_birth, class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= f.label :place_of_birth, "Place of Birth" %>
+        <%= f.text_field :place_of_birth, class: "form-control" %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= f.label :marital_status, "Marital Status" %><br>
+      <% ["Married", "Divorced", "Single", "Widowed", "Separated"].each_with_index do |status, index| %>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :marital_status, status, id: "status_#{index}" %>
+          <%= f.label "status_#{index}", status, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-4">
+        <%= f.label :number_of_dependents, "Number of Dependents" %>
+        <%= f.number_field :number_of_dependents, class: "form-control", min: 0 %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :tribe_enrolled, "Tribe Currently Enrolled With" %>
+        <%= f.text_field :tribe_enrolled, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :previous_scholarship, "Previously Received Scholarship from STA?" %><br>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :previous_scholarship, "Yes", id: "prev_yes" %>
+          <%= f.label "prev_yes", "Yes", class: "form-check-label" %>
+        </div>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :previous_scholarship, "No", id: "prev_no" %>
+          <%= f.label "prev_no", "No", class: "form-check-label" %>
+        </div>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= f.label :previous_scholarship_year, "If Yes, Year:" %>
+      <%= f.text_field :previous_scholarship_year, class: "form-control" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :preferred_contact, "Preferred Contact" %><br>
+      <% ["E-Mail", "Phone", "Mail"].each_with_index do |contact, index| %>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :preferred_contact, contact, id: "contact_#{index}" %>
+          <%= f.label "contact_#{index}", contact, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :email_address, "E-mail Address(es)" %>
+      <%= f.email_field :email_address, class: "form-control" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :mailing_address_permanent, "Mailing Address - Permanent Residence and Summer Address" %>
+      <%= f.text_field :mailing_address_permanent, class: "form-control" %>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-4">
+        <%= f.label :city, "City" %>
+        <%= f.text_field :city, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :state, "State" %>
+        <%= f.text_field :state, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :zip_code, "Zip Code" %>
+        <%= f.text_field :zip_code, class: "form-control" %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= f.label :mailing_address_school, "Mailing Address - While Attending School" %>
+      <%= f.text_field :mailing_address_school, class: "form-control" %>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-4">
+        <%= f.label :city_school, "City" %>
+        <%= f.text_field :city_school, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :state_school, "State" %>
+        <%= f.text_field :state_school, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :zip_code_school, "Zip Code" %>
+        <%= f.text_field :zip_code_school, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <%= f.label :permanent_phone, "Permanent Phone Number / Summer Contact" %>
+        <%= f.telephone_field :permanent_phone, class: "form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :school_phone, "Phone Number While at School" %>
+        <%= f.telephone_field :school_phone, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- Section: Education History -->
+    <h2 class="mt-5">Education History</h2>
+    <div class="mt-3">
+      <p>Please indicate if you earned a High School Diploma or GED:</p>
+      <div class="form-check form-check-inline">
+        <%= f.radio_button :education_earned, "High School Diploma", id: "hs_diploma" %>
+        <%= f.label "hs_diploma", "High School Diploma", class: "form-check-label" %>
+      </div>
+      <div class="form-check form-check-inline">
+        <%= f.radio_button :education_earned, "GED", id: "ged" %>
+        <%= f.label "ged", "GED", class: "form-check-label" %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= f.label :school_name, "Name of School" %>
+      <%= f.text_field :school_name, class: "form-control" %>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <%= f.label :school_city, "City/State" %>
+        <%= f.text_field :school_city, class: "form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :school_earned_in, "Earned In (Month/Year)" %>
+        <%= f.text_field :school_earned_in, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- Section: Education Plan -->
+    <h2 class="mt-5">Education Plan</h2>
+    <div class="mt-3">
+      <%= f.label :college_name, "Name of College/University" %>
+      <%= f.text_field :college_name, class: "form-control" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :college_financial_aid_office, "College Financial Aid Office" %>
+      <%= f.text_field :college_financial_aid_office, class: "form-control" %>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <%= f.label :college_phone, "Phone Number" %>
+        <%= f.telephone_field :college_phone, class: "form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :college_fax, "Fax Number" %>
+        <%= f.text_field :college_fax, class: "form-control" %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= f.label :college_financial_aid_mailing_address, "Financial Aid Office Mailing Address" %>
+      <%= f.text_field :college_financial_aid_mailing_address, class: "form-control" %>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-4">
+        <%= f.label :college_city, "City" %>
+        <%= f.text_field :college_city, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :college_state, "State" %>
+        <%= f.text_field :college_state, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :college_zip_code, "Zip Code" %>
+        <%= f.text_field :college_zip_code, class: "form-control" %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= f.label :college_term_type, "College/University Term Type" %><br>
+      <% ["Quarter", "Trimester", "Semester"].each_with_index do |term, index| %>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :college_term_type, term, id: "term_#{index}" %>
+          <%= f.label "term_#{index}", term, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :deadline_fee_payments, "Deadline for Fee Payments (Fall, Winter, Spring, Summer)" %>
+      <%= f.text_field :deadline_fee_payments, class: "form-control", placeholder: "Enter deadlines separated by commas" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :credits_taking, "Number of Credits Taking (Fall, Winter, Spring, Summer)" %>
+      <%= f.text_field :credits_taking, class: "form-control", placeholder: "Enter number of credits for each term" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :current_degree_program, "Current Degree Program" %><br>
+      <% ["Associates", "Bachelors (B.S./B.A.)", "Masters", "Doctorate", "Juris Doctorate", "Other"].each_with_index do |degree, index| %>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :current_degree_program, degree, id: "degree_#{index}" %>
+          <%= f.label "degree_#{index}", degree, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :expected_graduation_date, "Expected Date of Graduation" %>
+      <%= f.date_field :expected_graduation_date, class: "form-control" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :class_standing, "Class Standing for Next Academic Year" %><br>
+      <% ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"].each_with_index do |standing, index| %>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :class_standing, standing, id: "standing_#{index}" %>
+          <%= f.label "standing_#{index}", standing, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <%= f.label :field_of_study, "Field of Study/Major" %>
+        <%= f.text_field :field_of_study, class: "form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :minor, "Minor" %>
+        <%= f.text_field :minor, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- Section: Educational Goals -->
+    <h2 class="mt-5">Educational Goals</h2>
+    <div class="mt-3">
+      <%= f.label :educational_goals, "Please State Your Educational Objective" %>
+      <%= f.text_area :educational_goals, class: "form-control", rows: 5 %>
+    </div>
+    <div class="mt-3">
+      <p class="fw-bold">Certification:</p>
+      <div class="form-check">
+        <%= f.check_box :certify_information, class: "form-check-input", id: "certify_information" %>
+        <%= f.label :certify_information, "I certify that all the information given by me is true, complete, and correct to the best of my knowledge. I understand that any false information will disqualify me from this scholarship program.", class: "form-check-label" %>
+      </div>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <%= f.label :signature, "Student Signature" %>
+        <%= f.text_field :signature, class: "form-control", placeholder: "Type your name as signature" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :date, "Date" %>
+        <%= f.date_field :date, class: "form-control" %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <div class="form-check">
+        <%= f.check_box :certify_not_defaulting, class: "form-check-input", id: "certify_not_defaulting" %>
+        <%= f.label :certify_not_defaulting, "I certify that I am not defaulting on any Federal or State loans.", class: "form-check-label" %>
+      </div>
+    </div>
+
+    <!-- Section: Budget Forecast -->
+    <h2 class="mt-5">Budget Forecast</h2>
+    <p>Please complete the following for your anticipated expenses for the entire Academic Year.</p>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <%= f.label :tuition, "Tuition" %>
+        <%= f.number_field :tuition, class: "form-control", step: "0.01" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :fees, "Fees" %>
+        <%= f.number_field :fees, class: "form-control", step: "0.01" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :room_board, "Room/Board" %>
+        <%= f.number_field :room_board, class: "form-control", step: "0.01" %>
+      </div>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-4">
+        <%= f.label :books, "Books" %>
+        <%= f.number_field :books, class: "form-control", step: "0.01" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :transportation, "Transportation" %>
+        <%= f.number_field :transportation, class: "form-control", step: "0.01" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :personal_expenses, "Personal Expenses" %>
+        <%= f.number_field :personal_expenses, class: "form-control", step: "0.01" %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= f.label :other_expenses, "Other (please describe)" %>
+      <%= f.text_field :other_expenses, class: "form-control" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :resources_college_expenses, "Resources for College - Expenses (e.g., Student/Parent Contributions, etc.)" %>
+      <%= f.text_area :resources_college_expenses, class: "form-control", rows: 5 %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :amount_requested, "Amount Requested" %>
+      <%= f.number_field :amount_requested, class: "form-control", step: "0.01" %>
+    </div>
+
+    <!-- Section: Release of Information -->
+    <h2 class="mt-5">Release of Information</h2>
+    <p>I give my permission to the Sitka Tribe of Alaska Cultural Resources, Education, and Employment Department to verify any academic or financial information needed to determine my eligibility for funding.</p>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <%= f.label :release_signature, "Student Signature" %>
+        <%= f.text_field :release_signature, class: "form-control", placeholder: "Type your name as signature" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :release_date, "Date" %>
+        <%= f.date_field :release_date, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- Section: Enrollment Verification -->
+    <h2 class="mt-5">Enrollment Verification</h2>
+    <p>Please verify Tribal Enrollment or Indian Blood Degree:</p>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <%= f.label :enrollment_last_name, "Last Name" %>
+        <%= f.text_field :enrollment_last_name, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :enrollment_first_name, "First Name" %>
+        <%= f.text_field :enrollment_first_name, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :enrollment_middle_name, "Middle Name" %>
+        <%= f.text_field :enrollment_middle_name, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <%= f.label :enrollment_date_of_birth, "Date of Birth" %>
+        <%= f.date_field :enrollment_date_of_birth, class: "form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :enrollment_sex, "Sex" %>
+        <%= f.select :enrollment_sex, options_for_select([["Male", "Male"], ["Female", "Female"], ["Other", "Other"]]), {}, class: "form-select" %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= f.label :enrollment_phone, "Phone Number" %>
+      <%= f.telephone_field :enrollment_phone, class: "form-control" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :enrollment_place_of_birth, "Place of Birth" %>
+      <%= f.text_field :enrollment_place_of_birth, class: "form-control" %>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-4">
+        <%= f.label :enrollment_mailing_city, "Mailing City" %>
+        <%= f.text_field :enrollment_mailing_city, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :enrollment_mailing_state, "Mailing State" %>
+        <%= f.text_field :enrollment_mailing_state, class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :enrollment_mailing_zip, "Mailing Zip Code" %>
+        <%= f.text_field :enrollment_mailing_zip, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- Section: Financial Needs Analysis -->
+    <h2 class="mt-5">Financial Needs Analysis</h2>
+    <p>Student: Please complete the top section only, and submit to your school's Financial Aid Office.</p>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <%= f.label :financial_student_name, "Student Name" %>
+        <%= f.text_field :financial_student_name, class: "form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :financial_student_id, "Student Identification Number" %>
+        <%= f.text_field :financial_student_id, class: "form-control" %>
+      </div>
+    </div>
+    <p class="mt-3">TO BE COMPLETED BY THE FINANCIAL AID OFFICE</p>
+    <div class="mt-3">
+      <%= f.label :financial_aid_status, "Financial Aid Status" %>
+      <%= f.text_field :financial_aid_status, class: "form-control" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :budget_period, "Budget Period (From - To)" %>
+      <%= f.text_field :budget_period, class: "form-control", placeholder: "e.g., Fall 2023 - Spring 2024" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :student_resources, "Student Resources/Awards Budget" %>
+      <%= f.text_area :student_resources, class: "form-control", rows: 4 %>
+    </div>
+
+    <!-- Section: Photo Release Form -->
+    <h2 class="mt-5">Photo Release Form</h2>
+    <p>
+      I authorize the Sitka Tribe of Alaska, Cultural Resources, Education, and Employment Department to use the information I provide to be shared in an Education Edition Newsletter published by the Sitka Tribe of Alaska and for recruitment purposes.
+    </p>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <%= f.label :photo_release_signature, "Student Signature" %>
+        <%= f.text_field :photo_release_signature, class: "form-control", placeholder: "Type your name as signature" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :photo_release_date, "Date" %>
+        <%= f.date_field :photo_release_date, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- Section: Parental/Spousal Release Form (Optional) -->
+    <h2 class="mt-5">Parental/Spousal Release Form (Optional)</h2>
+    <p>
+      I authorize Sitka Tribe of Alaska's Cultural Resources, Education, and Employment Department to release information regarding my scholarship application (including but not limited to enrollment information and academic progress) to the person(s) listed.
+    </p>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <%= f.label :parental_release_signature, "Student Signature" %>
+        <%= f.text_field :parental_release_signature, class: "form-control", placeholder: "Type your name as signature" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :parental_release_date, "Date" %>
+        <%= f.date_field :parental_release_date, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- Section: ARPA Higher Education Scholarship -->
+    <h2 class="mt-5">ARPA Higher Education Scholarship</h2>
+    <p>
+      Sitka Tribe of Alaska's ARPA Higher Education Scholarship is an additional funding opportunity for eligible students. Complete the section below to be considered.
+    </p>
+    <div class="mt-3">
+      <%= f.label :arpa_student_name, "Student Name" %>
+      <%= f.text_field :arpa_student_name, class: "form-control" %>
+    </div>
+    <div class="mt-3">
+      <%= f.label :arpa_authorization, "I authorize Sitka Tribe of Alaska's Cultural Resources, Education, and Employment Department to utilize this scholarship application for the ARPA Higher Education Scholarship." %>
+      <div class="form-check">
+        <%= f.check_box :arpa_authorization, class: "form-check-input", id: "arpa_authorization" %>
+        <%= f.label "arpa_authorization", "I authorize", class: "form-check-label" %>
+      </div>
+    </div>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <%= f.label :arpa_signature, "Student Signature" %>
+        <%= f.text_field :arpa_signature, class: "form-control", placeholder: "Type your name as signature" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :arpa_date, "Date" %>
+        <%= f.date_field :arpa_date, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mt-5">
+      <%= f.submit "Submit Application", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,42 @@
+<div class="container my-5">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Application Details</h2>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <strong>Reference Number:</strong> <%= @application.reference_number %><br>
+        <strong>Status:</strong> <%= @application.status.humanize %>
+      </div>
+      
+      <h3>Applicant Information</h3>
+      <div class="row">
+        <div class="col-md-6">
+          <p><strong>Name:</strong> <%= @application.first_name %> <%= @application.last_name %></p>
+          <p><strong>Email:</strong> <%= @application.email_address %></p>
+          <p><strong>Phone:</strong> <%= @application.permanent_phone %></p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Application Date:</strong> <%= @application.created_at.strftime("%B %d, %Y") %></p>
+          <p><strong>Degree Program:</strong> <%= @application.current_degree_program %></p>
+          <p><strong>Institution:</strong> <%= @application.college_name %></p>
+        </div>
+      </div>
+      
+      <hr>
+      
+      <h3>Application Timeline</h3>
+      <ul class="list-group mb-4">
+        <li class="list-group-item">
+          <span class="badge bg-success">Submitted</span>
+          <%= @application.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+        </li>
+        <!-- Additional status updates would be added here -->
+      </ul>
+      
+      <div class="text-center">
+        <%= link_to "Return to Home", root_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div>

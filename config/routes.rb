@@ -5,9 +5,28 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # Scholarship application routes
+  resources :scholarship_applications, only: [:new, :create, :show] do
+    member do
+      get :confirmation
+    end
+  end
+  
+  # Application status lookup
+  get "check_status", to: "scholarship_applications#check_status"
+  post "lookup", to: "scholarship_applications#lookup"
+  
+  # Admin routes (will add devise later)
+  namespace :admin do
+    get "dashboard", to: "dashboard#index"
+    resources :scholarship_applications do
+      member do
+        patch :approve
+        patch :reject
+        patch :request_more_info
+      end
+    end
+  end
 
   # Defines the root path route ("/")
   root "home#index"
