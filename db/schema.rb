@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_20_180158) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_20_201438) do
   create_table "scholarship_applications", force: :cascade do |t|
     t.string "last_name"
     t.string "first_name"
@@ -61,19 +61,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_20_180158) do
     t.string "signature"
     t.date "date"
     t.boolean "certify_not_defaulting"
-    t.decimal "tuition"
-    t.decimal "fees"
-    t.decimal "room_board"
-    t.decimal "books"
-    t.decimal "transportation"
-    t.decimal "personal_expenses"
+    t.decimal "tuition", precision: 10, scale: 2
+    t.decimal "fees", precision: 10, scale: 2
+    t.decimal "room_board", precision: 10, scale: 2
+    t.decimal "books", precision: 10, scale: 2
+    t.decimal "transportation", precision: 10, scale: 2
+    t.decimal "personal_expenses", precision: 10, scale: 2
     t.string "other_expenses"
     t.text "resources_college_expenses"
-    t.decimal "amount_requested"
+    t.decimal "amount_requested", precision: 10, scale: 2
     t.string "status"
     t.string "reference_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "release_signature"
     t.date "release_date"
     t.string "enrollment_last_name"
@@ -99,5 +97,135 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_20_180158) do
     t.boolean "arpa_authorization"
     t.string "arpa_signature"
     t.date "arpa_date"
+    t.decimal "student_contribution", precision: 10, scale: 2
+    t.decimal "parent_contribution", precision: 10, scale: 2
+    t.decimal "spouse_contribution", precision: 10, scale: 2
+    t.string "native_corp_grant1_name"
+    t.decimal "native_corp_grant1_amount", precision: 10, scale: 2
+    t.string "native_corp_grant2_name"
+    t.decimal "native_corp_grant2_amount", precision: 10, scale: 2
+    t.decimal "anb_ans_grant", precision: 10, scale: 2
+    t.decimal "pell_grant", precision: 10, scale: 2
+    t.decimal "tuition_exemption", precision: 10, scale: 2
+    t.decimal "college_work_study", precision: 10, scale: 2
+    t.string "college_scholarship_name"
+    t.decimal "college_scholarship_amount", precision: 10, scale: 2
+    t.decimal "alaska_student_loan", precision: 10, scale: 2
+    t.decimal "stafford_loan", precision: 10, scale: 2
+    t.decimal "alaska_supplemental_loan", precision: 10, scale: 2
+    t.decimal "alaska_family_education_loan", precision: 10, scale: 2
+    t.decimal "seog_grant", precision: 10, scale: 2
+    t.decimal "parent_plus_loan", precision: 10, scale: 2
+    t.decimal "government_assistance", precision: 10, scale: 2
+    t.decimal "veterans_assistance", precision: 10, scale: 2
+    t.string "other_resource1_name"
+    t.decimal "other_resource1_amount", precision: 10, scale: 2
+    t.string "other_resource2_name"
+    t.decimal "other_resource2_amount", precision: 10, scale: 2
+    t.string "other_expense1_name"
+    t.decimal "other_expense1_amount", precision: 10, scale: 2
+    t.string "other_expense2_name"
+    t.decimal "other_expense2_amount", precision: 10, scale: 2
+    t.decimal "total_resources", precision: 10, scale: 2
+    t.decimal "total_expenses", precision: 10, scale: 2
+    t.decimal "total_expenses_calc", precision: 10, scale: 2
+    t.decimal "minus_total_resources", precision: 10, scale: 2
+    t.decimal "unmet_need", precision: 10, scale: 2
+    t.text "cover_remaining_need"
+    t.string "financial_college_name"
+    t.string "financial_student_signature"
+    t.date "financial_student_date"
+    t.string "financial_aid_status_other_text"
+    t.date "budget_period_from"
+    t.date "budget_period_to"
+    t.string "budget_period_type"
+    t.decimal "fna_family_fall", precision: 10, scale: 2
+    t.decimal "fna_family_winter", precision: 10, scale: 2
+    t.decimal "fna_family_spring", precision: 10, scale: 2
+    t.decimal "fna_family_summer", precision: 10, scale: 2
+    t.decimal "fna_family_total", precision: 10, scale: 2
+    t.decimal "fna_savings_fall", precision: 10, scale: 2
+    t.decimal "fna_savings_winter", precision: 10, scale: 2
+    t.decimal "fna_savings_spring", precision: 10, scale: 2
+    t.decimal "fna_savings_summer", precision: 10, scale: 2
+    t.decimal "fna_savings_total", precision: 10, scale: 2
+    t.decimal "fna_scholarships_fall", precision: 10, scale: 2
+    t.decimal "fna_scholarships_winter", precision: 10, scale: 2
+    t.decimal "fna_scholarships_spring", precision: 10, scale: 2
+    t.decimal "fna_scholarships_summer", precision: 10, scale: 2
+    t.decimal "fna_scholarships_total", precision: 10, scale: 2
+    t.decimal "fna_asl_fall", precision: 10, scale: 2
+    t.decimal "fna_asl_winter", precision: 10, scale: 2
+    t.decimal "fna_asl_spring", precision: 10, scale: 2
+    t.decimal "fna_asl_summer", precision: 10, scale: 2
+    t.decimal "fna_asl_total", precision: 10, scale: 2
+    t.decimal "fna_school_schol_fall", precision: 10, scale: 2
+    t.decimal "fna_school_schol_winter", precision: 10, scale: 2
+    t.decimal "fna_school_schol_spring", precision: 10, scale: 2
+    t.decimal "fna_school_schol_summer", precision: 10, scale: 2
+    t.decimal "fna_school_schol_total", precision: 10, scale: 2
+    t.decimal "fna_work_study_fall", precision: 10, scale: 2
+    t.decimal "fna_work_study_winter", precision: 10, scale: 2
+    t.decimal "fna_work_study_spring", precision: 10, scale: 2
+    t.decimal "fna_work_study_summer", precision: 10, scale: 2
+    t.decimal "fna_work_study_total", precision: 10, scale: 2
+    t.decimal "fna_pell_fall", precision: 10, scale: 2
+    t.decimal "fna_pell_winter", precision: 10, scale: 2
+    t.decimal "fna_pell_spring", precision: 10, scale: 2
+    t.decimal "fna_pell_summer", precision: 10, scale: 2
+    t.decimal "fna_pell_total", precision: 10, scale: 2
+    t.decimal "fna_seog_fall", precision: 10, scale: 2
+    t.decimal "fna_seog_winter", precision: 10, scale: 2
+    t.decimal "fna_seog_spring", precision: 10, scale: 2
+    t.decimal "fna_seog_summer", precision: 10, scale: 2
+    t.decimal "fna_seog_total", precision: 10, scale: 2
+    t.decimal "fna_stafford_fall", precision: 10, scale: 2
+    t.decimal "fna_stafford_winter", precision: 10, scale: 2
+    t.decimal "fna_stafford_spring", precision: 10, scale: 2
+    t.decimal "fna_stafford_summer", precision: 10, scale: 2
+    t.decimal "fna_stafford_total", precision: 10, scale: 2
+    t.decimal "fna_veteran_fall", precision: 10, scale: 2
+    t.decimal "fna_veteran_winter", precision: 10, scale: 2
+    t.decimal "fna_veteran_spring", precision: 10, scale: 2
+    t.decimal "fna_veteran_summer", precision: 10, scale: 2
+    t.decimal "fna_veteran_total", precision: 10, scale: 2
+    t.decimal "fna_tuition_waiver_fall", precision: 10, scale: 2
+    t.decimal "fna_tuition_waiver_winter", precision: 10, scale: 2
+    t.decimal "fna_tuition_waiver_spring", precision: 10, scale: 2
+    t.decimal "fna_tuition_waiver_summer", precision: 10, scale: 2
+    t.decimal "fna_tuition_waiver_total", precision: 10, scale: 2
+    t.decimal "fna_perkins_fall", precision: 10, scale: 2
+    t.decimal "fna_perkins_winter", precision: 10, scale: 2
+    t.decimal "fna_perkins_spring", precision: 10, scale: 2
+    t.decimal "fna_perkins_summer", precision: 10, scale: 2
+    t.decimal "fna_perkins_total", precision: 10, scale: 2
+    t.string "fna_other1_name"
+    t.decimal "fna_other1_fall", precision: 10, scale: 2
+    t.decimal "fna_other1_winter", precision: 10, scale: 2
+    t.decimal "fna_other1_spring", precision: 10, scale: 2
+    t.decimal "fna_other1_summer", precision: 10, scale: 2
+    t.decimal "fna_other1_total", precision: 10, scale: 2
+    t.string "fna_other2_name"
+    t.decimal "fna_other2_fall", precision: 10, scale: 2
+    t.decimal "fna_other2_winter", precision: 10, scale: 2
+    t.decimal "fna_other2_spring", precision: 10, scale: 2
+    t.decimal "fna_other2_summer", precision: 10, scale: 2
+    t.decimal "fna_other2_total", precision: 10, scale: 2
+    t.decimal "fna_tuition_fees", precision: 10, scale: 2
+    t.decimal "fna_room_board", precision: 10, scale: 2
+    t.decimal "fna_books", precision: 10, scale: 2
+    t.decimal "fna_transportation", precision: 10, scale: 2
+    t.decimal "fna_personal", precision: 10, scale: 2
+    t.string "fna_other_expense1_name"
+    t.decimal "fna_other_expense1", precision: 10, scale: 2
+    t.string "fna_other_expense2_name"
+    t.decimal "fna_other_expense2", precision: 10, scale: 2
+    t.string "financial_aid_officer_signature"
+    t.date "financial_aid_officer_date"
+    t.string "fao_address"
+    t.string "fao_telephone"
+    t.string "fao_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 end

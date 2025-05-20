@@ -293,49 +293,410 @@
       </div>
     </div>
 
-    <!-- Section: Budget Forecast -->
-    <h2 class="mt-5">Budget Forecast</h2>
-    <p>Please complete the following for your anticipated expenses for the entire Academic Year.</p>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <%= f.label :tuition, "Tuition" %>
-        <%= f.number_field :tuition, class: "form-control", step: "0.01" %>
+<!-- Section: Budget Forecast -->
+<h2 class="mt-5">Budget Forecast</h2>
+<div class="alert alert-info">
+  <strong>BUDGET FORECAST:</strong>
+  <p>Anticipated expenses <strong>MUST</strong> reflect the budget for the entire Academic Year. Students may obtain this information from the school admissions office or in the school catalog or website.</p>
+  <ul>
+    <li><strong>Tuition:</strong> (set by the school you will be attending)</li>
+    <li><strong>Fees:</strong> (including technology or lab fees)</li>
+    <li><strong>Room/Board:</strong> (as calculated by the school)</li>
+    <li><strong>Books:</strong> (calculated by the school)</li>
+    <li><strong>Transportation:</strong> (DO NOT include air transportation into your budget; you can include local transportation, i.e. bus passes)</li>
+    <li><strong>Personal expenses:</strong> (may include items such as sundries, laundry and laundry supplies, cannot include things such as personal debt or phone bills)</li>
+    <li><strong>Other:</strong> (If you list something under this expense you MUST describe the expense in detail. If more room is needed, please elaborate on the reverse side of the budget forecast page)</li>
+  </ul>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h4 class="text-center">Resources for College</h4>
+        <p class="text-center text-muted small">(indicate "applied" if award amount is unknown)</p>
+        
+        <div class="mb-3">
+          <%= f.label :student_contribution, "Student Contribution", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :student_contribution, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :parent_contribution, "Parent Contribution", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :parent_contribution, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :spouse_contribution, "Spouse Contribution", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :spouse_contribution, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-md-8">
+              <%= f.label :native_corp_grant1, "Native Corporation Grant", class: "form-label" %>
+              <%= f.text_field :native_corp_grant1_name, class: "form-control", placeholder: "specify..." %>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">&nbsp;</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :native_corp_grant1_amount, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-md-8">
+              <%= f.label :native_corp_grant2, "Native Corporation Grant", class: "form-label" %>
+              <%= f.text_field :native_corp_grant2_name, class: "form-control", placeholder: "specify..." %>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">&nbsp;</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :native_corp_grant2_amount, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :anb_ans_grant, "ANB/ANS Grant", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :anb_ans_grant, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :pell_grant, "Pell Grant", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :pell_grant, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :tuition_exemption, "Tuition Exemption", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :tuition_exemption, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :college_work_study, "College Work-Study", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :college_work_study, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-md-8">
+              <%= f.label :college_scholarship, "College Scholarship", class: "form-label" %>
+              <%= f.text_field :college_scholarship_name, class: "form-control", placeholder: "specify..." %>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">&nbsp;</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :college_scholarship_amount, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :alaska_student_loan, "Alaska Student Loan", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :alaska_student_loan, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :stafford_loan, "Stafford Loan", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :stafford_loan, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :alaska_supplemental_loan, "Alaska Supplemental Loan", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :alaska_supplemental_loan, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :alaska_family_education_loan, "Alaska Family Education Loan", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :alaska_family_education_loan, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :seog_grant, "Supplemental Educational Opportunity Grant", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :seog_grant, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :parent_plus_loan, "Parent Plus Loan", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :parent_plus_loan, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :government_assistance, "Government Aid (Assistance/SSI)", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :government_assistance, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :veterans_assistance, "Veteran's Assistance", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :veterans_assistance, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-md-8">
+              <%= f.label :other_resource1, "Other:", class: "form-label" %>
+              <%= f.text_field :other_resource1_name, class: "form-control", placeholder: "specify..." %>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">&nbsp;</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :other_resource1_amount, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-md-8">
+              <%= f.label :other_resource2, "Other:", class: "form-label" %>
+              <%= f.text_field :other_resource2_name, class: "form-control", placeholder: "specify..." %>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">&nbsp;</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :other_resource2_amount, class: "form-control budget-resource", step: "0.01", min: "0", data: { resource: true } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :total_resources, "TOTAL RESOURCES", class: "form-label fw-bold" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :total_resources, class: "form-control", step: "0.01", readonly: true, id: "total-resources" %>
+          </div>
+        </div>
       </div>
-      <div class="col-md-4">
-        <%= f.label :fees, "Fees" %>
-        <%= f.number_field :fees, class: "form-control", step: "0.01" %>
-      </div>
-      <div class="col-md-4">
-        <%= f.label :room_board, "Room/Board" %>
-        <%= f.number_field :room_board, class: "form-control", step: "0.01" %>
+      
+      <div class="col-md-6">
+        <h4 class="text-center">College Expenses</h4>
+        <p class="text-center text-muted">&nbsp;</p>
+        
+        <div class="mb-3">
+          <%= f.label :tuition, "Tuition", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :tuition, class: "form-control budget-expense", step: "0.01", min: "0", data: { expense: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :fees, "Fees", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :fees, class: "form-control budget-expense", step: "0.01", min: "0", data: { expense: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :room_board, "Room/Board", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :room_board, class: "form-control budget-expense", step: "0.01", min: "0", data: { expense: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :books, "Books/Supplies", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :books, class: "form-control budget-expense", step: "0.01", min: "0", data: { expense: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :transportation, "Local Transportation", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :transportation, class: "form-control budget-expense", step: "0.01", min: "0", data: { expense: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :personal_expenses, "Personal Expenses", class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :personal_expenses, class: "form-control budget-expense", step: "0.01", min: "0", data: { expense: true } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-md-8">
+              <%= f.label :other_expense1, "Other (specify)", class: "form-label" %>
+              <%= f.text_field :other_expense1_name, class: "form-control", placeholder: "specify..." %>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">&nbsp;</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :other_expense1_amount, class: "form-control budget-expense", step: "0.01", min: "0", data: { expense: true } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-md-8">
+              <%= f.label :other_expense2, "Other (specify)", class: "form-label" %>
+              <%= f.text_field :other_expense2_name, class: "form-control", placeholder: "specify..." %>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">&nbsp;</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :other_expense2_amount, class: "form-control budget-expense", step: "0.01", min: "0", data: { expense: true } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :total_expenses, "TOTAL EXPENSES", class: "form-label fw-bold" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :total_expenses, class: "form-control", step: "0.01", readonly: true, id: "total-expenses" %>
+          </div>
+        </div>
+        
+        <div class="mb-3 mt-5">
+          <%= f.label :total_expenses_calc, "TOTAL EXPENSES", class: "form-label fw-bold" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :total_expenses_calc, class: "form-control", step: "0.01", readonly: true, id: "total-expenses-calc" %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :minus_total_resources, "Minus TOTAL RESOURCES", class: "form-label fw-bold" %>
+          <div class="input-group">
+            <span class="input-group-text">-$</span>
+            <%= f.number_field :minus_total_resources, class: "form-control", step: "0.01", readonly: true, id: "minus-total-resources" %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :unmet_need, "REMAINING UNMET NEED", class: "form-label fw-bold" %>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :unmet_need, class: "form-control", step: "0.01", readonly: true, id: "unmet-need" %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :amount_requested, "Amount Requested", class: "form-label fw-bold" %>
+          <p class="form-text text-muted">(max $1500/Semester or $1000/quarter)</p>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <%= f.number_field :amount_requested, class: "form-control", step: "0.01", min: "0", max: "3000" %>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row g-3 mt-3">
-      <div class="col-md-4">
-        <%= f.label :books, "Books" %>
-        <%= f.number_field :books, class: "form-control", step: "0.01" %>
-      </div>
-      <div class="col-md-4">
-        <%= f.label :transportation, "Transportation" %>
-        <%= f.number_field :transportation, class: "form-control", step: "0.01" %>
-      </div>
-      <div class="col-md-4">
-        <%= f.label :personal_expenses, "Personal Expenses" %>
-        <%= f.number_field :personal_expenses, class: "form-control", step: "0.01" %>
-      </div>
-    </div>
-    <div class="mt-3">
-      <%= f.label :other_expenses, "Other (please describe)" %>
-      <%= f.text_field :other_expenses, class: "form-control" %>
-    </div>
-    <div class="mt-3">
-      <%= f.label :resources_college_expenses, "Resources for College - Expenses (e.g., Student/Parent Contributions, etc.)" %>
-      <%= f.text_area :resources_college_expenses, class: "form-control", rows: 5 %>
-    </div>
-    <div class="mt-3">
-      <%= f.label :amount_requested, "Amount Requested" %>
-      <%= f.number_field :amount_requested, class: "form-control", step: "0.01" %>
-    </div>
+  </div>
+</div>
+
+<div class="alert alert-warning">
+  <p><strong>STA scholarships are supplemental.</strong> Students must demonstrate that they have applied for other financial aid. The maximum scholarship is $3000 per year ($1000 per quarter or $1500 per semester). If your unmet need is greater than STA's maximum scholarship, please indicate below how you will cover your remaining financial need.</p>
+  <%= f.label :cover_remaining_need, "How will you cover your remaining financial need?", class: "form-label" %>
+  <%= f.text_area :cover_remaining_need, class: "form-control", rows: 3 %>
+</div>
+
+<!-- JavaScript to calculate totals automatically -->
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    // Function to calculate totals
+    function calculateTotals() {
+      // Calculate Resources Total
+      let totalResources = 0;
+      document.querySelectorAll('.budget-resource').forEach(function(input) {
+        const value = parseFloat(input.value) || 0;
+        totalResources += value;
+      });
+      document.getElementById('total-resources').value = totalResources.toFixed(2);
+      document.getElementById('minus-total-resources').value = totalResources.toFixed(2);
+      
+      // Calculate Expenses Total
+      let totalExpenses = 0;
+      document.querySelectorAll('.budget-expense').forEach(function(input) {
+        const value = parseFloat(input.value) || 0;
+        totalExpenses += value;
+      });
+      document.getElementById('total-expenses').value = totalExpenses.toFixed(2);
+      document.getElementById('total-expenses-calc').value = totalExpenses.toFixed(2);
+      
+      // Calculate Unmet Need
+      const unmetNeed = totalExpenses - totalResources;
+      document.getElementById('unmet-need').value = unmetNeed > 0 ? unmetNeed.toFixed(2) : '0.00';
+    }
+    
+    // Add event listeners to all resource and expense inputs
+    document.querySelectorAll('.budget-resource, .budget-expense').forEach(function(input) {
+      input.addEventListener('input', calculateTotals);
+    });
+    
+    // Initial calculation
+    calculateTotals();
+  });
+</script>
 
     <!-- Section: Release of Information -->
     <h2 class="mt-5">Release of Information</h2>
@@ -401,32 +762,465 @@
       </div>
     </div>
 
-    <!-- Section: Financial Needs Analysis -->
-    <h2 class="mt-5">Financial Needs Analysis</h2>
-    <p>Student: Please complete the top section only, and submit to your school's Financial Aid Office.</p>
-    <div class="row g-3">
-      <div class="col-md-6">
-        <%= f.label :financial_student_name, "Student Name" %>
-        <%= f.text_field :financial_student_name, class: "form-control" %>
+<!-- Section: Financial Needs Analysis -->
+<h2 class="mt-5">Financial Needs Analysis</h2>
+<div class="card border-warning mb-4">
+  <div class="card-header bg-warning text-dark">
+    <strong>Student:</strong> Please complete the top section only, and submit the form to the University or College FINANCIAL AID OFFICE.
+  </div>
+  
+  <div class="card-body">
+    <!-- To Be Completed By The Student -->
+    <div class="bg-secondary bg-opacity-25 p-3 mb-4">
+      <h5 class="mb-3">TO BE COMPLETED BY THE STUDENT</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <%= f.label :financial_student_name, "Student Name", class: "form-label" %>
+          <%= f.text_field :financial_student_name, class: "form-control" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :financial_student_id, "Student Identification Number", class: "form-label" %>
+          <%= f.text_field :financial_student_id, class: "form-control" %>
+        </div>
       </div>
-      <div class="col-md-6">
-        <%= f.label :financial_student_id, "Student Identification Number" %>
-        <%= f.text_field :financial_student_id, class: "form-control" %>
+      
+      <div class="mb-3">
+        <p>
+          I give my permission for 
+          <%= f.text_field :financial_college_name, class: "form-control d-inline-block mx-1", style: "width: 40%", placeholder: "Name of University or College" %>
+          to release any financial or academic information to Sitka Tribe of Alaska's Higher Education Program.
+        </p>
+      </div>
+      
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <%= f.label :financial_student_signature, "Signature of the Student", class: "form-label" %>
+          <%= f.text_field :financial_student_signature, class: "form-control", placeholder: "Type your name as signature" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :financial_student_date, "Date", class: "form-label" %>
+          <%= f.date_field :financial_student_date, class: "form-control" %>
+        </div>
       </div>
     </div>
-    <p class="mt-3">TO BE COMPLETED BY THE FINANCIAL AID OFFICE</p>
-    <div class="mt-3">
-      <%= f.label :financial_aid_status, "Financial Aid Status" %>
-      <%= f.text_field :financial_aid_status, class: "form-control" %>
+    
+    <!-- To Be Completed By The Financial Aid Office -->
+    <div class="bg-secondary bg-opacity-25 p-3 mb-4">
+      <h5 class="mb-3">TO BE COMPLETED BY THE FINANCIAL AID OFFICE</h5>
+      <p>This student has applied for a Sitka Tribe of Alaska higher education scholarship and verified financial need information is required by your office before action is taken on the application. Please complete and forward this form or a similar form to the address listed at the bottom of this page.</p>
+      
+      <div class="mb-3">
+        <%= f.label :financial_aid_status, "Financial Aid Status", class: "form-label d-block" %>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "not_applied", id: "status_not_applied", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_not_applied, "Student has not yet applied for financial aid, need cannot be determined", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "applied_late", id: "status_applied_late", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_applied_late, "Student applied late and will not be considered for funding", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "incomplete", id: "status_incomplete", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_incomplete, "Student's application is incomplete and cannot be considered", class: "form-check-label" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "funds_exhausted", id: "status_funds_exhausted", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_funds_exhausted, "Funds exhausted at this institution", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "other", id: "status_other", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_other, "Other:", class: "form-check-label" %>
+              <%= f.text_field :financial_aid_status_other_text, class: "form-control mt-1", placeholder: "Please specify" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-md-5">
+          <%= f.label :budget_period_from, "Budget Period: From", class: "form-label" %>
+          <%= f.date_field :budget_period_from, class: "form-control" %>
+        </div>
+        <div class="col-md-5">
+          <%= f.label :budget_period_to, "To", class: "form-label" %>
+          <%= f.date_field :budget_period_to, class: "form-control" %>
+        </div>
+        <div class="col-md-2">
+          <%= f.label :budget_period_type, "Type", class: "form-label" %>
+          <%= f.select :budget_period_type, options_for_select([["Quarter", "Quarter"], ["Semester", "Semester"], ["Trimester", "Trimester"]]), {}, class: "form-select" %>
+        </div>
+      </div>
+      
+      <!-- Student Resources/Awards Section -->
+      <h5 class="mt-4 mb-3">STUDENT RESOURCES/AWARDS</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th></th>
+              <th>Fall</th>
+              <th>Winter</th>
+              <th>Spring</th>
+              <th>Summer</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Family Contributions</td>
+              <td><%= f.number_field :fna_family_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "family", col: "fall" } %></td>
+              <td><%= f.number_field :fna_family_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "family", col: "winter" } %></td>
+              <td><%= f.number_field :fna_family_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "family", col: "spring" } %></td>
+              <td><%= f.number_field :fna_family_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "family", col: "summer" } %></td>
+              <td><%= f.number_field :fna_family_total, class: "form-control", step: "0.01", readonly: true, id: "fna-family-total" %></td>
+            </tr>
+            <tr>
+              <td>Savings</td>
+              <td><%= f.number_field :fna_savings_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "savings", col: "fall" } %></td>
+              <td><%= f.number_field :fna_savings_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "savings", col: "winter" } %></td>
+              <td><%= f.number_field :fna_savings_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "savings", col: "spring" } %></td>
+              <td><%= f.number_field :fna_savings_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "savings", col: "summer" } %></td>
+              <td><%= f.number_field :fna_savings_total, class: "form-control", step: "0.01", readonly: true, id: "fna-savings-total" %></td>
+            </tr>
+            <tr>
+              <td>Scholarships</td>
+              <td><%= f.number_field :fna_scholarships_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "scholarships", col: "fall" } %></td>
+              <td><%= f.number_field :fna_scholarships_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "scholarships", col: "winter" } %></td>
+              <td><%= f.number_field :fna_scholarships_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "scholarships", col: "spring" } %></td>
+              <td><%= f.number_field :fna_scholarships_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "scholarships", col: "summer" } %></td>
+              <td><%= f.number_field :fna_scholarships_total, class: "form-control", step: "0.01", readonly: true, id: "fna-scholarships-total" %></td>
+            </tr>
+            <tr>
+              <td>Alaska Student Loan</td>
+              <td><%= f.number_field :fna_asl_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "asl", col: "fall" } %></td>
+              <td><%= f.number_field :fna_asl_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "asl", col: "winter" } %></td>
+              <td><%= f.number_field :fna_asl_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "asl", col: "spring" } %></td>
+              <td><%= f.number_field :fna_asl_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "asl", col: "summer" } %></td>
+              <td><%= f.number_field :fna_asl_total, class: "form-control", step: "0.01", readonly: true, id: "fna-asl-total" %></td>
+            </tr>
+            <tr>
+              <td>School Scholarship</td>
+              <td><%= f.number_field :fna_school_schol_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "school_schol", col: "fall" } %></td>
+              <td><%= f.number_field :fna_school_schol_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "school_schol", col: "winter" } %></td>
+              <td><%= f.number_field :fna_school_schol_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "school_schol", col: "spring" } %></td>
+              <td><%= f.number_field :fna_school_schol_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "school_schol", col: "summer" } %></td>
+              <td><%= f.number_field :fna_school_schol_total, class: "form-control", step: "0.01", readonly: true, id: "fna-school-schol-total" %></td>
+            </tr>
+            <tr>
+              <td>School Work-Study</td>
+              <td><%= f.number_field :fna_work_study_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "work_study", col: "fall" } %></td>
+              <td><%= f.number_field :fna_work_study_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "work_study", col: "winter" } %></td>
+              <td><%= f.number_field :fna_work_study_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "work_study", col: "spring" } %></td>
+              <td><%= f.number_field :fna_work_study_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "work_study", col: "summer" } %></td>
+              <td><%= f.number_field :fna_work_study_total, class: "form-control", step: "0.01", readonly: true, id: "fna-work-study-total" %></td>
+            </tr>
+            <tr>
+              <td>Pell Grant</td>
+              <td><%= f.number_field :fna_pell_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "pell", col: "fall" } %></td>
+              <td><%= f.number_field :fna_pell_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "pell", col: "winter" } %></td>
+              <td><%= f.number_field :fna_pell_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "pell", col: "spring" } %></td>
+              <td><%= f.number_field :fna_pell_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "pell", col: "summer" } %></td>
+              <td><%= f.number_field :fna_pell_total, class: "form-control", step: "0.01", readonly: true, id: "fna-pell-total" %></td>
+            </tr>
+            <tr>
+              <td>SEOG</td>
+              <td><%= f.number_field :fna_seog_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "seog", col: "fall" } %></td>
+              <td><%= f.number_field :fna_seog_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "seog", col: "winter" } %></td>
+              <td><%= f.number_field :fna_seog_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "seog", col: "spring" } %></td>
+              <td><%= f.number_field :fna_seog_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "seog", col: "summer" } %></td>
+              <td><%= f.number_field :fna_seog_total, class: "form-control", step: "0.01", readonly: true, id: "fna-seog-total" %></td>
+            </tr>
+            <tr>
+              <td>Stafford Loan</td>
+              <td><%= f.number_field :fna_stafford_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "stafford", col: "fall" } %></td>
+              <td><%= f.number_field :fna_stafford_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "stafford", col: "winter" } %></td>
+              <td><%= f.number_field :fna_stafford_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "stafford", col: "spring" } %></td>
+              <td><%= f.number_field :fna_stafford_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "stafford", col: "summer" } %></td>
+              <td><%= f.number_field :fna_stafford_total, class: "form-control", step: "0.01", readonly: true, id: "fna-stafford-total" %></td>
+            </tr>
+            <tr>
+              <td>Veteran's Benefits</td>
+              <td><%= f.number_field :fna_veteran_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "veteran", col: "fall" } %></td>
+              <td><%= f.number_field :fna_veteran_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "veteran", col: "winter" } %></td>
+              <td><%= f.number_field :fna_veteran_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "veteran", col: "spring" } %></td>
+              <td><%= f.number_field :fna_veteran_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "veteran", col: "summer" } %></td>
+              <td><%= f.number_field :fna_veteran_total, class: "form-control", step: "0.01", readonly: true, id: "fna-veteran-total" %></td>
+            </tr>
+            <tr>
+              <td>Tuition Waiver</td>
+              <td><%= f.number_field :fna_tuition_waiver_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "tuition_waiver", col: "fall" } %></td>
+              <td><%= f.number_field :fna_tuition_waiver_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "tuition_waiver", col: "winter" } %></td>
+              <td><%= f.number_field :fna_tuition_waiver_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "tuition_waiver", col: "spring" } %></td>
+              <td><%= f.number_field :fna_tuition_waiver_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "tuition_waiver", col: "summer" } %></td>
+              <td><%= f.number_field :fna_tuition_waiver_total, class: "form-control", step: "0.01", readonly: true, id: "fna-tuition-waiver-total" %></td>
+            </tr>
+            <tr>
+              <td>Perkins Loan</td>
+              <td><%= f.number_field :fna_perkins_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "perkins", col: "fall" } %></td>
+              <td><%= f.number_field :fna_perkins_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "perkins", col: "winter" } %></td>
+              <td><%= f.number_field :fna_perkins_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "perkins", col: "spring" } %></td>
+              <td><%= f.number_field :fna_perkins_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "perkins", col: "summer" } %></td>
+              <td><%= f.number_field :fna_perkins_total, class: "form-control", step: "0.01", readonly: true, id: "fna-perkins-total" %></td>
+            </tr>
+            <tr>
+              <td>
+                <%= f.label :fna_other1_name, "Other:", class: "form-label" %>
+                <%= f.text_field :fna_other1_name, class: "form-control", placeholder: "specify" %>
+              </td>
+              <td><%= f.number_field :fna_other1_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "other1", col: "fall" } %></td>
+              <td><%= f.number_field :fna_other1_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "other1", col: "winter" } %></td>
+              <td><%= f.number_field :fna_other1_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "other1", col: "spring" } %></td>
+              <td><%= f.number_field :fna_other1_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "other1", col: "summer" } %></td>
+              <td><%= f.number_field :fna_other1_total, class: "form-control", step: "0.01", readonly: true, id: "fna-other1-total" %></td>
+            </tr>
+            <tr>
+              <td>
+                <%= f.label :fna_other2_name, "Other:", class: "form-label" %>
+                <%= f.text_field :fna_other2_name, class: "form-control", placeholder: "specify" %>
+              </td>
+              <td><%= f.number_field :fna_other2_fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "other2", col: "fall" } %></td>
+              <td><%= f.number_field :fna_other2_winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "other2", col: "winter" } %></td>
+              <td><%= f.number_field :fna_other2_spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "other2", col: "spring" } %></td>
+              <td><%= f.number_field :fna_other2_summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: "other2", col: "summer" } %></td>
+              <td><%= f.number_field :fna_other2_total, class: "form-control", step: "0.01", readonly: true, id: "fna-other2-total" %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Budget Section -->
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <!-- This column is for the left side (empty in original) -->
+        </div>
+        <div class="col-md-6">
+          <h5 class="mb-3">BUDGET</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td>Tuition & Fees</td>
+                  <td><%= f.number_field :fna_tuition_fees, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "tuition_fees" } %></td>
+                </tr>
+                <tr>
+                  <td>Room & Board</td>
+                  <td><%= f.number_field :fna_room_board, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "room_board" } %></td>
+                </tr>
+                <tr>
+                  <td>Books & Supplies</td>
+                  <td><%= f.number_field :fna_books, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "books" } %></td>
+                </tr>
+                <tr>
+                  <td>Transportation</td>
+                  <td><%= f.number_field :fna_transportation, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "transportation" } %></td>
+                </tr>
+                <tr>
+                  <td>Personal Expense</td>
+                  <td><%= f.number_field :fna_personal, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "personal" } %></td>
+                </tr>
+                <tr>
+                  <td>
+                    <%= f.label :fna_other_expense1, "Other:", class: "form-label" %>
+                    <%= f.text_field :fna_other_expense1_name, class: "form-control", placeholder: "specify" %>
+                  </td>
+                  <td><%= f.number_field :fna_other_expense1, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "other1" } %></td>
+                </tr>
+                <tr>
+                  <td>
+                    <%= f.label :fna_other_expense2, "Other:", class: "form-label" %>
+                    <%= f.text_field :fna_other_expense2_name, class: "form-control", placeholder: "specify" %>
+                  </td>
+                  <td><%= f.number_field :fna_other_expense2, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "other2" } %></td>
+                </tr>
+                <tr>
+                  <td><strong>TOTAL COST:</strong></td>
+                  <td>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <%= f.number_field :fna_total_cost, class: "form-control", step: "0.01", readonly: true, id: "fna-total-cost" %>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>TOTAL RESOURCES:</strong></td>
+                  <td>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <%= f.number_field :fna_total_resources, class: "form-control", step: "0.01", readonly: true, id: "fna-total-resources" %>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>UNMET NEED:</strong></td>
+                  <td>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <%= f.number_field :fna_unmet_need, class: "form-control", step: "0.01", readonly: true, id: "fna-unmet-need" %>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <%= f.label :financial_aid_officer_signature, "Signature of Financial Aid Officer/Advisor", class: "form-label" %>
+          <%= f.text_field :financial_aid_officer_signature, class: "form-control", placeholder: "To be completed by Financial Aid Office" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :financial_aid_officer_date, "Date", class: "form-label" %>
+          <%= f.date_field :financial_aid_officer_date, class: "form-control" %>
+        </div>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="col-md-4">
+          <%= f.label :fao_address, "FAO Address", class: "form-label" %>
+          <%= f.text_field :fao_address, class: "form-control", placeholder: "To be completed by Financial Aid Office" %>
+        </div>
+        <div class="col-md-4">
+          <%= f.label :fao_telephone, "FAO Telephone", class: "form-label" %>
+          <%= f.telephone_field :fao_telephone, class: "form-control", placeholder: "To be completed by Financial Aid Office" %>
+        </div>
+        <div class="col-md-4">
+          <%= f.label :fao_email, "FAO E-mail", class: "form-label" %>
+          <%= f.email_field :fao_email, class: "form-control", placeholder: "To be completed by Financial Aid Office" %>
+        </div>
+      </div>
     </div>
-    <div class="mt-3">
-      <%= f.label :budget_period, "Budget Period (From - To)" %>
-      <%= f.text_field :budget_period, class: "form-control", placeholder: "e.g., Fall 2023 - Spring 2024" %>
-    </div>
-    <div class="mt-3">
-      <%= f.label :student_resources, "Student Resources/Awards Budget" %>
-      <%= f.text_area :student_resources, class: "form-control", rows: 4 %>
-    </div>
+  </div>
+  
+  <div class="card-footer bg-warning text-dark">
+    Sholarship.applicant@sitkatribe-nsn.gov<br>
+    Sitka Tribe of Alaska,<br>
+    Attn: Scholarships<br>
+    204 Siginaka Way, Suite 300<br>
+    Sitka, AK 99835
+  </div>
+</div>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    // All rows that need totals calculated
+    const resourceRows = [
+      'family', 'savings', 'scholarships', 'asl', 'school_schol', 
+      'work_study', 'pell', 'seog', 'stafford', 'veteran',
+      'tuition_waiver', 'perkins', 'other1', 'other2'
+    ];
+    
+    // Map data-row values to corresponding total field IDs
+    const rowToIdMap = {
+      'family': 'fna-family-total',
+      'savings': 'fna-savings-total',
+      'scholarships': 'fna-scholarships-total',
+      'asl': 'fna-asl-total',
+      'school_schol': 'fna-school-schol-total',  // Fixed: changed _ to -
+      'work_study': 'fna-work-study-total',      // Fixed: changed _ to -
+      'pell': 'fna-pell-total',
+      'seog': 'fna-seog-total',
+      'stafford': 'fna-stafford-total',
+      'veteran': 'fna-veteran-total',
+      'tuition_waiver': 'fna-tuition-waiver-total', // Fixed: changed _ to -
+      'perkins': 'fna-perkins-total',
+      'other1': 'fna-other1-total',
+      'other2': 'fna-other2-total'
+    };
+    
+    // Calculate row totals in the Student Resources/Awards table
+    function calculateResourceRowTotals() {
+      let totalAllResources = 0;
+      
+      // Calculate each row's total
+      resourceRows.forEach(row => {
+        let rowTotal = 0;
+        const terms = ['fall', 'winter', 'spring', 'summer'];
+        
+        terms.forEach(term => {
+          const input = document.querySelector(`[data-row="${row}"][data-col="${term}"]`);
+          if (input) {
+            const value = parseFloat(input.value || 0);
+            rowTotal += value;
+          }
+        });
+        
+        // Set the row total
+        const totalFieldId = rowToIdMap[row]; // Use the mapping to get correct ID
+        const totalField = document.getElementById(totalFieldId);
+        if (totalField) {
+          totalField.value = rowTotal.toFixed(2);
+          totalAllResources += rowTotal;
+        }
+      });
+      
+      // Return the total of all resources for the combined total calculation
+      return totalAllResources;
+    }
+    
+    // Calculate total resources, expenses, and unmet need
+    function calculateFinancialNeedsTotals() {
+      // Calculate all row totals and get the combined total
+      const totalResources = calculateResourceRowTotals();
+      
+      // Set total resources
+      document.getElementById('fna-total-resources').value = totalResources.toFixed(2);
+      
+      // Calculate total expenses
+      let totalExpenses = 0;
+      document.querySelectorAll('.fna-expense').forEach(function(input) {
+        totalExpenses += parseFloat(input.value || 0);
+      });
+      
+      // Set total cost
+      document.getElementById('fna-total-cost').value = totalExpenses.toFixed(2);
+      
+      // Calculate unmet need
+      const unmetNeed = totalExpenses - totalResources;
+      document.getElementById('fna-unmet-need').value = unmetNeed > 0 ? unmetNeed.toFixed(2) : '0.00';
+    }
+    
+    // Add event listeners to all resource inputs
+    document.querySelectorAll('.fna-resource').forEach(function(input) {
+      input.addEventListener('input', function() {
+        calculateFinancialNeedsTotals();
+      });
+    });
+    
+    // Add event listeners to all expense inputs
+    document.querySelectorAll('.fna-expense').forEach(function(input) {
+      input.addEventListener('input', function() {
+        calculateFinancialNeedsTotals();
+      });
+    });
+    
+    // Initialize calculations
+    calculateFinancialNeedsTotals();
+    
+    // Toggle the "Other" text field based on radio button selection
+    const statusOtherRadio = document.getElementById('status_other');
+    if (statusOtherRadio) {
+      statusOtherRadio.addEventListener('change', function() {
+        const otherTextField = document.getElementById('financial_aid_status_other_text');
+        if (otherTextField) {
+          otherTextField.style.display = this.checked ? 'block' : 'none';
+        }
+      });
+      
+      // Set initial state
+      const otherTextField = document.getElementById('financial_aid_status_other_text');
+      if (otherTextField && statusOtherRadio) {
+        otherTextField.style.display = statusOtherRadio.checked ? 'block' : 'none';
+      }
+    }
+  });
+</script>
+
 
     <!-- Section: Photo Release Form -->
     <h2 class="mt-5">Photo Release Form</h2>
