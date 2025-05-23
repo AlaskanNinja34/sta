@@ -71,7 +71,13 @@ class ScholarshipApplicationsController < ApplicationController
       :field_of_study, :minor, :educational_goals,
       :certify_information, :signature, :date, :certify_not_defaulting,
       :tuition, :fees, :room_board, :books, :transportation, :personal_expenses,
-      :other_expenses, :resources_college_expenses, :amount_requested,
+      :other_expenses, :resources_college_expenses, :amount_requested, 
+      
+      # Education history
+      :school_city_state, :school_month_year_earned,
+      :previous_college1_name, :previous_college1_dates, :previous_college1_credits, :previous_college1_degree,
+      :previous_college2_name, :previous_college2_dates, :previous_college2_credits, :previous_college2_degree,
+      :previous_college3_name, :previous_college3_dates, :previous_college3_credits, :previous_college3_degree,
       
       # Release of information fields
       :release_signature, :release_date,
