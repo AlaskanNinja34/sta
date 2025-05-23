@@ -10,4 +10,7 @@
  */
 
  
-    ul li strong { color: #ff6f00; }
+    ul li strong { color: #0babbe; }
+    h1.card-title { color: #0babbe; }
+    h2.card-sub { color: #0babbe; }
+    h1.text-center { color: #0babbe; }
