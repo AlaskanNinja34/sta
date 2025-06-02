@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_21_230711) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_02_182129) do
   create_table "scholarship_applications", force: :cascade do |t|
     t.string "last_name"
     t.string "first_name"
@@ -241,5 +241,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_21_230711) do
     t.string "previous_college3_dates"
     t.integer "previous_college3_credits"
     t.string "previous_college3_degree"
+    t.decimal "fna_total_cost"
+    t.decimal "fna_total_resources"
+    t.decimal "fna_unmet_need"
   end
 end
