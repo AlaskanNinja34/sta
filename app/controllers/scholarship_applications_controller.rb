@@ -135,7 +135,7 @@ class ScholarshipApplicationsController < ApplicationController
       :fna_tuition_waiver_fall, :fna_tuition_waiver_winter, :fna_tuition_waiver_spring, :fna_tuition_waiver_summer, :fna_tuition_waiver_total,
       :fna_perkins_fall, :fna_perkins_winter, :fna_perkins_spring, :fna_perkins_summer, :fna_perkins_total,
       :fna_other1_name, :fna_other1_fall, :fna_other1_winter, :fna_other1_spring, :fna_other1_summer, :fna_other1_total,
-      :fna_other2_name, :fna_other2_fall, :fna_other2_winter, :fna_other2_spring, :fna_other2_summer, :fna_other2_total,
+      :fna_other2_name, :fna_other2_fall, :fna_other2_winter, :fna_other2_spring, :fna_other2_summer, :fna_other2_total, :fna_total_cost, :fna_total_resources, :fna_unmet_need,
       
       # FNA Budget fields
       :fna_tuition_fees, :fna_room_board, :fna_books, :fna_transportation, :fna_personal,

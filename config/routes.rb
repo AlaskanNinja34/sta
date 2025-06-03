@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   # Admin routes (will add devise later)
   namespace :admin do
     get "dashboard", to: "dashboard#index"
+    get "application_table", to: "scholarship_applications#table_view"
+    patch "bulk_update_status", to: "scholarship_applications#bulk_update_status"
+    get "export_applications", to: "scholarship_applications#export_applications"
+    
     resources :scholarship_applications do
       member do
         patch :approve

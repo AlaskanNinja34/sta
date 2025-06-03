@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_182129) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_02_234818) do
   create_table "scholarship_applications", force: :cascade do |t|
     t.string "last_name"
     t.string "first_name"
@@ -244,5 +244,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_182129) do
     t.decimal "fna_total_cost"
     t.decimal "fna_total_resources"
     t.decimal "fna_unmet_need"
+    t.string "finance_grant_number"
+    t.string "board_status"
+    t.json "custom_fields", default: {}
+    t.text "internal_notes"
+    t.index ["board_status"], name: "index_scholarship_applications_on_board_status"
+    t.index ["finance_grant_number"], name: "index_scholarship_applications_on_finance_grant_number"
   end
 end
