@@ -6,24 +6,27 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Scholarship application routes
-  resources :scholarship_applications, only: [:new, :create, :show] do
+  resources :scholarship_applications, only: [ :new, :create, :show ] do
     member do
       get :confirmation
     end
   end
-  
+
   # Application status lookup
   get "check_status", to: "scholarship_applications#check_status"
   post "lookup", to: "scholarship_applications#lookup"
-  
+
   # Admin routes (will add devise later)
   namespace :admin do
     get "dashboard", to: "dashboard#index"
     get "application_table", to: "scholarship_applications#table_view"
     patch "bulk_update_status", to: "scholarship_applications#bulk_update_status"
     get "export_applications", to: "scholarship_applications#export_applications"
-    
+
     resources :scholarship_applications do
+      collection do
+        get :export_csv
+      end
       member do
         patch :approve
         patch :reject

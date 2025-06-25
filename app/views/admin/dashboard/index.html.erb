@@ -95,6 +95,25 @@
           <%= link_to "View All", admin_scholarship_applications_path, class: "btn btn-sm btn-primary" %>
         </div>
         <div class="card-body">
+          <div data-controller="export" data-export-url-value="<%= export_csv_admin_scholarship_applications_path %>" class="mb-3">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="applicant_name" id="col-applicant" data-export-target="checkbox" checked>
+              <label class="form-check-label" for="col-applicant">Applicant Name</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="gpa" id="col-gpa" data-export-target="checkbox">
+              <label class="form-check-label" for="col-gpa">GPA</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="essay_excerpt" id="col-essay" data-export-target="checkbox">
+              <label class="form-check-label" for="col-essay">Essay Excerpt</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="status" id="col-status" data-export-target="checkbox" checked>
+              <label class="form-check-label" for="col-status">Status</label>
+            </div>
+            <button class="btn btn-success btn-sm ms-2" data-action="export#export">Export CSV</button>
+          </div>
           <% if @recent_applications.any? %>
             <div class="table-responsive">
               <table class="table table-bordered" width="100%" cellspacing="0">
