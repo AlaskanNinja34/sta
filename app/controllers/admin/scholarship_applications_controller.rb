@@ -125,6 +125,10 @@ class Admin::ScholarshipApplicationsController < ApplicationController
               type: "text/csv"
   end
 
+  def export_applications
+    export_csv
+  end
+
   def show
     # @application is set by before_action
   end
