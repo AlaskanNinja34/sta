@@ -113,16 +113,22 @@ class Admin::ScholarshipApplicationsController < ApplicationController
     selected = Array(params[:columns])
     applications = ScholarshipApplication.all.order(created_at: :desc)
 
-    csv_data = CSV.generate(headers: true) do |csv|
+    body = CSV.generate(headers: true) do |csv|
       csv << selected
       applications.each do |app|
         csv << selected.map { |col| export_value(app, col) }
       end
     end
 
+    csv_data = "sep=,\n" + body
+
     send_data csv_data,
               filename: "scholarship_applications-#{Time.zone.now.strftime('%Y%m%d')}.csv",
               type: "text/csv"
+  end
+
+  def export_applications
+    export_csv
   end
 
   def export_applications
