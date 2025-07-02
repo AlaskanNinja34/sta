@@ -15,6 +15,13 @@
  */
 
 /* Font face declarations for Alegreya Sans family */
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps.
+ */
+
+/* Font face declarations for Alegreya Sans family */
 @font-face {
   font-family: 'Alegreya Sans';
   src: url('AlegreyaSans-Regular.ttf') format('truetype');
@@ -55,131 +62,95 @@
   --sitka-tinted-orange: #f2dcb6;
   --sitka-gray: #e2e3e7;
   --sitka-lightest-neutral: #f7f4e0;
-  
-  /* Legacy naming for compatibility */
-  --sitka-dark-teal: #05292e;
-  --sitka-turquoise: #0babbe;
-  --sitka-light-green: #b0d574;
-  --sitka-accent-teal: #b4dfd6;
 }
 
-/* Font hierarchy for public-facing pages */
+/* Base font hierarchy */
 body {
   font-family: 'Alegreya Sans', sans-serif;
-  font-weight: 400; /* Regular for all body text */
+  font-weight: 400;
   line-height: 1.6;
   margin: 0;
   padding: 0;
 }
 
-/* Page titles only - Alegreya Sans Black */
+/* Page titles - Alegreya Sans Black */
 h1 {
   font-family: 'Alegreya Sans', sans-serif;
-  font-weight: 900; /* Black weight for main page titles */
+  font-weight: 900;
 }
 
 /* Section headers - Alegreya Medium */
 h2, h3, h4, h5, h6 {
   font-family: 'Alegreya', serif;
-  font-weight: 500; /* Medium weight for section headers */
+  font-weight: 500;
 }
 
-/* Bold elements only - Alegreya Sans Bold */
+/* Bold elements - Alegreya Sans Bold */
 strong, b {
   font-family: 'Alegreya Sans', sans-serif;
-  font-weight: 700; /* Bold weight for HTML bold elements only */
+  font-weight: 700;
 }
 
-/* Logo positioning - overlapping navigation and content */
-.logo-container {
-  position: absolute;
-  top: 0;
-  left: 20px;
-  z-index: 1050; /* Above bootstrap navbar */
-  background: white;
-  border-radius: 0 0 10px 10px;
-  padding: 10px 15px 20px 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.site-logo {
-  height: 120px;
-  width: auto;
-  display: block;
-}
-
-/* Custom navigation styling */
-.navbar-custom {
+/* Override Bootstrap navbar styles */
+.navbar-dark {
   background-color: var(--sitka-dark-green) !important;
-  padding: 15px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-logo-spacer {
-  width: 200px; /* Adjust based on your logo width */
-}
-
-.navbar-custom .navbar-nav .nav-link {
+.navbar-dark .navbar-nav .nav-link {
+  font-family: 'Alegreya Sans', sans-serif !important;
+  font-weight: 400 !important;
   color: white !important;
-  font-family: 'Alegreya Sans', sans-serif;
-  font-weight: 400; /* Regular weight for navigation */
-  margin: 0 10px;
   transition: color 0.3s ease;
 }
 
-.navbar-custom .navbar-nav .nav-link:hover {
-  color: var(--sitka-accent-teal) !important;
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: var(--sitka-tinted-blue-green) !important;
 }
 
-.navbar-custom .navbar-nav .nav-link.active {
-  color: var(--sitka-turquoise) !important;
+.navbar-dark .navbar-nav .nav-link.active {
+  color: var(--sitka-blue-viridianite) !important;
 }
 
-/* Custom navbar toggler for mobile */
-.navbar-custom .navbar-toggler {
-  border-color: var(--sitka-accent-teal);
+.navbar-dark .navbar-brand {
+  font-family: 'Alegreya Sans', sans-serif !important;
+  font-weight: 700 !important;
+  color: white !important;
 }
 
-.navbar-custom .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+/* Form styling */
+.form-label {
+  font-family: 'Alegreya', serif;
+  font-weight: 500;
+  color: var(--sitka-dark-green);
 }
 
-/* Main content spacing to account for overlapping logo */
-.main-content {
-  margin-top: 80px; /* Adjust based on navbar height */
-  padding-left: 0;
+.form-control, .form-select {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 400;
+  border-color: var(--sitka-gray);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .logo-container {
-    left: 10px;
-    padding: 8px 10px 15px 10px;
-  }
-  
-  .site-logo {
-    height: 80px;
-  }
-  
-  .navbar-logo-spacer {
-    width: 120px;
-  }
-  
-  .main-content {
-    margin-top: 60px;
-  }
+.form-control:focus, .form-select:focus {
+  border-color: var(--sitka-blue-viridianite);
+  box-shadow: 0 0 0 0.2rem rgba(11, 171, 190, 0.25);
 }
 
-/* Color updates using official brand colors */
-ul li strong { color: var(--sitka-blue-viridianite); }
-h1.card-title { color: var(--sitka-blue-viridianite); }
-h2.card-sub { color: var(--sitka-blue-viridianite); }
-h1.text-center { color: var(--sitka-blue-viridianite); }
+/* Card styling */
+.card {
+  border: 1px solid var(--sitka-gray);
+}
 
-/* Primary buttons use brand colors */
+.card-header {
+  background-color: var(--sitka-dark-green);
+  color: white;
+  font-family: 'Alegreya', serif;
+  font-weight: 500;
+}
+
+/* Button styling with brand colors */
 .btn {
   font-family: 'Alegreya Sans', sans-serif;
-  font-weight: 400; /* Regular weight for buttons */
+  font-weight: 400;
 }
 
 .btn-primary {
@@ -204,60 +175,7 @@ h1.text-center { color: var(--sitka-blue-viridianite); }
   color: var(--sitka-dark-green);
 }
 
-.btn-success {
-  background-color: var(--sitka-spruce-green);
-  border-color: var(--sitka-spruce-green);
-  color: var(--sitka-dark-green);
-}
-
-.btn-success:hover {
-  background-color: var(--sitka-dark-green);
-  border-color: var(--sitka-dark-green);
-  color: white;
-}
-
-/* Form styling */
-.form-label {
-  font-family: 'Alegreya', serif;
-  font-weight: 500; /* Medium weight for form labels */
-  color: var(--sitka-dark-green);
-}
-
-.form-control, .form-select {
-  font-family: 'Alegreya Sans', sans-serif;
-  font-weight: 400; /* Regular weight for form inputs */
-  border-color: var(--sitka-gray);
-}
-
-.form-control:focus, .form-select:focus {
-  border-color: var(--sitka-blue-viridianite);
-  box-shadow: 0 0 0 0.2rem rgba(11, 171, 190, 0.25);
-}
-
-/* Card styling with brand colors */
-.card {
-  border: 1px solid var(--sitka-gray);
-}
-
-.card-header {
-  background-color: var(--sitka-dark-green);
-  color: white;
-  font-family: 'Alegreya', serif;
-  font-weight: 500; /* Medium weight for card headers */
-}
-
-/* Alternative card header styles using secondary colors */
-.card-header.secondary {
-  background-color: var(--sitka-tinted-blue-green);
-  color: var(--sitka-dark-green);
-}
-
-.card-header.accent {
-  background-color: var(--sitka-spruce-green);
-  color: var(--sitka-dark-green);
-}
-
-/* Success/info styling using official brand colors */
+/* Success styling */
 .alert-info {
   background-color: var(--sitka-lightest-neutral);
   border-color: var(--sitka-tinted-blue-green);
@@ -270,13 +188,7 @@ h1.text-center { color: var(--sitka-blue-viridianite); }
   color: var(--sitka-dark-green);
 }
 
-.alert-warning {
-  background-color: var(--sitka-tinted-orange);
-  border-color: #f2dcb6;
-  color: var(--sitka-dark-green);
-}
-
-/* Links use brand colors */
+/* Links */
 a {
   color: var(--sitka-blue-viridianite);
 }
@@ -285,47 +197,27 @@ a:hover {
   color: var(--sitka-dark-green);
 }
 
-/* Additional utility classes using brand colors */
-.bg-sitka-primary {
-  background-color: var(--sitka-dark-green);
-  color: white;
-}
-
-.bg-sitka-secondary {
-  background-color: var(--sitka-tinted-blue-green);
-  color: var(--sitka-dark-green);
-}
-
-.bg-sitka-accent {
-  background-color: var(--sitka-spruce-green);
-  color: var(--sitka-dark-green);
-}
-
-.bg-sitka-neutral {
-  background-color: var(--sitka-lightest-neutral);
-  color: var(--sitka-dark-green);
-}
-
-.text-sitka-primary {
+/* Specific text coloring using brand colors */
+.card-title {
   color: var(--sitka-blue-viridianite);
 }
 
-.text-sitka-dark {
-  color: var(--sitka-dark-green);
+.card-sub {
+  color: var(--sitka-blue-viridianite);
 }
 
-/* Tables and data display */
+/* Tables */
 table {
   font-family: 'Alegreya Sans', sans-serif;
-  font-weight: 400; /* Regular weight for table content */
+  font-weight: 400;
 }
 
 th {
   font-family: 'Alegreya', serif;
-  font-weight: 500; /* Medium weight for table headers */
+  font-weight: 500;
 }
 
-/* Ensure all text inputs and textareas use regular weight */
+/* All text inputs and textareas */
 input, textarea, select {
   font-family: 'Alegreya Sans', sans-serif;
   font-weight: 400;
