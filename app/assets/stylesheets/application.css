@@ -9,8 +9,324 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
- 
-    ul li strong { color: #0babbe; }
-    h1.card-title { color: #0babbe; }
-    h2.card-sub { color: #0babbe; }
-    h1.text-center { color: #0babbe; }
+
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ */
+
+/* Font face declarations for Alegreya Sans family */
+@font-face {
+  font-family: 'Alegreya Sans';
+  src: url('AlegreyaSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('Alegreya-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Alegreya Sans';
+  src: url('AlegreyaSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Alegreya Sans';
+  src: url('AlegreyaSans-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Sitka Tribe Official Brand Colors */
+:root {
+  /* Primary Colors */
+  --sitka-dark-green: #05292e;
+  --sitka-blue-viridianite: #0babbe;
+  --sitka-spruce-green: #b0d574;
+  
+  /* Secondary Colors */
+  --sitka-tinted-blue-green: #b4dfd6;
+  --sitka-tinted-orange: #f2dcb6;
+  --sitka-gray: #e2e3e7;
+  --sitka-lightest-neutral: #f7f4e0;
+  
+  /* Legacy naming for compatibility */
+  --sitka-dark-teal: #05292e;
+  --sitka-turquoise: #0babbe;
+  --sitka-light-green: #b0d574;
+  --sitka-accent-teal: #b4dfd6;
+}
+
+/* Font hierarchy for public-facing pages */
+body {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 400; /* Regular for all body text */
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Page titles only - Alegreya Sans Black */
+h1 {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 900; /* Black weight for main page titles */
+}
+
+/* Section headers - Alegreya Medium */
+h2, h3, h4, h5, h6 {
+  font-family: 'Alegreya', serif;
+  font-weight: 500; /* Medium weight for section headers */
+}
+
+/* Bold elements only - Alegreya Sans Bold */
+strong, b {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 700; /* Bold weight for HTML bold elements only */
+}
+
+/* Logo positioning - overlapping navigation and content */
+.logo-container {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  z-index: 1050; /* Above bootstrap navbar */
+  background: white;
+  border-radius: 0 0 10px 10px;
+  padding: 10px 15px 20px 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.site-logo {
+  height: 120px;
+  width: auto;
+  display: block;
+}
+
+/* Custom navigation styling */
+.navbar-custom {
+  background-color: var(--sitka-dark-green) !important;
+  padding: 15px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo-spacer {
+  width: 200px; /* Adjust based on your logo width */
+}
+
+.navbar-custom .navbar-nav .nav-link {
+  color: white !important;
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 400; /* Regular weight for navigation */
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.navbar-custom .navbar-nav .nav-link:hover {
+  color: var(--sitka-accent-teal) !important;
+}
+
+.navbar-custom .navbar-nav .nav-link.active {
+  color: var(--sitka-turquoise) !important;
+}
+
+/* Custom navbar toggler for mobile */
+.navbar-custom .navbar-toggler {
+  border-color: var(--sitka-accent-teal);
+}
+
+.navbar-custom .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Main content spacing to account for overlapping logo */
+.main-content {
+  margin-top: 80px; /* Adjust based on navbar height */
+  padding-left: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .logo-container {
+    left: 10px;
+    padding: 8px 10px 15px 10px;
+  }
+  
+  .site-logo {
+    height: 80px;
+  }
+  
+  .navbar-logo-spacer {
+    width: 120px;
+  }
+  
+  .main-content {
+    margin-top: 60px;
+  }
+}
+
+/* Color updates using official brand colors */
+ul li strong { color: var(--sitka-blue-viridianite); }
+h1.card-title { color: var(--sitka-blue-viridianite); }
+h2.card-sub { color: var(--sitka-blue-viridianite); }
+h1.text-center { color: var(--sitka-blue-viridianite); }
+
+/* Primary buttons use brand colors */
+.btn {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 400; /* Regular weight for buttons */
+}
+
+.btn-primary {
+  background-color: var(--sitka-blue-viridianite);
+  border-color: var(--sitka-blue-viridianite);
+}
+
+.btn-primary:hover {
+  background-color: var(--sitka-dark-green);
+  border-color: var(--sitka-dark-green);
+}
+
+.btn-secondary {
+  background-color: var(--sitka-tinted-blue-green);
+  border-color: var(--sitka-tinted-blue-green);
+  color: var(--sitka-dark-green);
+}
+
+.btn-secondary:hover {
+  background-color: var(--sitka-spruce-green);
+  border-color: var(--sitka-spruce-green);
+  color: var(--sitka-dark-green);
+}
+
+.btn-success {
+  background-color: var(--sitka-spruce-green);
+  border-color: var(--sitka-spruce-green);
+  color: var(--sitka-dark-green);
+}
+
+.btn-success:hover {
+  background-color: var(--sitka-dark-green);
+  border-color: var(--sitka-dark-green);
+  color: white;
+}
+
+/* Form styling */
+.form-label {
+  font-family: 'Alegreya', serif;
+  font-weight: 500; /* Medium weight for form labels */
+  color: var(--sitka-dark-green);
+}
+
+.form-control, .form-select {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 400; /* Regular weight for form inputs */
+  border-color: var(--sitka-gray);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--sitka-blue-viridianite);
+  box-shadow: 0 0 0 0.2rem rgba(11, 171, 190, 0.25);
+}
+
+/* Card styling with brand colors */
+.card {
+  border: 1px solid var(--sitka-gray);
+}
+
+.card-header {
+  background-color: var(--sitka-dark-green);
+  color: white;
+  font-family: 'Alegreya', serif;
+  font-weight: 500; /* Medium weight for card headers */
+}
+
+/* Alternative card header styles using secondary colors */
+.card-header.secondary {
+  background-color: var(--sitka-tinted-blue-green);
+  color: var(--sitka-dark-green);
+}
+
+.card-header.accent {
+  background-color: var(--sitka-spruce-green);
+  color: var(--sitka-dark-green);
+}
+
+/* Success/info styling using official brand colors */
+.alert-info {
+  background-color: var(--sitka-lightest-neutral);
+  border-color: var(--sitka-tinted-blue-green);
+  color: var(--sitka-dark-green);
+}
+
+.alert-success {
+  background-color: rgba(177, 213, 116, 0.1);
+  border-color: var(--sitka-spruce-green);
+  color: var(--sitka-dark-green);
+}
+
+.alert-warning {
+  background-color: var(--sitka-tinted-orange);
+  border-color: #f2dcb6;
+  color: var(--sitka-dark-green);
+}
+
+/* Links use brand colors */
+a {
+  color: var(--sitka-blue-viridianite);
+}
+
+a:hover {
+  color: var(--sitka-dark-green);
+}
+
+/* Additional utility classes using brand colors */
+.bg-sitka-primary {
+  background-color: var(--sitka-dark-green);
+  color: white;
+}
+
+.bg-sitka-secondary {
+  background-color: var(--sitka-tinted-blue-green);
+  color: var(--sitka-dark-green);
+}
+
+.bg-sitka-accent {
+  background-color: var(--sitka-spruce-green);
+  color: var(--sitka-dark-green);
+}
+
+.bg-sitka-neutral {
+  background-color: var(--sitka-lightest-neutral);
+  color: var(--sitka-dark-green);
+}
+
+.text-sitka-primary {
+  color: var(--sitka-blue-viridianite);
+}
+
+.text-sitka-dark {
+  color: var(--sitka-dark-green);
+}
+
+/* Tables and data display */
+table {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 400; /* Regular weight for table content */
+}
+
+th {
+  font-family: 'Alegreya', serif;
+  font-weight: 500; /* Medium weight for table headers */
+}
+
+/* Ensure all text inputs and textareas use regular weight */
+input, textarea, select {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 400;
+}
