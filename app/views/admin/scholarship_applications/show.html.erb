@@ -1,0 +1,280 @@
+<div class="container-fluid my-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-1">Application Details</h1>
+      <p class="text-muted">Reference: <%= @application.reference_number %></p>
+    </div>
+    <div>
+      <%= link_to "← Back to Applications", admin_scholarship_applications_path, class: "btn btn-outline-secondary me-2" %>
+      <%= link_to "Edit Application", edit_admin_scholarship_application_path(@application), class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <!-- Status and Actions Card -->
+  <div class="card mb-4 border-<%= case @application.status
+    when 'submitted' then 'warning'
+    when 'under_review' then 'info' 
+    when 'approved' then 'success'
+    when 'rejected' then 'danger'
+    when 'more_info_needed' then 'secondary'
+    else 'light'
+    end %>">
+    <div class="card-header bg-<%= case @application.status
+      when 'submitted' then 'warning'
+      when 'under_review' then 'info'
+      when 'approved' then 'success'
+      when 'rejected' then 'danger'
+      when 'more_info_needed' then 'secondary'
+      else 'light'
+      end %> text-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          Status: <%= @application.status.humanize %>
+          <span class="badge bg-light text-dark ms-2">
+            Submitted <%= @application.created_at.strftime("%B %d, %Y") %>
+          </span>
+        </h5>
+        <div>
+          <% if @application.status == 'submitted' %>
+            <%= button_to "Approve", approve_admin_scholarship_application_path(@application),
+                method: :patch, class: "btn btn-success btn-sm me-2",
+                confirm: "Are you sure you want to approve this application?" %>
+            <%= button_to "Reject", reject_admin_scholarship_application_path(@application),
+                method: :patch, class: "btn btn-danger btn-sm me-2",
+                confirm: "Are you sure you want to reject this application?" %>
+            <%= button_to "Request More Info", request_more_info_admin_scholarship_application_path(@application),
+                method: :patch, class: "btn btn-warning btn-sm",
+                confirm: "Request more information from applicant?" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Left Column -->
+    <div class="col-lg-8">
+      <!-- Applicant Information -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-user"></i> Applicant Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Name:</strong> <%= @application.first_name %> <%= @application.middle_initial %> <%= @application.last_name %></p>
+              <p><strong>Previous/Maiden Name:</strong> <%= @application.previous_maiden_name.present? ? @application.previous_maiden_name : "N/A" %></p>
+              <p><strong>Date of Birth:</strong> <%= @application.date_of_birth&.strftime("%B %d, %Y") || "Not provided" %></p>
+              <p><strong>Place of Birth:</strong> <%= @application.place_of_birth || "Not provided" %></p>
+              <p><strong>Marital Status:</strong> <%= @application.marital_status || "Not provided" %></p>
+              <p><strong>Number of Dependents:</strong> <%= @application.number_of_dependents || "0" %></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Email:</strong> <%= @application.email_address %></p>
+              <p><strong>Phone (Permanent):</strong> <%= @application.permanent_phone || "Not provided" %></p>
+              <p><strong>Phone (School):</strong> <%= @application.school_phone || "Not provided" %></p>
+              <p><strong>Preferred Contact:</strong> <%= @application.preferred_contact || "Not specified" %></p>
+              <p><strong>Tribe Enrolled:</strong> <%= @application.tribe_enrolled || "Not provided" %></p>
+              <p><strong>Previous STA Scholarship:</strong> <%= @application.previous_scholarship || "Not specified" %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Information -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Address Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Permanent Address</h6>
+              <p>
+                <%= @application.mailing_address_permanent %><br>
+                <%= @application.city %>, <%= @application.state %> <%= @application.zip_code %>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <h6>School Address</h6>
+              <p>
+                <%= @application.mailing_address_school || "Not provided" %><br>
+                <% if @application.city_school.present? %>
+                  <%= @application.city_school %>, <%= @application.state_school %> <%= @application.zip_code_school %>
+                <% end %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education Information -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-graduation-cap"></i> Education Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6>High School/GED</h6>
+              <p><strong>Education Earned:</strong> <%= @application.education_earned || "Not specified" %></p>
+              <p><strong>School Name:</strong> <%= @application.school_name || "Not provided" %></p>
+              <p><strong>Location:</strong> <%= @application.school_city_state || "Not provided" %></p>
+              <p><strong>Date Earned:</strong> <%= @application.school_month_year_earned || "Not provided" %></p>
+            </div>
+            <div class="col-md-6">
+              <h6>Current College/University</h6>
+              <p><strong>Institution:</strong> <%= @application.college_name %></p>
+              <p><strong>Degree Program:</strong> <%= @application.current_degree_program %></p>
+              <p><strong>Field of Study:</strong> <%= @application.field_of_study %></p>
+              <p><strong>Minor:</strong> <%= @application.minor || "None" %></p>
+              <p><strong>Class Standing:</strong> <%= @application.class_standing %></p>
+              <p><strong>Expected Graduation:</strong> <%= @application.expected_graduation_date&.strftime("%B %Y") || "Not provided" %></p>
+            </div>
+          </div>
+          
+          <% if [@application.previous_college1_name, @application.previous_college2_name, @application.previous_college3_name].any?(&:present?) %>
+            <hr>
+            <h6>Previous College/University Experience</h6>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Institution</th>
+                    <th>Dates Attended</th>
+                    <th>Credits Completed</th>
+                    <th>Degree/Field of Study</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if @application.previous_college1_name.present? %>
+                    <tr>
+                      <td><%= @application.previous_college1_name %></td>
+                      <td><%= @application.previous_college1_dates %></td>
+                      <td><%= @application.previous_college1_credits %></td>
+                      <td><%= @application.previous_college1_degree %></td>
+                    </tr>
+                  <% end %>
+                  <% if @application.previous_college2_name.present? %>
+                    <tr>
+                      <td><%= @application.previous_college2_name %></td>
+                      <td><%= @application.previous_college2_dates %></td>
+                      <td><%= @application.previous_college2_credits %></td>
+                      <td><%= @application.previous_college2_degree %></td>
+                    </tr>
+                  <% end %>
+                  <% if @application.previous_college3_name.present? %>
+                    <tr>
+                      <td><%= @application.previous_college3_name %></td>
+                      <td><%= @application.previous_college3_dates %></td>
+                      <td><%= @application.previous_college3_credits %></td>
+                      <td><%= @application.previous_college3_degree %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Educational Goals -->
+      <% if @application.educational_goals.present? %>
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-bullseye"></i> Educational Goals</h5>
+          </div>
+          <div class="card-body">
+            <p><%= simple_format(@application.educational_goals) %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-lg-4">
+      <!-- Financial Summary -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0"><i class="fas fa-dollar-sign"></i> Financial Summary</h5>
+        </div>
+        <div class="card-body">
+          <% if @application.amount_requested.present? %>
+            <div class="text-center mb-3">
+              <h3 class="text-primary">$<%= number_with_delimiter(@application.amount_requested) %></h3>
+              <small class="text-muted">Amount Requested</small>
+            </div>
+          <% end %>
+          
+          <% if @application.total_expenses.present? && @application.total_resources.present? %>
+            <hr>
+            <p><strong>Total Expenses:</strong> $<%= number_with_delimiter(@application.total_expenses) %></p>
+            <p><strong>Total Resources:</strong> $<%= number_with_delimiter(@application.total_resources) %></p>
+            <% if @application.unmet_need.present? %>
+              <p><strong>Unmet Need:</strong> $<%= number_with_delimiter(@application.unmet_need) %></p>
+            <% end %>
+          <% end %>
+          
+          <% if @application.cover_remaining_need.present? %>
+            <hr>
+            <p><strong>How remaining need will be covered:</strong></p>
+            <p class="small"><%= simple_format(@application.cover_remaining_need) %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- College Information -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-university"></i> College Details</h5>
+        </div>
+        <div class="card-body">
+          <p><strong>College:</strong> <%= @application.college_name %></p>
+          <p><strong>Financial Aid Office:</strong> <%= @application.college_financial_aid_office || "Not provided" %></p>
+          <% if @application.college_phone.present? %>
+            <p><strong>Phone:</strong> <%= @application.college_phone %></p>
+          <% end %>
+          <% if @application.college_fax.present? %>
+            <p><strong>Fax:</strong> <%= @application.college_fax %></p>
+          <% end %>
+          <p><strong>Term Type:</strong> <%= @application.college_term_type || "Not specified" %></p>
+          <% if @application.credits_taking.present? %>
+            <p><strong>Credits Taking:</strong> <%= @application.credits_taking %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Application Timeline -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-clock"></i> Timeline</h5>
+        </div>
+        <div class="card-body">
+          <div class="timeline">
+            <div class="timeline-item">
+              <span class="badge bg-success">Submitted</span>
+              <span class="ms-2"><%= @application.created_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+            </div>
+            <!-- Add more timeline items as status changes -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-tools"></i> Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <%= link_to "Print Application", "#", class: "btn btn-outline-primary" %>
+            <%= link_to "Export to PDF", "#", class: "btn btn-outline-info" %>
+            <%= link_to "Contact Applicant", "mailto:#{@application.email_address}", class: "btn btn-outline-success" %>
+            <%= link_to "Edit Application", edit_admin_scholarship_application_path(@application), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
