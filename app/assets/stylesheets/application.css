@@ -222,3 +222,30 @@ input, textarea, select {
   font-family: 'Alegreya Sans', sans-serif;
   font-weight: 400;
 }
+
+.logo-overlap-container {
+  position: absolute;
+  top: 100%; /* halfway down the navbar */
+  left: 15%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* sits above navbar */
+  background-color: var(--sitka-lightest-neutral);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.logo-image {
+  max-height: 90px;
+  width: auto;
+}
+
+.form-seal {
+  max-height: 200px;
+  width: auto;
+}
+
+.dropdown-item:hover {
+  background-color: var(--sitka-tinted-blue-green);
+  color: var(--sitka-dark-green);
+}
