@@ -61,20 +61,33 @@
   <div class="table-container" style="height: calc(100vh - 250px); overflow: auto;">
     <table class="table table-sm table-bordered excel-table mb-0" id="applications-table">
       <!-- Frozen Header -->
-      <thead class="table-header-fixed">
+      <thead>
+        <!-- 1st row: group headers -->
         <tr class="bg-primary text-white">
           <th class="select-column">
             <input type="checkbox" id="select-all" class="form-check-input">
           </th>
-          <% @visible_columns.each do |column| %>
-            <th class="sortable-column" data-column="<%= column %>" style="min-width: 120px;">
-              <%= @available_columns[column] %>
+          <% grouped_headers_for(@visible_columns).each do |grp| %>
+            <th colspan="<%= grp[:colspan] %>" class="text-center">
+              <%= grp[:label].present? ? grp[:label] : "&nbsp;".html_safe %>
+            </th>
+          <% end %>
+          <th class="actions-column text-center">Actions</th>
+        </tr>
+
+        <!-- 2nd row: individual column names -->
+        <tr class="bg-primary text-white">
+          <th></th>
+          <% @visible_columns.each do |col| %>
+            <th class="sortable-column" data-column="<%= col %>">
+              <%= @available_columns[col] %>
               <i class="fas fa-sort sort-icon ms-1"></i>
             </th>
           <% end %>
-          <th class="actions-column" style="width: 100px;">Actions</th>
+          <th></th>
         </tr>
       </thead>
+
       
       <!-- Table Body -->
       <tbody>

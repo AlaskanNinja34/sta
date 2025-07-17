@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_234818) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_17_103000) do
   create_table "scholarship_applications", force: :cascade do |t|
     t.string "last_name"
     t.string "first_name"
@@ -248,6 +248,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_234818) do
     t.string "board_status"
     t.json "custom_fields", default: {}
     t.text "internal_notes"
+    t.decimal "gpa", precision: 4, scale: 2
+    t.boolean "sta_enroll", default: false
+    t.boolean "transcript_overall", default: false
+    t.boolean "acceptance_letter", default: false
+    t.boolean "fafsa", default: false
+    t.string "vendor_id"
+    t.string "committee_action"
+    t.decimal "amount_awarded", precision: 10, scale: 2
+    t.string "term"
+    t.string "arpa_application_page"
+    t.decimal "arpa_amount_awarded", precision: 10, scale: 2
+    t.decimal "distribution_he_fall_2023", precision: 10, scale: 2
+    t.decimal "distribution_he_spring_2022_2023", precision: 10, scale: 2
+    t.decimal "distribution_he_summer_2024", precision: 10, scale: 2
+    t.decimal "distribution_he_summer_2023", precision: 10, scale: 2
+    t.decimal "distribution_arpa_fall_2022", precision: 10, scale: 2
+    t.decimal "distribution_arpa_spring_2022_2023", precision: 10, scale: 2
+    t.decimal "distribution_arpa_spring_2023", precision: 10, scale: 2
+    t.decimal "distribution_arpa_summer_2023", precision: 10, scale: 2
+    t.decimal "ties_out_year_payments", precision: 10, scale: 2
+    t.boolean "transcript_fall_term", default: false
+    t.boolean "transcript_winter_term", default: false
+    t.boolean "transcript_spring_term", default: false
+    t.boolean "transcript_summer_term", default: false
     t.index ["board_status"], name: "index_scholarship_applications_on_board_status"
     t.index ["finance_grant_number"], name: "index_scholarship_applications_on_finance_grant_number"
   end
