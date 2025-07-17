@@ -1,0 +1,39 @@
+<!-- Section: Financial Needs Analysis – To Be Completed By The Student -->
+<h2 class="mt-5">Financial Needs Analysis</h2>
+<div class="card mb-4">
+  <div class="card-header text-dark" style="background-color: #b4dfd6;">
+    <strong>Student:</strong> Please complete the top section only, and submit the form to the University or College FINANCIAL AID OFFICE.
+  </div>
+  <div class="card-body">
+    <div class="bg-opacity-25 p-3 mb-4" style="background-color: #b4dfd6;">
+      <h5 class="mb-3">TO BE COMPLETED BY THE STUDENT</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <%= f.label :financial_student_name, "Student Name", class: "form-label" %>
+          <%= f.text_field :financial_student_name, class: "form-control" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :financial_student_id, "Student Identification Number", class: "form-label" %>
+          <%= f.text_field :financial_student_id, class: "form-control" %>
+        </div>
+      </div>
+      <div class="mb-3">
+        <p>
+          I give my permission for 
+          <%= f.text_field :financial_college_name, class: "form-control d-inline-block mx-1", style: "width: 40%", placeholder: "Name of University or College" %>
+          to release any financial or academic information to Sitka Tribe of Alaska's Higher Education Program.
+        </p>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <%= f.label :financial_student_signature, "Signature of the Student", class: "form-label" %>
+          <%= f.text_field :financial_student_signature, class: "form-control", placeholder: "Type your name as signature" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :financial_student_date, "Date", class: "form-label" %>
+          <%= f.date_field :financial_student_date, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

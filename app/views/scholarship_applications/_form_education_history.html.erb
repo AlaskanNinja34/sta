@@ -1,0 +1,93 @@
+<h2 class="mt-5">Education History</h2>
+<div class="card mb-4">
+  <div class="card-body">
+    <!-- High School/GED Section -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <label class="form-label"><strong>Earned:</strong></label>
+        <div class="form-check">
+          <%= f.radio_button :education_earned, "High School Diploma", id: "hs_diploma", class: "form-check-input" %>
+          <%= f.label "hs_diploma", "High School Diploma", class: "form-check-label" %>
+        </div>
+        <div class="form-check">
+          <%= f.radio_button :education_earned, "GED", id: "ged", class: "form-check-input" %>
+          <%= f.label "ged", "GED", class: "form-check-label" %>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <%= f.label :school_name, "Name of School:", class: "form-label" %>
+        <%= f.text_field :school_name, class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= f.label :school_city_state, "City / State Earned In:", class: "form-label" %>
+        <%= f.text_field :school_city_state, class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= f.label :school_month_year_earned, "Month / Year Earned:", class: "form-label" %>
+        <%= f.text_field :school_month_year_earned, class: "form-control", placeholder: "MM/YYYY" %>
+      </div>
+    </div>
+
+    <!-- Previous College/University Section -->
+    <div class="mb-4">
+      <h5 class="mb-3">Previous College/University attended if applicable:</h5>
+      <!-- First Previous College Row -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <%= f.label :previous_college1_name, "Name", class: "form-label" %>
+          <%= f.text_field :previous_college1_name, class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college1_dates, "Dates Attended", class: "form-label" %>
+          <%= f.text_field :previous_college1_dates, class: "form-control", placeholder: "MM/YYYY - MM/YYYY" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college1_credits, "Number of credit hours completed", class: "form-label" %>
+          <%= f.number_field :previous_college1_credits, class: "form-control", min: "0" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college1_degree, "Degree/Field of Study", class: "form-label" %>
+          <%= f.text_field :previous_college1_degree, class: "form-control" %>
+        </div>
+      </div>
+      <!-- Second Previous College Row -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <%= f.label :previous_college2_name, "Name", class: "form-label" %>
+          <%= f.text_field :previous_college2_name, class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college2_dates, "Dates Attended", class: "form-label" %>
+          <%= f.text_field :previous_college2_dates, class: "form-control", placeholder: "MM/YYYY - MM/YYYY" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college2_credits, "Number of credit hours completed", class: "form-label" %>
+          <%= f.number_field :previous_college2_credits, class: "form-control", min: "0" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college2_degree, "Degree/Field of Study", class: "form-label" %>
+          <%= f.text_field :previous_college2_degree, class: "form-control" %>
+        </div>
+      </div>
+      <!-- Third Previous College Row -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <%= f.label :previous_college3_name, "Name", class: "form-label" %>
+          <%= f.text_field :previous_college3_name, class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college3_dates, "Dates Attended", class: "form-label" %>
+          <%= f.text_field :previous_college3_dates, class: "form-control", placeholder: "MM/YYYY - MM/YYYY" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college3_credits, "Number of credit hours completed", class: "form-label" %>
+          <%= f.number_field :previous_college3_credits, class: "form-control", min: "0" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :previous_college3_degree, "Degree/Field of Study", class: "form-label" %>
+          <%= f.text_field :previous_college3_degree, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
