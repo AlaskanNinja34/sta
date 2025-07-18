@@ -28,6 +28,7 @@ Rails.application.routes.draw do
         get :export_csv
       end
       member do
+        get "view_file/:blob_id", action: :view_file, as: :view_file
         patch :approve
         patch :reject
         patch :request_more_info

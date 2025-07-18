@@ -7,6 +7,9 @@
 
   <!-- Status and Actions Card -->
   <%= render 'admin/scholarship_applications/show_status_card', application: @application %>
+  <%= render "admin/scholarship_applications/show_files_button", application: @application %>
+  <%= render "admin/scholarship_applications/uploaded_files_list", application: @application %>
+
 
   <div class="row">
     <!-- Left Column -->

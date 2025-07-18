@@ -20,7 +20,7 @@ class Admin::ScholarshipApplicationsController < ApplicationController
     end
 
     @applications = @applications.order(created_at: :desc)
-    @status_options = ScholarshipApplication.distinct.pluck(:status).compact.map { |s| [s.humanize, s] }
+    @status_options = ScholarshipApplication.distinct.pluck(:status).compact.map { |s| [ s.humanize, s ] }
   end
 
   # Excel-style dashboard
@@ -136,8 +136,8 @@ class Admin::ScholarshipApplicationsController < ApplicationController
     ) & @available_columns.keys
 
     # filters for dropdowns
-    @status_options       = ScholarshipApplication.distinct.pluck(:status).compact.map { |s| [s.humanize, s] }
-    @board_status_options = %w[pending approved denied].map { |s| [s.humanize, s] }
+    @status_options       = ScholarshipApplication.distinct.pluck(:status).compact.map { |s| [ s.humanize, s ] }
+    @board_status_options = %w[pending approved denied].map { |s| [ s.humanize, s ] }
   end
 
   # Export CSV (used by both export_csv and export_applications)
@@ -162,10 +162,28 @@ class Admin::ScholarshipApplicationsController < ApplicationController
   def show; end
   def edit; end
 
-  # Handles both “real” DB columns and JSON custom_fields
-  def update
-    field = params[:scholarship_application].keys.first
-    val   = params[:scholarship_application][field]
+# Handles both in-place (single field/JSON) and full-form updates (including file uploads)
+def update
+  app_params = params[:scholarship_application] || {}
+
+  if app_params.keys == [ "uploaded_files" ]
+    # 1. Staff/admin is uploading files (only)
+    if @application.update(scholarship_application_params)
+      respond_to do |format|
+        format.html { redirect_to admin_scholarship_application_path(@application), notice: "Files uploaded." }
+        format.json { render json: { success: true } }
+      end
+    else
+      respond_to do |format|
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: { success: false, errors: @application.errors.full_messages }, status: :unprocessable_entity }
+      end
+    end
+
+  elsif app_params.keys.length == 1
+    # 2. In-place, single-field update (current logic)
+    field = app_params.keys.first
+    val   = app_params[field]
 
     if @application.respond_to?(field)
       @application.update(field => cast_value(field, val))
@@ -178,7 +196,23 @@ class Admin::ScholarshipApplicationsController < ApplicationController
       format.json { render json: { success: @application.errors.empty? } }
       format.html { redirect_to admin_scholarship_application_path(@application), notice: "Application updated." }
     end
+
+  else
+    # 3. Full-form update (normal form, including file uploads & other fields)
+    if @application.update(scholarship_application_params)
+      respond_to do |format|
+        format.html { redirect_to admin_scholarship_application_path(@application), notice: "Application updated." }
+        format.json { render json: { success: true } }
+      end
+    else
+      respond_to do |format|
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: { success: false, errors: @application.errors.full_messages }, status: :unprocessable_entity }
+      end
+    end
   end
+end
+
 
   def destroy
     @application.destroy
@@ -210,6 +244,18 @@ class Admin::ScholarshipApplicationsController < ApplicationController
     end
   end
 
+    def view_file
+    file = ActiveStorage::Blob.find_signed(params[:blob_id])
+    if file.content_type == "application/pdf"
+      # Stream the PDF inline
+      redirect_to rails_blob_url(file, disposition: "inline")
+    else
+      # Fallback: download for other types
+      redirect_to rails_blob_url(file, disposition: "attachment")
+    end
+    end
+
+
   private
 
   def set_application
@@ -239,6 +285,8 @@ class Admin::ScholarshipApplicationsController < ApplicationController
     val
   end
 
+
+
   # Used for exporting both real + custom fields
   def export_value(application, column)
     if application.respond_to?(column)
@@ -246,5 +294,11 @@ class Admin::ScholarshipApplicationsController < ApplicationController
     else
       application.custom_fields[column]
     end
+  end
+  def scholarship_application_params
+  params.require(:scholarship_application).permit(
+    # Add any other fields you want to permit for update here,
+    uploaded_files: []  # For multiple file uploads!
+  )
   end
 end

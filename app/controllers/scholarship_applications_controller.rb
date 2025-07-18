@@ -143,7 +143,9 @@ class ScholarshipApplicationsController < ApplicationController
       
       # Financial aid officer information
       :financial_aid_officer_signature, :financial_aid_officer_date,
-      :fao_address, :fao_telephone, :fao_email
+      :fao_address, :fao_telephone, :fao_email,
+
+      uploaded_files: []
     )
   end
   
