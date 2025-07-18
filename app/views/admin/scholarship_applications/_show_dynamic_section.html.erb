@@ -1,0 +1,36 @@
+<%# Usage: render 'admin/scholarship_applications/show_dynamic_section', section: "Release of Information", fields: fields_hash %>
+<div class="card mt-4">
+  <div class="card-header">
+    <h5 class="mb-0"><%= section %></h5>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-sm table-striped mb-0">
+      <tbody>
+        <% fields.each do |key, val| %>
+          <tr>
+            <th class="text-nowrap"><%= key.to_s.humanize %></th>
+            <td>
+              <%= case val
+                when TrueClass then "Yes"
+                when FalseClass then "No"
+                when Date, Time, DateTime then val.strftime("%B %d, %Y")
+                when nil
+                  "—"
+                else
+                  s = val.to_s.strip
+                  if s.blank?
+                    "—"
+                  elsif s.length > 50
+                    simple_format(s)
+                  else
+                    h(s)
+                  end
+                end
+              %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h5 class="mb-0"><i class="fas fa-table"></i> Financial Needs Analysis</h5>
+  </div>
+  <div class="card-body p-0 table-responsive">
+    <table class="table table-bordered mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Resource / Award</th>
+          <th class="text-end">Fall</th>
+          <th class="text-end">Winter</th>
+          <th class="text-end">Spring</th>
+          <th class="text-end">Summer</th>
+          <th class="text-end">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rows = [
+          ["Family Contributions", %w[fna_family_fall fna_family_winter fna_family_spring fna_family_summer fna_family_total]],
+          ["Student Contributions", %w[fna_savings_fall fna_savings_winter fna_savings_spring fna_savings_summer fna_savings_total]],
+          ["Scholarships", %w[fna_scholarships_fall fna_scholarships_winter fna_scholarships_spring fna_scholarships_summer fna_scholarships_total]],
+          ["Alaska Student Loan", %w[fna_asl_fall fna_asl_winter fna_asl_spring fna_asl_summer fna_asl_total]],
+          ["School Scholarship", %w[fna_school_schol_fall fna_school_schol_winter fna_school_schol_spring fna_school_schol_summer fna_school_schol_total]],
+          ["Work‑Study", %w[fna_work_study_fall fna_work_study_winter fna_work_study_spring fna_work_study_summer fna_work_study_total]],
+          ["Pell Grant", %w[fna_pell_fall fna_pell_winter fna_pell_spring fna_pell_summer fna_pell_total]],
+          ["SEOG", %w[fna_seog_fall fna_seog_winter fna_seog_spring fna_seog_summer fna_seog_total]],
+          ["Other (specify)", %w[fna_other1_fall fna_other1_winter fna_other1_spring fna_other1_summer fna_other1_total]]
+        ] %>
+        <% rows.each do |label, attrs| %>
+          <tr>
+            <td>
+              <%= label %>
+              <% if label.include?("Other") %>
+                <%= application.fna_other1_name %>
+              <% end %>
+            </td>
+            <% attrs.each do |attr| %>
+              <td class="text-end">
+                <%= number_to_currency(application.send(attr)) rescue "—" %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+        <tr class="table-secondary fw-bold">
+          <td>Total Resources</td>
+          <td colspan="4"></td>
+          <td class="text-end"><%= number_to_currency(application.total_resources) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

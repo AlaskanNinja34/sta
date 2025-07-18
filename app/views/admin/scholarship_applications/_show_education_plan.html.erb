@@ -1,0 +1,71 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h5 class="mb-0"><i class="fas fa-university"></i> Education Plan</h5>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <p><strong>Name of College/University:</strong> <%= application.college_name.presence || "Not provided" %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Financial Aid Office Email:</strong> <%= application.college_financial_aid_office.presence || "Not provided" %></p>
+      </div>
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <p><strong>Phone Number:</strong> <%= application.college_phone.presence || "Not provided" %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Fax Number:</strong> <%= application.college_fax.presence || "Not provided" %></p>
+      </div>
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-md-12">
+        <p><strong>Financial Aid Office Mailing Address:</strong> <%= application.college_financial_aid_mailing_address.presence || "Not provided" %></p>
+      </div>
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-md-4">
+        <p><strong>City:</strong> <%= application.college_city.presence || "Not provided" %></p>
+      </div>
+      <div class="col-md-4">
+        <p><strong>State:</strong> <%= application.college_state.presence || "Not provided" %></p>
+      </div>
+      <div class="col-md-4">
+        <p><strong>Zip Code:</strong> <%= application.college_zip_code.presence || "Not provided" %></p>
+      </div>
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <p><strong>Term Type:</strong> <%= application.college_term_type.presence || "Not specified" %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Deadline for Fee Payments:</strong> <%= application.deadline_fee_payments.presence || "Not provided" %></p>
+      </div>
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <p><strong>Credits Taking:</strong> <%= application.credits_taking.presence || "Not provided" %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Current Degree Program:</strong> <%= application.current_degree_program.presence || "Not provided" %></p>
+      </div>
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <p><strong>Expected Graduation Date:</strong> <%= application.expected_graduation_date&.strftime("%B %Y") || "Not provided" %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Class Standing:</strong> <%= application.class_standing.presence || "Not provided" %></p>
+      </div>
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <p><strong>Field of Study/Major:</strong> <%= application.field_of_study.presence || "Not provided" %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Minor:</strong> <%= application.minor.presence || "None" %></p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Address Information</h5>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h6>Permanent Address</h6>
+        <p>
+          <%= application.mailing_address_permanent.presence || "Not provided" %><br>
+          <%= [application.city, application.state, application.zip_code].compact.reject(&:blank?).join(", ").presence || "" %>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <h6>School Address</h6>
+        <p>
+          <%= application.mailing_address_school.presence || "Not provided" %><br>
+          <% if [application.city_school, application.state_school, application.zip_code_school].any?(&:present?) %>
+            <%= [application.city_school, application.state_school, application.zip_code_school].compact.reject(&:blank?).join(", ") %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h5 class="mb-0"><i class="fas fa-university"></i> College Details</h5>
+  </div>
+  <div class="card-body">
+    <dl class="mb-0">
+      <dt>College</dt>
+      <dd><%= application.college_name.presence || "Not provided" %></dd>
+
+      <dt>Financial Aid Office</dt>
+      <dd><%= application.college_financial_aid_office.presence || "Not provided" %></dd>
+
+      <dt>Phone</dt>
+      <dd><%= application.college_phone.presence || "Not provided" %></dd>
+
+      <dt>Fax</dt>
+      <dd><%= application.college_fax.presence || "Not provided" %></dd>
+
+      <dt>Term Type</dt>
+      <dd><%= application.college_term_type.presence || "Not specified" %></dd>
+
+      <dt>Credits Taking</dt>
+      <dd><%= application.credits_taking.presence || "Not provided" %></dd>
+    </dl>
+  </div>
+</div>
