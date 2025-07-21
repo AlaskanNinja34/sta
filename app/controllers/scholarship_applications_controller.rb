@@ -1,7 +1,7 @@
 # app/controllers/scholarship_applications_controller.rb
 class ScholarshipApplicationsController < ApplicationController
 
-  protect_from_forgery with: :null_session
+  skip_before_action :verify_authenticity_token
 
   def new
     @application = ScholarshipApplication.new
