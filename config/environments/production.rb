@@ -5,7 +5,7 @@ Rails.application.configure do
 
   
   # For dev testing only
-  config.action_controller.forgery_protection_origin_check = false
+  #config.action_controller.forgery_protection_origin_check = false
 
 
   # Code is not reloaded between requests.
