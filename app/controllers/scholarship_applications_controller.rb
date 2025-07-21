@@ -1,5 +1,8 @@
 # app/controllers/scholarship_applications_controller.rb
 class ScholarshipApplicationsController < ApplicationController
+
+  protect_from_forgery with: :null_session
+
   def new
     @application = ScholarshipApplication.new
   end
