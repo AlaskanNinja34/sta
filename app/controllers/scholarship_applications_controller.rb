@@ -1,8 +1,6 @@
 # app/controllers/scholarship_applications_controller.rb
 class ScholarshipApplicationsController < ApplicationController
 
-  # skip_before_action :verify_authenticity_token
-
   def new
     @application = ScholarshipApplication.new
   end
