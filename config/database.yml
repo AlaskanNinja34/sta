@@ -19,5 +19,15 @@ production:
   database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
   username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
   password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
-  host: <%= ENV['POSTGRES_HOST'] || 'sta-postgres' %>
+  host: <%= ENV['POSTGRES_HOST'] || 'localhost' %>
   port: <%= ENV['POSTGRES_PORT'] || 5432 %>
+
+  cable:
+    <<: *default
+    adapter: postgresql
+    encoding: unicode
+    database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
+    username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
+    password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+    host: <%= ENV['POSTGRES_HOST'] || 'localhost' %>
+    port: <%= ENV['POSTGRES_PORT'] || 5432 %>
