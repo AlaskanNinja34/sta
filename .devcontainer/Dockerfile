@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/devcontainers/ruby:1-3.3-bullseye
+PODMAN build --no-cache -t registry.gitlab.com/samurailink3/sta:main
 
 # Install Rails
 RUN su vscode -c "gem install rails webdrivers"
