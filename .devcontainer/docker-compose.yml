@@ -36,13 +36,15 @@ services:
       # and host "db" (as that's the name of this service). You can use whatever
       # database name you want. Use `bin/rails db:prepare` to create the database.
     
-      development:
+    production:
       <<: *default
-      host: sta-postgres
-      username: postgres
-      password: postgres
-      database: postgres
-      port: 5432
+      adapter: postgresql
+      encoding: unicode
+      database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
+      username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
+      password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+      host: <%= ENV['POSTGRES_HOST'] || 'db' %>
+
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
