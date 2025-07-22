@@ -8,6 +8,7 @@ services:
 
     volumes:
       - ../..:/workspaces:cached
+      - ./storage:/workspaces/sta/storage
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
@@ -17,6 +18,9 @@ services:
 
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
+  local:
+    service: Disk
+    root: /sta/storage
 
   db:
     image: postgres:latest
@@ -31,19 +35,17 @@ services:
       # Your config/database.yml should use the user and password you set here,
       # and host "db" (as that's the name of this service). You can use whatever
       # database name you want. Use `bin/rails db:prepare` to create the database.
-      #
-      # Example:
-      #
-      #  development:
-      #    <<: *default
-      #    host: db
-      #    username: postgres
-      #    password: postgres
-      #    database: myapp_development
+    
+      development:
+      <<: *default
+      host: sta-postgres
+      username: postgres
+      password: postgres
+      database: postgres
+      port: 5432
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
 volumes:
   postgres-data:
-  
