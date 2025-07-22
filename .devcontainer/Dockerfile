@@ -1,5 +1,4 @@
 FROM mcr.microsoft.com/devcontainers/ruby:1-3.3-bullseye
-PODMAN build --no-cache -t registry.gitlab.com/samurailink3/sta:main .
 
 # Install Rails
 RUN su vscode -c "gem install rails webdrivers"
@@ -18,5 +17,3 @@ ENV RAILS_DEVELOPMENT_HOSTS=".githubpreview.dev,.preview.app.github.dev,.app.git
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
-COPY Gemfile Gemfile.lock ./
-RUN bundle install
