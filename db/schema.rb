@@ -256,7 +256,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "school_city_state"
-    t.date "school_month_year_earned"
     t.string "previous_college1_name"
     t.string "previous_college1_dates"
     t.integer "previous_college1_credits"
@@ -300,6 +299,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_000000) do
     t.boolean "transcript_winter_term", default: false
     t.boolean "transcript_spring_term", default: false
     t.boolean "transcript_summer_term", default: false
+    t.date "school_month_year_earned"
     t.date "previous_college1_start_date"
     t.date "previous_college1_end_date"
     t.date "previous_college2_start_date"
