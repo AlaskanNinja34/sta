@@ -1,32 +1,26 @@
 class AddEducationRefactorsToScholarshipApplications < ActiveRecord::Migration[8.0]
   def up
-    if ActiveRecord::Base.connection.adapter_name == "SQLite"
-      # SQLite-specific code
-      add_column :scholarship_applications, :school_month_year_earned_new, :date
+    # 1. Add a new column with type `date`
+    add_column :scholarship_applications, :school_month_year_earned_new, :date
 
-      execute <<-SQL
-        UPDATE scholarship_applications
-        SET school_month_year_earned_new = 
-          CASE
-            WHEN school_month_year_earned IS NOT NULL THEN
-              strftime('%Y-%m-%d', school_month_year_earned)
-            ELSE NULL
-          END
-      SQL
+    # 2. Copy data to the new column (convert string to date)
+    execute <<-SQL
+      UPDATE scholarship_applications
+      SET school_month_year_earned_new = 
+        CASE
+          WHEN school_month_year_earned != '' THEN
+            CAST(school_month_year_earned AS DATE)
+          ELSE NULL
+        END
+    SQL
 
-      remove_column :scholarship_applications, :school_month_year_earned
-      rename_column :scholarship_applications, :school_month_year_earned_new, :school_month_year_earned
+    # 3. Remove the old column
+    remove_column :scholarship_applications, :school_month_year_earned
 
-    elsif ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
-      # PostgreSQL-specific code
-      execute <<-SQL
-        ALTER TABLE scholarship_applications
-        ALTER COLUMN school_month_year_earned TYPE date
-        USING school_month_year_earned::date
-      SQL
-    end
+    # 4. Rename the new column to the old column name
+    rename_column :scholarship_applications, :school_month_year_earned_new, :school_month_year_earned
 
-    # Add other columns
+    # Add other columns as required
     add_column :scholarship_applications, :previous_college1_start_date, :date
     add_column :scholarship_applications, :previous_college1_end_date, :date
     add_column :scholarship_applications, :previous_college2_start_date, :date
@@ -46,27 +40,17 @@ class AddEducationRefactorsToScholarshipApplications < ActiveRecord::Migration[8
   end
 
   def down
-    if ActiveRecord::Base.connection.adapter_name == "SQLite"
-      # SQLite-specific code for rollback
-      add_column :scholarship_applications, :school_month_year_earned_old, :string
+    # Revert the changes made in the `up` method
+    add_column :scholarship_applications, :school_month_year_earned_old, :string
 
-      execute <<-SQL
-        UPDATE scholarship_applications
-        SET school_month_year_earned_old = school_month_year_earned
-      SQL
+    execute <<-SQL
+      UPDATE scholarship_applications
+      SET school_month_year_earned_old = school_month_year_earned
+    SQL
 
-      remove_column :scholarship_applications, :school_month_year_earned
-      rename_column :scholarship_applications, :school_month_year_earned_old, :school_month_year_earned
+    remove_column :scholarship_applications, :school_month_year_earned
+    rename_column :scholarship_applications, :school_month_year_earned_old, :school_month_year_earned
 
-    elsif ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
-      # PostgreSQL-specific code for rollback
-      execute <<-SQL
-        ALTER TABLE scholarship_applications
-        ALTER COLUMN school_month_year_earned TYPE string
-      SQL
-    end
-
-    # Remove other columns
     remove_column :scholarship_applications, :previous_college1_start_date
     remove_column :scholarship_applications, :previous_college1_end_date
     remove_column :scholarship_applications, :previous_college2_start_date
