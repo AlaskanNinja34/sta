@@ -67,7 +67,11 @@ class ScholarshipApplicationsController < ApplicationController
       :education_earned, :school_name, :school_city, :school_earned_in,
       :college_name, :college_financial_aid_office, :college_phone, :college_fax,
       :college_financial_aid_mailing_address, :college_city, :college_state, :college_zip_code,
-      :college_term_type, :deadline_fee_payments, :credits_taking,
+      :college_term_type,
+      :deadline_fee_payments_fall, :deadline_fee_payments_winter,
+      :deadline_fee_payments_spring, :deadline_fee_payments_summer,
+      :credits_taking_fall, :credits_taking_winter,
+      :credits_taking_spring, :credits_taking_summer,
       :current_degree_program, :expected_graduation_date, :class_standing,
       :field_of_study, :minor, :educational_goals,
       :certify_information, :signature, :date, :certify_not_defaulting,
@@ -76,9 +80,9 @@ class ScholarshipApplicationsController < ApplicationController
       
       # Education history
       :school_city_state, :school_month_year_earned,
-      :previous_college1_name, :previous_college1_dates, :previous_college1_credits, :previous_college1_degree,
-      :previous_college2_name, :previous_college2_dates, :previous_college2_credits, :previous_college2_degree,
-      :previous_college3_name, :previous_college3_dates, :previous_college3_credits, :previous_college3_degree,
+      :previous_college1_name, :previous_college1_start_date, :previous_college1_end_date, :previous_college1_credits, :previous_college1_degree,
+      :previous_college2_name, :previous_college2_start_date, :previous_college2_end_date, :previous_college2_credits, :previous_college2_degree,
+      :previous_college3_name, :previous_college3_start_date, :previous_college3_end_date, :previous_college3_credits, :previous_college3_degree,
       
       # Release of information fields
       :release_signature, :release_date,

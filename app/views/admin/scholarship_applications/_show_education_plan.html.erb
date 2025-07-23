@@ -40,12 +40,24 @@
         <p><strong>Term Type:</strong> <%= application.college_term_type.presence || "Not specified" %></p>
       </div>
       <div class="col-md-6">
-        <p><strong>Deadline for Fee Payments:</strong> <%= application.deadline_fee_payments.presence || "Not provided" %></p>
+        <p><strong>Fee Payment Deadlines:</strong></p>
+        <ul class="mb-0">
+          <li>Fall: <%= application.deadline_fee_payments_fall&.strftime('%m/%d/%Y') || 'N/A' %></li>
+          <li>Winter: <%= application.deadline_fee_payments_winter&.strftime('%m/%d/%Y') || 'N/A' %></li>
+          <li>Spring: <%= application.deadline_fee_payments_spring&.strftime('%m/%d/%Y') || 'N/A' %></li>
+          <li>Summer: <%= application.deadline_fee_payments_summer&.strftime('%m/%d/%Y') || 'N/A' %></li>
+        </ul>
       </div>
     </div>
     <div class="row g-3 mt-2">
       <div class="col-md-6">
-        <p><strong>Credits Taking:</strong> <%= application.credits_taking.presence || "Not provided" %></p>
+        <p><strong>Credits Taking:</strong></p>
+        <ul class="mb-0">
+          <li>Fall: <%= application.credits_taking_fall.presence || 'N/A' %></li>
+          <li>Winter: <%= application.credits_taking_winter.presence || 'N/A' %></li>
+          <li>Spring: <%= application.credits_taking_spring.presence || 'N/A' %></li>
+          <li>Summer: <%= application.credits_taking_summer.presence || 'N/A' %></li>
+        </ul>
       </div>
       <div class="col-md-6">
         <p><strong>Current Degree Program:</strong> <%= application.current_degree_program.presence || "Not provided" %></p>

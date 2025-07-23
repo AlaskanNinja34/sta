@@ -38,8 +38,14 @@ one:
   college_state: MyString
   college_zip_code: MyString
   college_term_type: MyString
-  deadline_fee_payments: MyString
-  credits_taking: MyString
+  deadline_fee_payments_fall: 2025-09-01
+  deadline_fee_payments_winter: 2026-01-05
+  deadline_fee_payments_spring: 2026-03-01
+  deadline_fee_payments_summer: 2026-06-01
+  credits_taking_fall: 12
+  credits_taking_winter: 12
+  credits_taking_spring: 12
+  credits_taking_summer: 6
   current_degree_program: MyString
   expected_graduation_date: 2025-05-20
   class_standing: MyString
@@ -100,8 +106,14 @@ two:
   college_state: MyString
   college_zip_code: MyString
   college_term_type: MyString
-  deadline_fee_payments: MyString
-  credits_taking: MyString
+  deadline_fee_payments_fall: 2025-09-01
+  deadline_fee_payments_winter: 2026-01-05
+  deadline_fee_payments_spring: 2026-03-01
+  deadline_fee_payments_summer: 2026-06-01
+  credits_taking_fall: 12
+  credits_taking_winter: 12
+  credits_taking_spring: 12
+  credits_taking_summer: 6
   current_degree_program: MyString
   expected_graduation_date: 2025-05-20
   class_standing: MyString

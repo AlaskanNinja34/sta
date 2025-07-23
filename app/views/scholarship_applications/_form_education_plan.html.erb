@@ -44,13 +44,41 @@
     </div>
   <% end %>
 </div>
-<div class="mt-3">
-  <%= f.label :deadline_fee_payments, "Deadline for Fee Payments (Fall, Winter, Spring, Summer)" %>
-  <%= f.text_field :deadline_fee_payments, class: "form-control", placeholder: "Enter deadlines separated by commas" %>
+<div class="row g-3 mt-3">
+  <div class="col-md-3">
+    <%= f.label :deadline_fee_payments_fall, "Fee Payment Deadline - Fall" %>
+    <%= f.date_field :deadline_fee_payments_fall, class: "form-control" %>
+  </div>
+  <div class="col-md-3">
+    <%= f.label :deadline_fee_payments_winter, "Fee Payment Deadline - Winter" %>
+    <%= f.date_field :deadline_fee_payments_winter, class: "form-control" %>
+  </div>
+  <div class="col-md-3">
+    <%= f.label :deadline_fee_payments_spring, "Fee Payment Deadline - Spring" %>
+    <%= f.date_field :deadline_fee_payments_spring, class: "form-control" %>
+  </div>
+  <div class="col-md-3">
+    <%= f.label :deadline_fee_payments_summer, "Fee Payment Deadline - Summer" %>
+    <%= f.date_field :deadline_fee_payments_summer, class: "form-control" %>
+  </div>
 </div>
-<div class="mt-3">
-  <%= f.label :credits_taking, "Number of Credits Taking (Fall, Winter, Spring, Summer)" %>
-  <%= f.text_field :credits_taking, class: "form-control", placeholder: "Enter number of credits for each term" %>
+<div class="row g-3 mt-3">
+  <div class="col-md-3">
+    <%= f.label :credits_taking_fall, "Credits Taking Fall" %>
+    <%= f.number_field :credits_taking_fall, class: "form-control", min: 0 %>
+  </div>
+  <div class="col-md-3">
+    <%= f.label :credits_taking_winter, "Credits Taking Winter" %>
+    <%= f.number_field :credits_taking_winter, class: "form-control", min: 0 %>
+  </div>
+  <div class="col-md-3">
+    <%= f.label :credits_taking_spring, "Credits Taking Spring" %>
+    <%= f.number_field :credits_taking_spring, class: "form-control", min: 0 %>
+  </div>
+  <div class="col-md-3">
+    <%= f.label :credits_taking_summer, "Credits Taking Summer" %>
+    <%= f.number_field :credits_taking_summer, class: "form-control", min: 0 %>
+  </div>
 </div>
 <div class="mt-3">
   <%= f.label :current_degree_program, "Current Degree Program" %><br>

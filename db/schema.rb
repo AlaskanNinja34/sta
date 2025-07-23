@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_18_211426) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_19_000000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -256,7 +256,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_211426) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "school_city_state"
-    t.string "school_month_year_earned"
+    t.date "school_month_year_earned"
     t.string "previous_college1_name"
     t.string "previous_college1_dates"
     t.integer "previous_college1_credits"
@@ -300,6 +300,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_211426) do
     t.boolean "transcript_winter_term", default: false
     t.boolean "transcript_spring_term", default: false
     t.boolean "transcript_summer_term", default: false
+    t.date "previous_college1_start_date"
+    t.date "previous_college1_end_date"
+    t.date "previous_college2_start_date"
+    t.date "previous_college2_end_date"
+    t.date "previous_college3_start_date"
+    t.date "previous_college3_end_date"
+    t.date "deadline_fee_payments_fall"
+    t.date "deadline_fee_payments_winter"
+    t.date "deadline_fee_payments_spring"
+    t.date "deadline_fee_payments_summer"
+    t.integer "credits_taking_fall"
+    t.integer "credits_taking_winter"
+    t.integer "credits_taking_spring"
+    t.integer "credits_taking_summer"
     t.index ["board_status"], name: "index_scholarship_applications_on_board_status"
     t.index ["finance_grant_number"], name: "index_scholarship_applications_on_finance_grant_number"
   end

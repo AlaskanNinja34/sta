@@ -19,8 +19,25 @@
       <dt>Term Type</dt>
       <dd><%= application.college_term_type.presence || "Not specified" %></dd>
 
+      <dt>Fee Payment Deadlines</dt>
+      <dd>
+        <ul class="mb-0">
+          <li>Fall: <%= application.deadline_fee_payments_fall&.strftime('%m/%d/%Y') || 'N/A' %></li>
+          <li>Winter: <%= application.deadline_fee_payments_winter&.strftime('%m/%d/%Y') || 'N/A' %></li>
+          <li>Spring: <%= application.deadline_fee_payments_spring&.strftime('%m/%d/%Y') || 'N/A' %></li>
+          <li>Summer: <%= application.deadline_fee_payments_summer&.strftime('%m/%d/%Y') || 'N/A' %></li>
+        </ul>
+      </dd>
+
       <dt>Credits Taking</dt>
-      <dd><%= application.credits_taking.presence || "Not provided" %></dd>
+      <dd>
+        <ul class="mb-0">
+          <li>Fall: <%= application.credits_taking_fall.presence || 'N/A' %></li>
+          <li>Winter: <%= application.credits_taking_winter.presence || 'N/A' %></li>
+          <li>Spring: <%= application.credits_taking_spring.presence || 'N/A' %></li>
+          <li>Summer: <%= application.credits_taking_summer.presence || 'N/A' %></li>
+        </ul>
+      </dd>
     </dl>
   </div>
 </div>
