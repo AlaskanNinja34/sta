@@ -30,7 +30,7 @@
                 <% if name.present? %>
                   <tr>
                     <td><%= name %></td>
-                    <td><%= application.send("previous_college#{n}_dates").presence || "—" %></td>
+                    <td><%= "#{application.send("previous_college#{n}_start_date").strftime('%m/%d/%Y')} - #{application.send("previous_college#{n}_end_date").strftime('%m/%d/%Y')}".presence || "—" %></td>
                     <td><%= application.send("previous_college#{n}_credits").presence || "—" %></td>
                     <td><%= application.send("previous_college#{n}_degree").presence || "—" %></td>
                   </tr>
