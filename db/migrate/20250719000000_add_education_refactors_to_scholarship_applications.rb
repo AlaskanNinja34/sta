@@ -1,4 +1,4 @@
-class AddEducationRefactorsToScholarshipApplications < ActiveRecord::Migration[7.1]
+class AddEducationRefactorsToScholarshipApplications < ActiveRecord::Migration[8.0]
   def change
     change_column :scholarship_applications, :school_month_year_earned, :date
 
