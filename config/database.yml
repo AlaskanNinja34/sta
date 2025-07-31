@@ -21,7 +21,7 @@ production:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  host: 'sta-postgres'
+  host: 'STA-DB'
   port: 5432
   database: <%= ENV['POSTGRES_DB'] %>
   username: <%= ENV['POSTGRES_USER'] %>
@@ -31,28 +31,28 @@ cable:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  host: <%= ENV['POSTGRES_HOST'] || 'sta-postgres' %>
-  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
-  database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
-  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+  host: 'STA-DB'
+  port: 5432
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 queue:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  host: <%= ENV['POSTGRES_HOST'] || 'sta-postgres' %>
-  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
-  database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
-  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+  host: 'STA-DB'
+  port: 5432
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 cache:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  host: <%= ENV['POSTGRES_HOST'] || 'sta-postgres' %>
-  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
-  database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
-  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+  host: 'STA-DB'
+  port: 5432
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
