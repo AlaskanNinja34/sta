@@ -4,8 +4,13 @@ default: &default
 
 development:
   <<: *default
-  adapter: sqlite3
-  database: storage/development.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  host: 'dev-db'
+  port: 5432
+  database: 'sta-development'
+  username: 'sta-development-admin'
+  password: 'sta-development-admin'
 
 test:
   <<: *default
@@ -16,38 +21,38 @@ production:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
-  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
-  host: <%= ENV['POSTGRES_HOST'] || 'sta-postgres' %>
-  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
+  host: 'STA-DB'
+  port: 5432
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 cable:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
-  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
-  host: <%= ENV['POSTGRES_HOST'] || 'sta-postgres' %>
-  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
+  host: 'STA-DB'
+  port: 5432
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 queue:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
-  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
-  host: <%= ENV['POSTGRES_HOST'] || 'sta-postgres' %>
-  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
+  host: 'STA-DB'
+  port: 5432
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 cache:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['POSTGRES_DB'] || 'postgres' %>
-  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
-  host: <%= ENV['POSTGRES_HOST'] || 'sta-postgres' %>
-  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
+  host: 'STA-DB'
+  port: 5432
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
