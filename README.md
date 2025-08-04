@@ -5,8 +5,6 @@ application up and running.
 
 Things you may want to cover:
 
-* sudo chmod +x bin/*
-
 * Ruby version
 
 * System dependencies
