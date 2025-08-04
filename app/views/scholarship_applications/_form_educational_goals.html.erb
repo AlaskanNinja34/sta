@@ -1,0 +1,28 @@
+<h2 class="mt-5">Educational Goals</h2>
+<div class="mt-3">
+  <%= f.label :educational_goals, "Please State Your Educational Objective" %>
+  <%= f.text_area :educational_goals, class: "form-control", rows: 25 %>
+</div>
+<div class="mt-3">
+  <p class="fw-bold">Certification:</p>
+  <div class="form-check">
+    <%= f.check_box :certify_information, class: "form-check-input", id: "certify_information" %>
+    <%= f.label :certify_information, "I certify that all the information given by me is true, complete, and correct to the best of my knowledge. I understand that any false information will disqualify me from this scholarship program.", class: "form-check-label" %>
+  </div>
+</div>
+<div class="row g-3 mt-3">
+  <div class="col-md-6">
+    <%= f.label :signature, "Student Signature" %>
+    <%= f.text_field :signature, class: "form-control", placeholder: "Type your name as signature" %>
+  </div>
+  <div class="col-md-6">
+    <%= f.label :date, "Date" %>
+    <%= f.date_field :date, class: "form-control" %>
+  </div>
+</div>
+<div class="mt-3">
+  <div class="form-check">
+    <%= f.check_box :certify_not_defaulting, class: "form-check-input", id: "certify_not_defaulting" %>
+    <%= f.label :certify_not_defaulting, "I certify that I am not defaulting on any Federal or State loans.", class: "form-check-label" %>
+  </div>
+</div>

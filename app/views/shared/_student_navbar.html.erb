@@ -1,0 +1,130 @@
+<div class="position-relative">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="color:#05292e;">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav" style="color:#05292e;">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/admin/dashboard">Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://sitkatribe.org/our-services/financial-assistance/scholarships/" target="_blank" rel="noopener noreferrer">About</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="resourcesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Resources
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="resourcesDropdown">
+            <li>
+              <a class="dropdown-item" href="https://www.collegeboard.org/" target="_blank" rel="noopener noreferrer">
+                College Board
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://fafsa.gov/" target="_blank" rel="noopener noreferrer">
+                FAFSA Application
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://bigfuture.collegeboard.org/" target="_blank" rel="noopener noreferrer">
+                BigFuture Scholarships
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://mysealaska.com/Opportunities/Scholarships" target="_blank" rel="noopener noreferrer">
+                Sealaska Scholarship
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://www.hunaheritage.org/projects" target="_blank" rel="noopener noreferrer">
+                Huna Heritage Scholarship
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://tlingitandhaida.gov/service/college-student-assistance-csa-scholarship/" target="_blank" rel="noopener noreferrer">
+                Tlingit and Haida Scholarship
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://tlingitandhaida.gov/service/alumni-scholarship/" target="_blank" rel="noopener noreferrer">
+                Tlingit and Haida Alumni Scholarship
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://uas.alaska.edu/financial_aid/scholarships.html" target="_blank" rel="noopener noreferrer">
+                UAS Scholarships
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://acpe.alaska.gov/Funding-Solutions/Alaska-Education-Grant" target="_blank" rel="noopener noreferrer">
+                Alaska Education Grant
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="https://collegefund.org/students/scholarships/" target="_blank" rel="noopener noreferrer">
+                American Indian College Fund
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Contact Button with Popover for Email and Copy Button -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="contactDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Contact
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="contactDropdown">
+            <li>
+              <button class="dropdown-item copy-btn" data-copy-text="scholarship.applicant@sitkatribe-nsn.gov">
+                📧 Copy Email: scholarship.applicant@sitkatribe-nsn.gov
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item copy-btn" data-copy-text="907-123-4567">
+                📞 Copy Phone Number: 907-123-4567
+              </button>
+            </li>
+          </ul>
+        </li>
+        
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.copy-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const textToCopy = button.dataset.copyText;
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        // Show feedback
+        const originalText = button.innerHTML;
+        button.innerHTML = '✅ Copied!';
+        setTimeout(() => {
+          button.innerHTML = originalText;
+        }, 1500);
+      }).catch(err => {
+        console.error('Clipboard copy failed:', err);
+      });
+    });
+  });
+});
+</script>
+
+<div class="container d-flex justify-content-left">
+  <div class="logo-overlap-container text-center">
+    <%= link_to root_path do %>
+      <%= image_tag("STA_Logo_RGB.png", alt: "Sitka Tribe of Alaska Logo", class: "logo-image") %>
+    <% end %>
+  </div>
+</div>
+</div>

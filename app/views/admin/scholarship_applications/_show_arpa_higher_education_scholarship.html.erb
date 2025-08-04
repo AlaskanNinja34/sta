@@ -1,0 +1,30 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h5 class="mb-0"><i class="fas fa-certificate"></i> ARPA Higher Education Scholarship</h5>
+  </div>
+  <div class="card-body">
+    <p>
+      Sitka Tribe of Alaska’s ARPA Higher Education Scholarship is an additional funding opportunity for eligible students (subject to available funding). Complete the section below to be considered.
+    </p>
+    <dl>
+      <dt>Student Name</dt>
+      <dd><%= application.arpa_student_name.presence || application.first_name.presence || "Not provided" %></dd>
+
+      <dt>I authorize</dt>
+      <dd>
+        <% case application.arpa_authorization %>
+        <% when true, "true", 1, "1" %>
+          <span class="badge bg-success">Yes</span>
+        <% else %>
+          <span class="badge bg-secondary">No</span>
+        <% end %>
+      </dd>
+
+      <dt>Student Signature</dt>
+      <dd><%= application.arpa_signature.presence || "Not provided" %></dd>
+
+      <dt>Date</dt>
+      <dd><%= application.arpa_date&.strftime("%B %d, %Y") || "Not provided" %></dd>
+    </dl>
+  </div>
+</div>
