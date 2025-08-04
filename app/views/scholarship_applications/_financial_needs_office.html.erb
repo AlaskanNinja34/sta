@@ -1,0 +1,210 @@
+    <!-- To Be Completed By The Financial Aid Office -->
+    <div class="bg-opacity-25 p-3 mb-4" style="background-color: #f2dcb6;">
+      <h5 class="mb-3">TO BE COMPLETED BY THE FINANCIAL AID OFFICE</h5>
+      <p>This student has applied for a Sitka Tribe of Alaska higher education scholarship and verified financial need information is required by your office before action is taken on the application. Please complete and forward this form or a similar form to the address listed at the bottom of this page.</p>
+      
+      <div class="mb-3">
+        <%= f.label :financial_aid_status, "Financial Aid Status", class: "form-label d-block" %>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "not_applied", id: "status_not_applied", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_not_applied, "Student has not yet applied for financial aid, need cannot be determined", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "applied_late", id: "status_applied_late", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_applied_late, "Student applied late and will not be considered for funding", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "incomplete", id: "status_incomplete", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_incomplete, "Student's application is incomplete and cannot be considered", class: "form-check-label" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "funds_exhausted", id: "status_funds_exhausted", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_funds_exhausted, "Funds exhausted at this institution", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :financial_aid_status, "other", id: "status_other", class: "form-check-input" %>
+              <%= f.label :financial_aid_status_other, "Other:", class: "form-check-label" %>
+              <%= f.text_field :financial_aid_status_other_text, class: "form-control mt-1", placeholder: "Please specify" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-md-5">
+          <%= f.label :budget_period_from, "Budget Period: From", class: "form-label" %>
+          <%= f.date_field :budget_period_from, class: "form-control" %>
+        </div>
+        <div class="col-md-5">
+          <%= f.label :budget_period_to, "To", class: "form-label" %>
+          <%= f.date_field :budget_period_to, class: "form-control" %>
+        </div>
+        <div class="col-md-2">
+          <%= f.label :budget_period_type, "Type", class: "form-label" %>
+          <%= f.select :budget_period_type, options_for_select([["Quarter", "Quarter"], ["Semester", "Semester"], ["Trimester", "Trimester"]]), {}, class: "form-select" %>
+        </div>
+      </div>
+      
+      <!-- Student Resources/Awards Section -->
+      <h5 class="mt-4 mb-3">STUDENT RESOURCES/AWARDS</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th></th>
+              <th>Fall</th>
+              <th>Winter</th>
+              <th>Spring</th>
+              <th>Summer</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% [
+              ["Family Contributions", :fna_family_fall, :fna_family_winter, :fna_family_spring, :fna_family_summer, :fna_family_total],
+              ["Student Contributions", :fna_savings_fall, :fna_savings_winter, :fna_savings_spring, :fna_savings_summer, :fna_savings_total],
+              ["Scholarships", :fna_scholarships_fall, :fna_scholarships_winter, :fna_scholarships_spring, :fna_scholarships_summer, :fna_scholarships_total],
+              ["Alaska Student Loan", :fna_asl_fall, :fna_asl_winter, :fna_asl_spring, :fna_asl_summer, :fna_asl_total],
+              ["School Scholarship", :fna_school_schol_fall, :fna_school_schol_winter, :fna_school_schol_spring, :fna_school_schol_summer, :fna_school_schol_total],
+              ["School Work-Study", :fna_work_study_fall, :fna_work_study_winter, :fna_work_study_spring, :fna_work_study_summer, :fna_work_study_total],
+              ["Pell Grant", :fna_pell_fall, :fna_pell_winter, :fna_pell_spring, :fna_pell_summer, :fna_pell_total],
+              ["SEOG", :fna_seog_fall, :fna_seog_winter, :fna_seog_spring, :fna_seog_summer, :fna_seog_total],
+              ["Stafford Loan", :fna_stafford_fall, :fna_stafford_winter, :fna_stafford_spring, :fna_stafford_summer, :fna_stafford_total],
+              ["Veteran's Benefits", :fna_veteran_fall, :fna_veteran_winter, :fna_veteran_spring, :fna_veteran_summer, :fna_veteran_total],
+              ["Tuition Waiver", :fna_tuition_waiver_fall, :fna_tuition_waiver_winter, :fna_tuition_waiver_spring, :fna_tuition_waiver_summer, :fna_tuition_waiver_total],
+              ["Perkins Loan", :fna_perkins_fall, :fna_perkins_winter, :fna_perkins_spring, :fna_perkins_summer, :fna_perkins_total],
+              ["Other:", :fna_other1_fall, :fna_other1_winter, :fna_other1_spring, :fna_other1_summer, :fna_other1_total],
+              ["Other:", :fna_other2_fall, :fna_other2_winter, :fna_other2_spring, :fna_other2_summer, :fna_other2_total]
+            ].each_with_index do |(label, fall, winter, spring, summer, total), idx| %>
+              <tr>
+                <td>
+                  <%= label.is_a?(String) ? label : f.label(fall, label) %>
+                  <% if label == "Other:" %>
+                    <%= f.text_field("#{fall.to_s.gsub(/_fall$/, '')}_name", class: "form-control", placeholder: "specify") %>
+                  <% end %>
+                </td>
+                <td><%= f.number_field fall, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: fall.to_s.gsub(/_fall$/, ''), col: "fall" } %></td>
+                <td><%= f.number_field winter, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: fall.to_s.gsub(/_fall$/, ''), col: "winter" } %></td>
+                <td><%= f.number_field spring, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: fall.to_s.gsub(/_fall$/, ''), col: "spring" } %></td>
+                <td><%= f.number_field summer, class: "form-control fna-resource", step: "0.01", min: "0", data: { row: fall.to_s.gsub(/_fall$/, ''), col: "summer" } %></td>
+                <td><%= f.number_field total, class: "form-control", step: "0.01", readonly: true, id: "fna-#{fall.to_s.gsub(/_fall$/, '').gsub('_', '-')}-total" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Budget Section -->
+      <div class="row mt-3">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          <h5 class="mb-3">BUDGET</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td>Tuition & Fees</td>
+                  <td><%= f.number_field :fna_tuition_fees, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "tuition_fees" } %></td>
+                </tr>
+                <tr>
+                  <td>Room & Board</td>
+                  <td><%= f.number_field :fna_room_board, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "room_board" } %></td>
+                </tr>
+                <tr>
+                  <td>Books & Supplies</td>
+                  <td><%= f.number_field :fna_books, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "books" } %></td>
+                </tr>
+                <tr>
+                  <td>Transportation</td>
+                  <td><%= f.number_field :fna_transportation, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "transportation" } %></td>
+                </tr>
+                <tr>
+                  <td>Personal Expense</td>
+                  <td><%= f.number_field :fna_personal, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "personal" } %></td>
+                </tr>
+                <tr>
+                  <td>
+                    <%= f.label :fna_other_expense1, "Other:", class: "form-label" %>
+                    <%= f.text_field :fna_other_expense1_name, class: "form-control", placeholder: "specify" %>
+                  </td>
+                  <td><%= f.number_field :fna_other_expense1, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "other1" } %></td>
+                </tr>
+                <tr>
+                  <td>
+                    <%= f.label :fna_other_expense2, "Other:", class: "form-label" %>
+                    <%= f.text_field :fna_other_expense2_name, class: "form-control", placeholder: "specify" %>
+                  </td>
+                  <td><%= f.number_field :fna_other_expense2, class: "form-control fna-expense", step: "0.01", min: "0", data: { expense: "other2" } %></td>
+                </tr>
+                <tr>
+                  <td><strong>TOTAL COST:</strong></td>
+                  <td>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <%= f.number_field :fna_total_cost, class: "form-control", step: "0.01", readonly: true, id: "fna-total-cost" %>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>TOTAL RESOURCES:</strong></td>
+                  <td>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <%= f.number_field :fna_total_resources, class: "form-control", step: "0.01", readonly: true, id: "fna-total-resources" %>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>UNMET NEED:</strong></td>
+                  <td>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <%= f.number_field :fna_unmet_need, class: "form-control", step: "0.01", readonly: true, id: "fna-unmet-need" %>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <%= f.label :financial_aid_officer_signature, "Signature of Financial Aid Officer/Advisor", class: "form-label" %>
+          <%= f.text_field :financial_aid_officer_signature, class: "form-control", placeholder: "To be completed by Financial Aid Office" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :financial_aid_officer_date, "Date", class: "form-label" %>
+          <%= f.date_field :financial_aid_officer_date, class: "form-control" %>
+        </div>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="col-md-4">
+          <%= f.label :fao_address, "FAO Address", class: "form-label" %>
+          <%= f.text_field :fao_address, class: "form-control", placeholder: "To be completed by Financial Aid Office" %>
+        </div>
+        <div class="col-md-4">
+          <%= f.label :fao_telephone, "FAO Telephone", class: "form-label" %>
+          <%= f.telephone_field :fao_telephone, class: "form-control", placeholder: "To be completed by Financial Aid Office" %>
+        </div>
+        <div class="col-md-4">
+          <%= f.label :fao_email, "FAO E-mail", class: "form-label" %>
+          <%= f.email_field :fao_email, class: "form-control", placeholder: "To be completed by Financial Aid Office" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card-footer text-dark" style="background-color:  #b4dfd6;">
+    Scholarship.applicant@sitkatribe-nsn.gov<br>
+    Sitka Tribe of Alaska,<br>
+    Attn: Scholarships<br>
+    204 Siginaka Way, Suite 300<br>
+    Sitka, AK 99835
+  </div>

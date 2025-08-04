@@ -1,0 +1,29 @@
+<%= render 'shared/student_navbar' %>
+
+<div class="container my-5">
+  <div class="card border-success">
+    <div class="card-header bg-success text-white">
+      <h2 class="mb-0">Application Submitted Successfully!</h2>
+    </div>
+    <div class="card-body">
+      <h4>Thank you, <%= @application.first_name %>!</h4>
+      <p class="lead">Your scholarship application has been received.</p>
+      
+      <div class="alert alert-info">
+        <strong>Your Reference Number:</strong> <%= @application.reference_number %>
+      </div>
+      
+      <p>Please save this reference number for your records. You will need it to check the status of your application.</p>
+      
+      <p>We will review your application and may contact you if additional information is needed.</p>
+      
+      <p>For any questions regarding your application, please contact:</p>
+      <p>
+        <strong>Email:</strong> scholarship.applicant@sitkatribe-nsn.gov<br>
+        <strong>Phone:</strong> (555) 123-4567
+      </p>
+      
+      <a href="<%= root_path %>" class="btn btn-primary mt-3">Return to Home</a>
+    </div>
+  </div>
+</div>

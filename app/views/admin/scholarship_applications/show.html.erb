@@ -1,0 +1,72 @@
+<%= render 'shared/admin_navbar' %>
+
+<div class="container-fluid my-4">
+
+  <!-- Header -->
+  <%= render 'admin/scholarship_applications/show_header', application: @application %>
+
+  <!-- Status and Actions Card -->
+  <%= render 'admin/scholarship_applications/show_status_card', application: @application %>
+  <%= render "admin/scholarship_applications/show_files_button", application: @application %>
+  <%= render "admin/scholarship_applications/uploaded_files_list", application: @application %>
+
+
+  <div class="row">
+    <!-- Left Column -->
+    <div class="col-lg-8">
+      <%= render 'admin/scholarship_applications/show_applicant_information', application: @application %>
+      <%= render 'admin/scholarship_applications/show_address_information', application: @application %>
+      <%= render 'admin/scholarship_applications/show_education_history', application: @application %>
+      <%= render 'admin/scholarship_applications/show_education_plan', application: @application %>
+      <%= render 'admin/scholarship_applications/show_educational_goals', application: @application %>
+    </div>
+    <!-- Right Column -->
+    <div class="col-lg-4">
+      <%= render 'admin/scholarship_applications/show_financial_summary', application: @application %>
+      <%= render 'admin/scholarship_applications/show_college_details', application: @application %>
+      <%= render 'admin/scholarship_applications/show_timeline', application: @application %>
+      <%= render 'admin/scholarship_applications/show_quick_actions', application: @application %>
+    </div>
+  </div>
+
+  <!-- ==== DYNAMIC SECTIONS ==== -->
+  <%
+    already_rendered = [
+      "Applicant Information",
+      "Address Information",
+      "Education History",
+      "Education Plan",
+      "Educational Goals"
+    ]
+  %>
+  <% sectioned_application_attributes(@application).each do |section, fields| %>
+    <% next if fields.empty? || already_rendered.include?(section) %>
+    <% case section
+      when "Budget Forecast"
+    %>
+      <%= render 'admin/scholarship_applications/show_budget_forecast', application: @application %>
+    <% when "Financial Needs Analysis"
+    %>
+      <%= render 'admin/scholarship_applications/show_financial_needs_analysis', application: @application %>
+    <% when "Enrollment Verification"
+    %>
+      <%= render 'admin/scholarship_applications/show_enrollment_verification', application: @application %>
+    <% when "Release of Information"
+    %>
+      <%= render 'admin/scholarship_applications/show_release_of_information', application: @application %>
+    <% when "Photo Release Form"
+    %>
+      <%= render 'admin/scholarship_applications/show_photo_release_form', application: @application %>
+    <% when "Parental/Spousal Release Form (Optional)"
+    %>
+      <%= render 'admin/scholarship_applications/show_parental_spousal_release_form', application: @application %>
+    <% when "ARPA Higher Education Scholarship"
+    %>
+      <%= render 'admin/scholarship_applications/show_arpa_higher_education_scholarship', application: @application %>
+    <% else %>
+      <%= render 'admin/scholarship_applications/show_dynamic_section', section: section, fields: fields, application: @application %>
+    <% end %>
+  <% end %>
+  <!-- ==== END DYNAMIC SECTIONS ==== -->
+
+</div>

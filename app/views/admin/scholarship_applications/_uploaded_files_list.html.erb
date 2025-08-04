@@ -1,0 +1,30 @@
+<div class="collapse" id="uploadedFiles-<%= application.id %>">
+  <% if application.uploaded_files.attached? %>
+    <ul class="list-group mb-3">
+      <% application.uploaded_files.each do |file| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <% if file.content_type&.include?('pdf') %>
+              <i class="fas fa-file-pdf text-danger me-2"></i>
+            <% else %>
+              <i class="fas fa-file-alt text-secondary me-2"></i>
+            <% end %>
+            <%= link_to file.filename, rails_blob_path(file, disposition: "attachment"), target: "_blank" %>
+            <span class="badge bg-secondary ms-2"><%= number_to_human_size(file.byte_size) %></span>
+          </div>
+          <div>
+            <% if file.content_type&.include?('pdf') %>
+              <%= link_to "View in Webview", 
+                    view_file_admin_scholarship_application_path(application, blob_id: file.signed_id), 
+                    target: "_blank", 
+                    class: "btn btn-sm btn-outline-primary ms-2",
+                    rel: "noopener noreferrer" %>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted mb-0">No files uploaded.</p>
+  <% end %>
+</div>

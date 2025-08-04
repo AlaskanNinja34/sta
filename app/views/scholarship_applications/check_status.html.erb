@@ -1,0 +1,37 @@
+<%= render 'shared/student_navbar' %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Check Application Status</h2>
+        </div>
+        <div class="card-body">
+          <p class="lead">Enter your application reference number and email address to check the status of your application.</p>
+          
+          <% if flash[:alert] %>
+            <div class="alert alert-danger"><%= flash[:alert] %></div>
+          <% end %>
+          
+          <%= form_with url: lookup_path, method: :post, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :reference_number, "Reference Number", class: "form-label" %>
+              <%= f.text_field :reference_number, class: "form-control", required: true, placeholder: "e.g. STA-2025-ABC123" %>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :email_address, "Email Address", class: "form-label" %>
+              <%= f.email_field :email_address, class: "form-control", required: true, placeholder: "The email you provided on your application" %>
+            </div>
+            
+            <div class="text-center">
+              <%= f.submit "Check Status", class: "btn btn-primary" %>
+              <%= link_to "Back to Home", root_path, class: "btn btn-outline-secondary ms-2" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

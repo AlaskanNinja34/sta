@@ -1,0 +1,51 @@
+<%= render 'shared/student_navbar' %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow">
+        <div class="card-body text-center">
+          <h1 class="card-title">Sitka Tribe of Alaska</h1>
+          <h2 class="card-sub">Higher Education Scholarship Program</h2>
+          
+          <hr>
+          
+          <p class="lead my-4">
+            The Sitka Tribe of Alaska (STA) Higher Education Scholarship Program provides financial assistance to eligible tribal citizens pursuing higher education.
+          </p>
+          
+          <div class="row mt-5">
+            <div class="col-md-6 mb-3">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h3 class="card-title">New Application</h3>
+                  <p class="card-text">Complete and submit a new scholarship application.</p>
+                  <%= link_to "Start Application", new_scholarship_application_path, class: "btn btn-primary" %>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h3 class="card-title">Check Status</h3>
+                  <p class="card-text">Check the status of your existing application.</p>
+                  <%= link_to "Check Status", check_status_path, class: "btn btn-secondary" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-5">
+            <h3>Application Deadlines</h3>
+            <ul class="list-group">
+              <li class="list-group-item">First Time Applicants: <strong>April 1</strong></li>
+              <li class="list-group-item">Renewing Applicants: <strong>May 1</strong></li>
+              <li class="list-group-item">Partial Academic Year: <strong>October 1</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
