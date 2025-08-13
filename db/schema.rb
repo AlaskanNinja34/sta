@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_19_000000) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_06_223412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -319,6 +319,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_000000) do
     t.integer "credits_taking_summer"
     t.index ["board_status"], name: "index_scholarship_applications_on_board_status"
     t.index ["finance_grant_number"], name: "index_scholarship_applications_on_finance_grant_number"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string "tribal_id", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "middle_initial"
+    t.date "date_of_birth"
+    t.string "email_address"
+    t.string "permanent_phone"
+    t.string "mailing_address_permanent"
+    t.string "city"
+    t.string "state"
+    t.string "zip_code"
+    t.decimal "total_undergrad_awarded", precision: 10, scale: 2, default: "0.0"
+    t.decimal "total_grad_awarded", precision: 10, scale: 2, default: "0.0"
+    t.text "lifetime_award_notes"
+    t.boolean "close_to_undergrad_limit", default: false
+    t.boolean "close_to_grad_limit", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tribal_id"], name: "index_students_on_tribal_id", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
