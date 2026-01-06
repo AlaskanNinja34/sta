@@ -1,0 +1,303 @@
+<%= render 'shared/admin_navbar' %>
+
+<div class="container-fluid my-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h2 mb-1"><%= @student.first_name %> <%= @student.last_name %></h1>
+      <p class="text-muted">Tribal ID: <code><%= @student.tribal_id %></code></p>
+    </div>
+    <div>
+      <%= link_to "Back to Students", admin_students_path, class: "btn btn-outline-secondary" %>
+      <%= link_to "Edit Profile", edit_admin_student_path(@student), class: "btn btn-outline-primary" %>
+      <%= button_to "Recalculate Totals", recalculate_totals_admin_student_path(@student), method: :post, class: "btn btn-outline-info" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Left Column - Profile & Applications -->
+    <div class="col-lg-8">
+      <!-- Contact Information -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Contact Information</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Email:</strong> <%= @student.email_address || 'N/A' %></p>
+              <p><strong>Phone:</strong> <%= @student.permanent_phone || 'N/A' %></p>
+              <p><strong>Date of Birth:</strong> <%= @student.date_of_birth&.strftime("%m/%d/%Y") || 'N/A' %></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Address:</strong><br>
+                <%= @student.mailing_address_permanent %><br>
+                <%= [@student.city, @student.state, @student.zip_code].compact.join(', ') %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Applications -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Applications (<%= @applications.count %>)</h6>
+        </div>
+        <div class="card-body">
+          <% if @applications.any? %>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>App Key</th>
+                    <th>Year</th>
+                    <th>School</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @applications.each do |app| %>
+                    <tr>
+                      <td><code><%= app.application_key %></code></td>
+                      <td><%= app.application_year %></td>
+                      <td><%= app.college_name %></td>
+                      <td>
+                        <span class="badge <%= case app.status
+                          when 'submitted' then 'bg-warning'
+                          when 'approved' then 'bg-success'
+                          when 'rejected' then 'bg-danger'
+                          else 'bg-secondary'
+                          end %>">
+                          <%= app.status&.humanize %>
+                        </span>
+                      </td>
+                      <td>$<%= number_with_delimiter(app.amount_awarded || 0) %></td>
+                      <td><%= link_to "View", admin_application_path(app), class: "btn btn-sm btn-outline-primary" %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted text-center py-3">No applications on file</p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Historical Applications -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+          <h6 class="m-0 font-weight-bold text-primary">Historical Applications (<%= @historical_applications.count %>)</h6>
+          <%= link_to "Add Historical Record", new_admin_historical_application_path(tribal_id: @student.tribal_id), class: "btn btn-sm btn-outline-success" %>
+        </div>
+        <div class="card-body">
+          <% if @historical_applications.any? %>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>App Key</th>
+                    <th>Year</th>
+                    <th>School</th>
+                    <th>Level</th>
+                    <th>Awarded</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @historical_applications.each do |hist| %>
+                    <tr>
+                      <td><code><%= hist.application_key %></code></td>
+                      <td><%= hist.application_year %></td>
+                      <td><%= hist.school_name %></td>
+                      <td><%= hist.education_level&.humanize %></td>
+                      <td>$<%= number_with_delimiter(hist.amount_awarded || 0) %></td>
+                      <td><%= link_to "View", admin_historical_application_path(hist), class: "btn btn-sm btn-outline-primary" %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted text-center py-3">No historical records</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Lifetime Tracking -->
+    <div class="col-lg-4">
+      <!-- Lifetime Award Summary -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Lifetime Award Summary</h6>
+        </div>
+        <div class="card-body">
+          <!-- Overall Lifetime Total -->
+          <div class="mb-4 p-3 bg-light rounded">
+            <h6 class="text-center mb-2">Total Lifetime</h6>
+            <div class="d-flex justify-content-between mb-1">
+              <span>Total Awarded</span>
+              <strong>$<%= number_with_delimiter(@student.lifetime_total_awarded) %></strong>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span>Remaining</span>
+              <% lifetime_remaining = @student.remaining_lifetime_eligibility %>
+              <strong class="<%= lifetime_remaining < 5000 ? 'text-danger' : lifetime_remaining < 10000 ? 'text-warning' : 'text-success' %>">
+                $<%= number_with_delimiter(lifetime_remaining) %>
+              </strong>
+            </div>
+            <% lifetime_pct = (@student.lifetime_total_awarded / Student::TOTAL_LIFETIME_LIMIT.to_f * 100).round(1) %>
+            <div class="progress" style="height: 12px;">
+              <div class="progress-bar <%= lifetime_pct > 90 ? 'bg-danger' : lifetime_pct > 75 ? 'bg-warning' : 'bg-primary' %>"
+                   style="width: <%= lifetime_pct %>%"></div>
+            </div>
+            <small class="text-muted d-block text-center mt-1"><%= lifetime_pct %>% of $<%= number_with_delimiter(Student::TOTAL_LIFETIME_LIMIT) %> lifetime cap</small>
+          </div>
+
+          <hr>
+
+          <!-- Undergraduate -->
+          <h6>Undergraduate <small class="text-muted">($<%= number_with_delimiter(Student::UNDERGRAD_ALLOCATION) %> allocation)</small></h6>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span>Awarded</span>
+              <strong>$<%= number_with_delimiter(@student.lifetime_undergrad_total) %></strong>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span>Remaining</span>
+              <strong class="<%= @undergrad_remaining < 3000 ? 'text-warning' : 'text-success' %>">
+                $<%= number_with_delimiter(@undergrad_remaining) %>
+              </strong>
+            </div>
+            <% undergrad_pct = (@student.lifetime_undergrad_total / Student::UNDERGRAD_ALLOCATION.to_f * 100).round(1) %>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-info" style="width: <%= [undergrad_pct, 100].min %>%"></div>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Graduate -->
+          <% effective_grad = @student.effective_grad_allocation %>
+          <% unused_undergrad = [Student::UNDERGRAD_ALLOCATION - @student.lifetime_undergrad_total, 0].max %>
+
+          <!-- Graduate Base Allocation -->
+          <h6>Graduate Base <small class="text-muted">($<%= number_with_delimiter(Student::GRAD_BASE_ALLOCATION) %> allocation)</small></h6>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span>Awarded</span>
+              <strong>$<%= number_with_delimiter(@student.lifetime_grad_total) %></strong>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span>Base Remaining</span>
+              <% base_grad_remaining = [Student::GRAD_BASE_ALLOCATION - @student.lifetime_grad_total, 0].max %>
+              <strong class="<%= base_grad_remaining < 2000 ? 'text-warning' : 'text-success' %>">
+                $<%= number_with_delimiter(base_grad_remaining) %>
+              </strong>
+            </div>
+            <% base_grad_pct = (@student.lifetime_grad_total / Student::GRAD_BASE_ALLOCATION.to_f * 100).round(1) %>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-success" style="width: <%= [base_grad_pct, 100].min %>%"></div>
+            </div>
+            <small class="text-muted">Guaranteed graduate allocation</small>
+          </div>
+
+          <% if unused_undergrad > 0 %>
+            <hr>
+
+            <!-- Graduate Effective (with rollover) -->
+            <h6>Graduate Effective <small class="text-muted">($<%= number_with_delimiter(effective_grad) %> with rollover)</small></h6>
+            <div class="mb-3">
+              <div class="alert alert-info py-1 px-2 small mb-2">
+                <i class="fas fa-info-circle"></i>
+                $<%= number_with_delimiter(Student::GRAD_BASE_ALLOCATION) %> base + $<%= number_with_delimiter(unused_undergrad) %> unused undergrad = $<%= number_with_delimiter(effective_grad) %>
+              </div>
+              <div class="d-flex justify-content-between mb-1">
+                <span>Awarded</span>
+                <strong>$<%= number_with_delimiter(@student.lifetime_grad_total) %></strong>
+              </div>
+              <div class="d-flex justify-content-between mb-1">
+                <span>Effective Remaining</span>
+                <strong class="<%= @grad_remaining < 3000 ? 'text-warning' : 'text-success' %>">
+                  $<%= number_with_delimiter(@grad_remaining) %>
+                </strong>
+              </div>
+              <% grad_pct = effective_grad > 0 ? (@student.lifetime_grad_total / effective_grad.to_f * 100).round(1) : 0 %>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-success" style="width: <%= [grad_pct, 100].min %>%"></div>
+              </div>
+              <small class="text-muted">Includes unused undergrad funds</small>
+            </div>
+          <% end %>
+
+          <!-- ARPA Awards (tracked separately) -->
+          <% arpa_total = @student.total_arpa_awarded %>
+          <% if arpa_total > 0 %>
+            <hr>
+            <div class="p-2 bg-light rounded">
+              <h6 class="mb-2">
+                <span class="badge bg-info me-1">ARPA</span>
+                Additional Awards
+              </h6>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Total ARPA Awarded</span>
+                <strong>$<%= number_with_delimiter(arpa_total) %></strong>
+              </div>
+              <small class="text-muted">ARPA awards do not count toward lifetime limits</small>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Financial Records -->
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Financial Records</h6>
+        </div>
+        <div class="card-body">
+          <% if @financial_records.any? %>
+            <% @financial_records.each do |record| %>
+              <div class="border-bottom py-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span><%= record.award_year %></span>
+                    <% if record.award_type == 'arpa' %>
+                      <span class="badge bg-info ms-1">ARPA</span>
+                    <% elsif record.award_type == 'combined' %>
+                      <span class="badge bg-secondary ms-1">Combined</span>
+                    <% end %>
+                  </div>
+                  <strong class="<%= record.award_type == 'arpa' ? 'text-info' : '' %>">
+                    $<%= number_with_delimiter(record.total_award_amount || 0) %>
+                  </strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <small class="text-muted"><%= record.application_key %></small>
+                  <small class="text-muted"><%= record.education_level&.humanize %></small>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-muted text-center py-3">No financial records</p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <% if @student.lifetime_award_notes.present? %>
+        <div class="card shadow mt-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Notes</h6>
+          </div>
+          <div class="card-body">
+            <p><%= @student.lifetime_award_notes %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

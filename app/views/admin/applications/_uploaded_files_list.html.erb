@@ -15,7 +15,7 @@
           <div>
             <% if file.content_type&.include?('pdf') %>
               <%= link_to "View in Webview", 
-                    view_file_admin_scholarship_application_path(application, blob_id: file.signed_id), 
+                    view_file_admin_application_path(application, blob_id: file.signed_id), 
                     target: "_blank", 
                     class: "btn btn-sm btn-outline-primary ms-2",
                     rel: "noopener noreferrer" %>

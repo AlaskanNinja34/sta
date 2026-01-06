@@ -23,13 +23,13 @@ end %>">
       </h5>
       <div>
         <% if application.status == 'submitted' %>
-          <%= button_to "Approve", approve_admin_scholarship_application_path(application),
+          <%= button_to "Approve", approve_admin_application_path(application),
                 method: :patch, class: "btn btn-success btn-sm me-2",
                 form: { data: { turbo_confirm: "Are you sure you want to approve this application?" } } %>
-          <%= button_to "Reject", reject_admin_scholarship_application_path(application),
+          <%= button_to "Reject", reject_admin_application_path(application),
                 method: :patch, class: "btn btn-danger btn-sm me-2",
                 form: { data: { turbo_confirm: "Are you sure you want to reject this application?" } } %>
-          <%= button_to "Request More Info", request_more_info_admin_scholarship_application_path(application),
+          <%= button_to "Request More Info", request_more_info_admin_application_path(application),
                 method: :patch, class: "btn btn-warning btn-sm",
                 form: { data: { turbo_confirm: "Request more information from applicant?" } } %>
         <% end %>

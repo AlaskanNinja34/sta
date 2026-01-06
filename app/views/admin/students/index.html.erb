@@ -1,0 +1,101 @@
+<%= render 'shared/admin_navbar' %>
+
+<div class="container-fluid my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h2 mb-1">Student Profiles</h1>
+      <p class="text-muted">View and manage student information and lifetime award tracking</p>
+    </div>
+    <div>
+      <%= link_to "Create Student", new_admin_student_path, class: "btn btn-success" %>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <%= form_with url: admin_students_path, method: :get, local: true, class: "row g-3" do %>
+        <div class="col-md-4">
+          <input type="text" name="search" class="form-control" placeholder="Search by name, tribal ID, or email..." value="<%= params[:search] %>">
+        </div>
+        <div class="col-md-3">
+          <select name="approaching_limit" class="form-select">
+            <option value="">All Students</option>
+            <option value="lifetime" <%= 'selected' if params[:approaching_limit] == 'lifetime' %>>Approaching Lifetime Limit ($24k)</option>
+            <option value="undergrad" <%= 'selected' if params[:approaching_limit] == 'undergrad' %>>Approaching Undergrad Limit ($15k)</option>
+            <option value="grad" <%= 'selected' if params[:approaching_limit] == 'grad' %>>Approaching Grad Limit</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Students Table -->
+  <div class="card shadow">
+    <div class="card-body">
+      <% if @students.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Tribal ID</th>
+                <th>Lifetime Total</th>
+                <th>Undergrad</th>
+                <th>Graduate</th>
+                <th>Apps</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @students.each do |student| %>
+                <% lifetime_remaining = student.remaining_lifetime_eligibility %>
+                <% lifetime_pct = (student.lifetime_total_awarded / Student::TOTAL_LIFETIME_LIMIT.to_f * 100).round(0) %>
+                <tr class="<%= 'table-warning' if lifetime_remaining < 5000 %>">
+                  <td><strong><%= student.last_name %>, <%= student.first_name %></strong></td>
+                  <td><code><%= student.tribal_id %></code></td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div style="width: 60px;">
+                        <div class="progress" style="height: 6px;">
+                          <div class="progress-bar <%= lifetime_pct > 90 ? 'bg-danger' : lifetime_pct > 75 ? 'bg-warning' : 'bg-success' %>"
+                               style="width: <%= lifetime_pct %>%"></div>
+                        </div>
+                      </div>
+                      <span class="ms-2">
+                        $<%= number_with_delimiter(student.lifetime_total_awarded) %>
+                        <small class="text-muted">/ $24k</small>
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    $<%= number_with_delimiter(student.lifetime_undergrad_total) %>
+                    <small class="text-muted">/ $15k</small>
+                  </td>
+                  <td>
+                    $<%= number_with_delimiter(student.lifetime_grad_total) %>
+                    <small class="text-muted">/ $<%= number_with_delimiter(student.effective_grad_allocation / 1000) %>k</small>
+                  </td>
+                  <td>
+                    <%= student.applications.count + student.historical_applications.count %>
+                  </td>
+                  <td>
+                    <%= link_to "View", admin_student_path(student), class: "btn btn-sm btn-outline-primary" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="fas fa-users fa-3x text-gray-300 mb-3"></i>
+          <p class="text-muted">No students found</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<%= render 'shared/admin_navbar' %>
+
+<div class="container-fluid my-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Edit Historical Application</h6>
+        </div>
+        <div class="card-body">
+          <p class="text-muted mb-4">
+            Application Key: <code><%= @historical_application.application_key %></code>
+          </p>
+
+          <%= render 'form', historical_application: @historical_application %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

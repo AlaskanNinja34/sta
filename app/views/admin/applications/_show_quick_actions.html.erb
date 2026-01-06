@@ -7,7 +7,7 @@
       <%= link_to "Print Application", "#", class: "btn btn-outline-primary", onclick: "window.print(); return false;" %>
       <%= link_to "Export to PDF", "#", class: "btn btn-outline-info" %>
       <%= link_to "Contact Applicant", "mailto:#{application.email_address}", class: "btn btn-outline-success" %>
-      <%= link_to "Edit Application", edit_admin_scholarship_application_path(application), class: "btn btn-primary" %>
+      <%= link_to "Edit Application", edit_admin_application_path(application), class: "btn btn-primary" %>
     </div>
   </div>
 </div>

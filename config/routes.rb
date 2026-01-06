@@ -5,25 +5,35 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Scholarship application routes
-  resources :scholarship_applications, only: [ :new, :create, :show ] do
+  # Student-facing application routes
+  resources :applications, only: [:new, :create, :show] do
     member do
       get :confirmation
     end
   end
 
   # Application status lookup
-  get "check_status", to: "scholarship_applications#check_status"
-  post "lookup", to: "scholarship_applications#lookup"
+  get "check_status", to: "applications#check_status"
+  post "lookup", to: "applications#lookup"
 
   # Admin routes (will add devise later)
   namespace :admin do
     get "dashboard", to: "dashboard#index"
-    get "application_table", to: "scholarship_applications#table_view"
-    patch "bulk_update_status", to: "scholarship_applications#bulk_update_status"
-    get "export_applications", to: "scholarship_applications#export_applications"
 
-    resources :scholarship_applications do
+    # Legacy route - redirect to verification workflow
+    get "application_table", to: redirect("/admin/verifications/workflow")
+
+    # Verification Workflow - Excel-like main staff processing interface
+    get "verification_workflow", to: "verifications#workflow", as: :verification_workflow
+
+    # Verification Overview - Status/progress summary page
+    get "verification_overview", to: "verifications#index", as: :verification_overview
+
+    # Bulk operations for applications
+    patch "bulk_update_status", to: "applications#bulk_update_status"
+    get "export_applications", to: "applications#export_applications"
+
+    resources :applications do
       collection do
         get :export_csv
       end
@@ -34,6 +44,19 @@ Rails.application.routes.draw do
         patch :request_more_info
       end
     end
+
+    # Verification workflow
+    resources :verifications, only: [:index, :show, :update]
+
+    # Student profiles
+    resources :students, only: [:index, :show, :new, :create, :edit, :update] do
+      member do
+        post :recalculate_totals
+      end
+    end
+
+    # Historical application imports
+    resources :historical_applications
   end
 
   # Defines the root path route ("/")

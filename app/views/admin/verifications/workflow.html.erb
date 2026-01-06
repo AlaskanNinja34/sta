@@ -1,0 +1,861 @@
+<%= render 'shared/admin_navbar' %>
+
+<div class="application-table-container">
+  <!-- Header Controls -->
+  <div class="table-header bg-light p-3 border-bottom">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h2 class="mb-1">Application Management Table</h2>
+        <p class="text-muted mb-0">Excel-like interface for managing scholarship applications</p>
+      </div>
+      <div class="d-flex gap-2">
+        <%= link_to "← Dashboard", admin_dashboard_path, class: "btn btn-outline-secondary" %>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#columnManager">
+          <i class="fas fa-columns"></i> Manage Columns
+        </button>
+        <button type="button" class="btn btn-success" onclick="exportToExcel()">
+          <i class="fas fa-file-excel"></i> Export Excel
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Row -->
+    <%= form_with url: admin_verification_workflow_path, method: :get, local: true,
+        class: "row g-3 align-items-end", id: "filter-form" do |f| %>
+      <div class="col-md-3">
+        <%= f.label :search, "Search", class: "form-label small" %>
+        <%= f.text_field :search, value: params[:search], 
+            class: "form-control form-control-sm", 
+            placeholder: "Name, email, reference..." %>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :status, "Status", class: "form-label small" %>
+        <%= f.select :status, options_for_select([["All", ""]] + @status_options, params[:status]),
+            {}, { class: "form-select form-select-sm" } %>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :date_from, "From Date", class: "form-label small" %>
+        <%= f.date_field :date_from, value: params[:date_from], 
+            class: "form-control form-control-sm" %>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :date_to, "To Date", class: "form-label small" %>
+        <%= f.date_field :date_to, value: params[:date_to], 
+            class: "form-control form-control-sm" %>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :amount_min, "Min Amount", class: "form-label small" %>
+        <%= f.number_field :amount_min, value: params[:amount_min], 
+            class: "form-control form-control-sm", step: 0.01 %>
+      </div>
+      <div class="col-md-1">
+        <div class="d-flex gap-1">
+          <%= f.submit "Filter", class: "btn btn-sm btn-primary" %>
+          <%= link_to "Clear", admin_verification_workflow_path, class: "btn btn-sm btn-outline-secondary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Table Container with Excel-like styling -->
+  <div class="table-container" style="height: calc(100vh - 250px); overflow: auto;">
+    <table class="table table-sm table-bordered excel-table mb-0" id="applications-table">
+      <!-- Frozen Header -->
+      <thead>
+        <tr class="bg-primary text-white">
+          <th class="select-column">
+            <input type="checkbox" id="select-all" class="form-check-input">
+          </th>
+          <% @visible_columns.each do |col| %>
+            <th class="sortable-column" data-column="<%= col %>">
+              <%= @available_columns[col] %>
+              <i class="fas fa-sort sort-icon ms-1"></i>
+            </th>
+          <% end %>
+          <th class="actions-column text-center">Actions</th>
+        </tr>
+      </thead>
+
+      
+      <!-- Table Body -->
+      <tbody>
+        <% @applications.each_with_index do |app, index| %>
+          <tr class="application-row" data-id="<%= app.id %>" data-index="<%= index %>">
+            <td class="select-column">
+              <input type="checkbox" class="form-check-input row-select" value="<%= app.id %>">
+            </td>
+            
+            <% @visible_columns.each do |column| %>
+              <td class="editable-cell" data-field="<%= column %>" data-id="<%= app.id %>">
+                <% case column %>
+                <% when 'reference_number' %>
+                  <span class="cell-value"><%= app.reference_number %></span>
+                <% when 'first_name' %>
+                  <span class="cell-value editable" data-type="text"><%= app.first_name %></span>
+                <% when 'last_name' %>
+                  <span class="cell-value editable" data-type="text"><%= app.last_name %></span>
+                <% when 'email_address' %>
+                  <span class="cell-value editable" data-type="email"><%= app.email_address %></span>
+                <% when 'student_id' %>
+                  <span class="cell-value editable" data-type="text"><%= app.student_id %></span>
+                <% when 'permanent_phone' %>
+                  <span class="cell-value editable" data-type="text"><%= app.permanent_phone %></span>
+                <% when 'college_name' %>
+                  <span class="cell-value editable" data-type="text"><%= app.college_name %></span>
+                <% when 'current_degree_program' %>
+                  <span class="cell-value editable" data-type="text"><%= app.current_degree_program %></span>
+                <% when 'field_of_study' %>
+                  <span class="cell-value editable" data-type="text"><%= app.field_of_study %></span>
+                <% when 'class_standing' %>
+                  <span class="cell-value editable" data-type="text"><%= app.class_standing %></span>
+                <% when 'amount_requested' %>
+                  <span class="cell-value editable" data-type="number">
+                    <%= app.amount_requested ? "$#{number_with_delimiter(app.amount_requested)}" : "" %>
+                  </span>
+                <% when 'status' %>
+                  <select class="form-select form-select-sm status-select" data-field="status" data-id="<%= app.id %>">
+                    <option value="submitted" <%= 'selected' if app.status == 'submitted' %>>Submitted</option>
+                    <option value="under_review" <%= 'selected' if app.status == 'under_review' %>>Under Review</option>
+                    <option value="approved" <%= 'selected' if app.status == 'approved' %>>Approved</option>
+                    <option value="rejected" <%= 'selected' if app.status == 'rejected' %>>Rejected</option>
+                    <option value="more_info_needed" <%= 'selected' if app.status == 'more_info_needed' %>>More Info Needed</option>
+                  </select>
+                <% when 'finance_grant_number' %>
+                  <span class="cell-value editable" data-type="text"><%= app.finance_grant_number %></span>
+                <% when 'board_status' %>
+                  <select class="form-select form-select-sm board-status-select" data-field="board_status" data-id="<%= app.id %>">
+                    <option value="">Select...</option>
+                    <option value="pending" <%= 'selected' if app.board_status == 'pending' %>>Pending</option>
+                    <option value="approved" <%= 'selected' if app.board_status == 'approved' %>>Approved</option>
+                    <option value="denied" <%= 'selected' if app.board_status == 'denied' %>>Denied</option>
+                  </select>
+                <% when 'tribe_enrolled' %>
+                  <span class="cell-value"><%= app.tribe_enrolled %></span>
+                <% when 'marital_status' %>
+                  <span class="cell-value"><%= app.marital_status %></span>
+                <% when 'number_of_dependents' %>
+                  <span class="cell-value"><%= app.number_of_dependents %></span>
+                <% when 'expected_graduation_date' %>
+                  <span class="cell-value"><%= app.expected_graduation_date&.strftime("%m/%Y") %></span>
+                <% when 'created_at' %>
+                  <span class="cell-value"><%= app.created_at.strftime("%m/%d/%Y") %></span>
+                <% when 'tribal_id' %>
+                  <span class="cell-value"><%= app.tribal_id %></span>
+                <% when 'application_key' %>
+                  <span class="cell-value"><%= app.application_key %></span>
+                <% when 'application_year' %>
+                  <span class="cell-value"><%= app.application_year %></span>
+                <% when 'gpa' %>
+                  <span class="cell-value editable" data-type="number"><%= app.gpa %></span>
+                <% when 'amount_awarded' %>
+                  <span class="cell-value editable" data-type="number">
+                    <%= app.amount_awarded ? "$#{number_with_delimiter(app.amount_awarded)}" : "" %>
+                  </span>
+                <% when 'arpa_amount_awarded' %>
+                  <span class="cell-value editable" data-type="number">
+                    <%= app.arpa_amount_awarded ? "$#{number_with_delimiter(app.arpa_amount_awarded)}" : "" %>
+                  </span>
+                <% when 'total_expenses' %>
+                  <span class="cell-value">
+                    <%= app.total_expenses ? "$#{number_with_delimiter(app.total_expenses)}" : "" %>
+                  </span>
+                <% when 'total_resources' %>
+                  <span class="cell-value">
+                    <%= app.total_resources ? "$#{number_with_delimiter(app.total_resources)}" : "" %>
+                  </span>
+                <% when 'unmet_need' %>
+                  <span class="cell-value">
+                    <%= app.unmet_need ? "$#{number_with_delimiter(app.unmet_need)}" : "" %>
+                  </span>
+                <% end %>
+              </td>
+            <% end %>
+            
+            <td class="actions-column">
+              <%= link_to admin_application_path(app), 
+                  class: "btn btn-sm btn-outline-primary", title: "View Details" do %>
+                <i class="fas fa-eye"></i>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bulk Actions Bar -->
+  <div class="bulk-actions-bar bg-light p-2 border-top" id="bulk-actions" style="display: none;">
+    <div class="d-flex align-items-center gap-3">
+      <span class="text-muted">
+        <span id="selected-count">0</span> applications selected
+      </span>
+      <button type="button" class="btn btn-sm btn-success" onclick="bulkApprove()">
+        <i class="fas fa-check"></i> Bulk Approve
+      </button>
+      <button type="button" class="btn btn-sm btn-danger" onclick="bulkReject()">
+        <i class="fas fa-times"></i> Bulk Reject
+      </button>
+      <button type="button" class="btn btn-sm btn-warning" onclick="bulkSetStatus()">
+        <i class="fas fa-edit"></i> Set Status
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Column Manager Modal -->
+<div class="modal fade" id="columnManager" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Manage Table Columns</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6>Available Columns</h6>
+            <div class="border rounded p-2" style="height: 300px; overflow-y: auto;">
+              <% @available_columns.each do |key, label| %>
+                <% unless @visible_columns.include?(key) %>
+                  <div class="form-check">
+                    <input class="form-check-input available-column" type="checkbox" 
+                           value="<%= key %>" id="available-<%= key %>">
+                    <label class="form-check-label" for="available-<%= key %>">
+                      <%= label %>
+                    </label>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h6>Visible Columns <small class="text-muted">(drag to reorder)</small></h6>
+            <div class="border rounded p-2" style="height: 300px; overflow-y: auto;" id="visible-columns-list">
+              <% @visible_columns.each do |column| %>
+                <div class="visible-column-item d-flex justify-content-between align-items-center p-2 mb-1 bg-light rounded" data-column="<%= column %>">
+                  <span>
+                    <i class="fas fa-grip-vertical text-muted me-2"></i>
+                    <%= @available_columns[column] %>
+                  </span>
+                  <button type="button" class="btn btn-sm btn-outline-danger remove-column" data-column="<%= column %>">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="applyColumnChanges()">Apply Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Excel-like Styling -->
+<style>
+/* Excel-like neutral color scheme */
+.application-table-container {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.excel-table {
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: white;
+}
+
+.excel-table th {
+  background: #4472c4 !important;
+  color: white !important;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 6px;
+  border: 1px solid #2c5aa0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.excel-table td {
+  padding: 4px 6px;
+  border: 1px solid #d1d3d4;
+  background: white;
+  vertical-align: middle;
+}
+
+.excel-table tbody tr:hover {
+  background-color: #e7f3ff;
+}
+
+.excel-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.excel-table tbody tr:nth-child(even):hover {
+  background-color: #e7f3ff;
+}
+
+/* Editable cells */
+.cell-value.editable {
+  cursor: text;
+  border: 1px solid transparent;
+  padding: 2px;
+  border-radius: 2px;
+  min-height: 20px;
+  display: inline-block;
+  width: 100%;
+}
+
+.cell-value.editable:hover {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+}
+
+.cell-value.editing {
+  border-color: #007bff !important;
+  background-color: white !important;
+  box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+/* Form controls in table */
+.form-select-sm, .form-control-sm {
+  font-size: 12px;
+  padding: 2px 4px;
+}
+
+/* Column sorting */
+.sortable-column {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable-column:hover {
+  background-color: #3a5998 !important;
+}
+
+.sort-icon {
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.sortable-column:hover .sort-icon {
+  opacity: 1;
+}
+
+/* Bulk actions */
+.bulk-actions-bar {
+  border-top: 3px solid #007bff;
+}
+
+/* Column manager */
+.visible-column-item {
+  cursor: move;
+  transition: background-color 0.2s;
+}
+
+.visible-column-item:hover {
+  background-color: #e9ecef !important;
+}
+
+/* Scrollbar styling */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Selection highlighting */
+tr.selected {
+  background-color: #cce5ff !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table-header .row {
+    gap: 1rem;
+  }
+  
+  .excel-table {
+    font-size: 12px;
+  }
+  
+  .excel-table th,
+  .excel-table td {
+    padding: 3px 4px;
+  }
+}
+</style>
+
+<script>
+// Excel-like Table Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    initializeExcelTable();
+});
+
+function initializeExcelTable() {
+    setupInlineEditing();
+    setupColumnSorting();
+    setupBulkSelection();
+    setupColumnManager();
+    setupKeyboardNavigation();
+    setupAutoSave();
+}
+
+// Inline Editing Functionality
+function setupInlineEditing() {
+    // Handle editable text cells
+    document.querySelectorAll('.cell-value.editable').forEach(cell => {
+        cell.addEventListener('click', function(e) {
+            if (!this.classList.contains('editing')) {
+                enterEditMode(this);
+            }
+        });
+        
+        cell.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && this.classList.contains('editing')) {
+                exitEditMode(this);
+            }
+            if (e.key === 'Escape' && this.classList.contains('editing')) {
+                cancelEditMode(this);
+            }
+        });
+        
+        cell.addEventListener('blur', function(e) {
+            if (this.classList.contains('editing')) {
+                exitEditMode(this);
+            }
+        });
+    });
+    
+    // Handle dropdown changes (status, board_status)
+    document.querySelectorAll('.status-select, .board-status-select').forEach(select => {
+        select.addEventListener('change', function() {
+            saveFieldValue(this.dataset.id, this.dataset.field, this.value);
+        });
+    });
+}
+
+function enterEditMode(cell) {
+    const currentValue = cell.textContent.trim();
+    const dataType = cell.dataset.type || 'text';
+    
+    cell.classList.add('editing');
+    cell.contentEditable = true;
+    cell.focus();
+    
+    // Select all text
+    const range = document.createRange();
+    range.selectNodeContents(cell);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    
+    // Store original value for cancel functionality
+    cell.dataset.originalValue = currentValue;
+}
+
+function exitEditMode(cell) {
+    const newValue = cell.textContent.trim();
+    const originalValue = cell.dataset.originalValue;
+    
+    cell.classList.remove('editing');
+    cell.contentEditable = false;
+    
+    if (newValue !== originalValue) {
+        const applicationId = cell.closest('tr').dataset.id;
+        const fieldName = cell.closest('td').dataset.field;
+        saveFieldValue(applicationId, fieldName, newValue);
+        
+        // Visual feedback for successful save
+        cell.style.backgroundColor = '#d4edda';
+        setTimeout(() => {
+            cell.style.backgroundColor = '';
+        }, 1000);
+    }
+}
+
+function cancelEditMode(cell) {
+    cell.textContent = cell.dataset.originalValue;
+    cell.classList.remove('editing');
+    cell.contentEditable = false;
+}
+
+// Auto-save functionality
+function saveFieldValue(applicationId, fieldName, value) {
+    // Show saving indicator
+    showSavingIndicator();
+    
+    const data = {
+        application: {}
+    };
+    data.application[fieldName] = value;
+    
+    fetch(`/admin/applications/${applicationId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideSavingIndicator();
+        if (data.success) {
+            showSuccessMessage('Saved successfully');
+        } else {
+            showErrorMessage('Failed to save');
+        }
+    })
+    .catch(error => {
+        hideSavingIndicator();
+        showErrorMessage('Network error occurred');
+        console.error('Save error:', error);
+    });
+}
+
+// Column Sorting
+function setupColumnSorting() {
+    document.querySelectorAll('.sortable-column').forEach(header => {
+        header.addEventListener('click', function() {
+            const column = this.dataset.column;
+            const currentSort = new URLSearchParams(window.location.search).get('sort');
+            const currentDirection = new URLSearchParams(window.location.search).get('direction');
+            
+            let newDirection = 'asc';
+            if (currentSort === column && currentDirection === 'asc') {
+                newDirection = 'desc';
+            }
+            
+            const url = new URL(window.location);
+            url.searchParams.set('sort', column);
+            url.searchParams.set('direction', newDirection);
+            
+            window.location.href = url.toString();
+        });
+    });
+}
+
+// Bulk Selection
+function setupBulkSelection() {
+    const selectAllCheckbox = document.getElementById('select-all');
+    const rowCheckboxes = document.querySelectorAll('.row-select');
+    const bulkActionsBar = document.getElementById('bulk-actions');
+    const selectedCountSpan = document.getElementById('selected-count');
+    
+    selectAllCheckbox?.addEventListener('change', function() {
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+            toggleRowSelection(checkbox.closest('tr'), this.checked);
+        });
+        updateBulkActionsVisibility();
+    });
+    
+    rowCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            toggleRowSelection(this.closest('tr'), this.checked);
+            updateSelectAllState();
+            updateBulkActionsVisibility();
+        });
+    });
+    
+    function toggleRowSelection(row, selected) {
+        if (selected) {
+            row.classList.add('selected');
+        } else {
+            row.classList.remove('selected');
+        }
+    }
+    
+    function updateSelectAllState() {
+        const checkedBoxes = document.querySelectorAll('.row-select:checked');
+        const totalBoxes = document.querySelectorAll('.row-select');
+        
+        if (checkedBoxes.length === 0) {
+            selectAllCheckbox.indeterminate = false;
+            selectAllCheckbox.checked = false;
+        } else if (checkedBoxes.length === totalBoxes.length) {
+            selectAllCheckbox.indeterminate = false;
+            selectAllCheckbox.checked = true;
+        } else {
+            selectAllCheckbox.indeterminate = true;
+        }
+    }
+    
+    function updateBulkActionsVisibility() {
+        const checkedBoxes = document.querySelectorAll('.row-select:checked');
+        if (checkedBoxes.length > 0) {
+            bulkActionsBar.style.display = 'block';
+            selectedCountSpan.textContent = checkedBoxes.length;
+        } else {
+            bulkActionsBar.style.display = 'none';
+        }
+    }
+}
+
+// Column Management
+function setupColumnManager() {
+    // Add event listeners for column management
+    document.querySelectorAll('.available-column').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                addColumnToVisible(this.value);
+            }
+        });
+    });
+    
+    document.querySelectorAll('.remove-column').forEach(button => {
+        button.addEventListener('click', function() {
+            removeColumnFromVisible(this.dataset.column);
+        });
+    });
+    
+    // Make visible columns sortable (drag and drop)
+    const visibleColumnsList = document.getElementById('visible-columns-list');
+    if (visibleColumnsList) {
+        new Sortable(visibleColumnsList, {
+            animation: 150,
+            ghostClass: 'sortable-ghost'
+        });
+    }
+}
+
+function addColumnToVisible(columnKey) {
+    const availableColumns = {
+        'reference_number': 'Reference #',
+        'first_name': 'First Name',
+        'last_name': 'Last Name',
+        'email_address': 'Email',
+        'permanent_phone': 'Phone',
+        'college_name': 'College',
+        'current_degree_program': 'Degree Program',
+        'field_of_study': 'Field of Study',
+        'class_standing': 'Class Standing',
+        'amount_requested': 'Amount Requested',
+        'status': 'Status',
+        'finance_grant_number': 'Grant Number',
+        'board_status': 'Board Status',
+        'tribe_enrolled': 'Tribe',
+        'marital_status': 'Marital Status',
+        'number_of_dependents': 'Dependents',
+        'expected_graduation_date': 'Expected Graduation',
+        'created_at': 'Application Date',
+        'total_expenses': 'Total Expenses',
+        'total_resources': 'Total Resources',
+        'unmet_need': 'Unmet Need'
+    };
+    
+    const visibleList = document.getElementById('visible-columns-list');
+    const columnHtml = `
+        <div class="visible-column-item d-flex justify-content-between align-items-center p-2 mb-1 bg-light rounded" data-column="${columnKey}">
+            <span>
+                <i class="fas fa-grip-vertical text-muted me-2"></i>
+                ${availableColumns[columnKey]}
+            </span>
+            <button type="button" class="btn btn-sm btn-outline-danger remove-column" data-column="${columnKey}">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    visibleList.insertAdjacentHTML('beforeend', columnHtml);
+    
+    // Hide from available list
+    document.getElementById(`available-${columnKey}`).parentElement.style.display = 'none';
+}
+
+function removeColumnFromVisible(columnKey) {
+    document.querySelector(`[data-column="${columnKey}"]`).remove();
+    
+    // Show in available list
+    const availableCheckbox = document.getElementById(`available-${columnKey}`);
+    if (availableCheckbox) {
+        availableCheckbox.parentElement.style.display = 'block';
+        availableCheckbox.checked = false;
+    }
+}
+
+function applyColumnChanges() {
+    const visibleColumns = Array.from(document.querySelectorAll('.visible-column-item'))
+        .map(item => item.dataset.column);
+    
+    const url = new URL(window.location);
+    url.searchParams.set('columns', visibleColumns.join(','));
+    
+    window.location.href = url.toString();
+}
+
+// Keyboard Navigation
+function setupKeyboardNavigation() {
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+A to select all
+        if (e.ctrlKey && e.key === 'a' && !e.target.isContentEditable) {
+            e.preventDefault();
+            document.getElementById('select-all').checked = true;
+            document.getElementById('select-all').dispatchEvent(new Event('change'));
+        }
+        
+        // Delete key to delete selected rows
+        if (e.key === 'Delete' && !e.target.isContentEditable) {
+            const selectedRows = document.querySelectorAll('.row-select:checked');
+            if (selectedRows.length > 0 && confirm(`Delete ${selectedRows.length} selected applications?`)) {
+                // Implement bulk delete functionality
+                bulkDelete();
+            }
+        }
+    });
+}
+
+// Bulk Operations
+function bulkApprove() {
+    const selectedIds = getSelectedApplicationIds();
+    if (selectedIds.length === 0) return;
+    
+    if (confirm(`Approve ${selectedIds.length} selected applications?`)) {
+        bulkUpdateStatus(selectedIds, 'approved');
+    }
+}
+
+function bulkReject() {
+    const selectedIds = getSelectedApplicationIds();
+    if (selectedIds.length === 0) return;
+    
+    if (confirm(`Reject ${selectedIds.length} selected applications?`)) {
+        bulkUpdateStatus(selectedIds, 'rejected');
+    }
+}
+
+function bulkSetStatus() {
+    const selectedIds = getSelectedApplicationIds();
+    if (selectedIds.length === 0) return;
+    
+    const newStatus = prompt('Enter new status (submitted, under_review, approved, rejected, more_info_needed):');
+    if (newStatus) {
+        bulkUpdateStatus(selectedIds, newStatus);
+    }
+}
+
+function getSelectedApplicationIds() {
+    return Array.from(document.querySelectorAll('.row-select:checked'))
+        .map(checkbox => checkbox.value);
+}
+
+function bulkUpdateStatus(applicationIds, status) {
+    showSavingIndicator();
+    
+    fetch('/admin/bulk_update_status', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            application_ids: applicationIds,
+            status: status
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideSavingIndicator();
+        if (data.success) {
+            location.reload(); // Refresh to show updates
+        } else {
+            showErrorMessage('Failed to update applications');
+        }
+    })
+    .catch(error => {
+        hideSavingIndicator();
+        showErrorMessage('Network error occurred');
+        console.error('Bulk update error:', error);
+    });
+}
+
+// Export functionality
+function exportToExcel() {
+    const visibleColumns = Array.from(document.querySelectorAll('.visible-column-item'))
+        .map(item => item.dataset.column);
+    
+    const url = new URL('/admin/export_applications', window.location.origin);
+    url.searchParams.set('columns', visibleColumns.join(','));
+    url.searchParams.set('format', 'excel');
+    
+    // Copy current filters
+    const currentParams = new URLSearchParams(window.location.search);
+    ['status', 'search', 'date_from', 'date_to', 'amount_min', 'amount_max'].forEach(param => {
+        if (currentParams.get(param)) {
+            url.searchParams.set(param, currentParams.get(param));
+        }
+    });
+    
+    window.open(url.toString(), '_blank');
+}
+
+// UI Helper Functions
+function showSavingIndicator() {
+    // Create or show a saving spinner
+    let indicator = document.getElementById('saving-indicator');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'saving-indicator';
+        indicator.className = 'position-fixed top-0 end-0 m-3 alert alert-info';
+        indicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        document.body.appendChild(indicator);
+    }
+    indicator.style.display = 'block';
+}
+
+function hideSavingIndicator() {
+    const indicator = document.getElementById('saving-indicator');
+    if (indicator) {
+        indicator.style.display = 'none';
+    }
+}
+
+function showSuccessMessage(message) {
+    showToast(message, 'success');
+}
+
+function showErrorMessage(message) {
+    showToast(message, 'danger');
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `position-fixed top-0 end-0 m-3 alert alert-${type} alert-dismissible`;
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(toast);
+    
+    // Auto-dismiss after 3 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.remove();
+        }
+    }, 3000);
+}
+
+// Initialize auto-save setup
+function setupAutoSave() {
+    // Save changes every 30 seconds if there are unsaved changes
+    setInterval(() => {
+        // This could be enhanced to track unsaved changes
+    }, 30000);
+}
+</script>

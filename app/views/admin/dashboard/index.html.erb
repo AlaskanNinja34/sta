@@ -8,7 +8,7 @@
       <p class="text-muted">Sitka Tribe of Alaska Scholarship Program Administration</p>
     </div>
     <div>
-      <%= link_to "View All Applications", admin_scholarship_applications_path, class: "btn btn-primary" %>
+      <%= link_to "View All Applications", admin_applications_path, class: "btn btn-primary" %>
     </div>
   </div>
 
@@ -94,10 +94,10 @@
       <div class="card shadow">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
           <h6 class="m-0 font-weight-bold text-primary">Recent Applications</h6>
-          <%= link_to "View All", admin_scholarship_applications_path, class: "btn btn-sm btn-primary" %>
+          <%= link_to "View All", admin_applications_path, class: "btn btn-sm btn-primary" %>
         </div>
         <div class="card-body">
-          <div data-controller="export" data-export-url-value="<%= export_csv_admin_scholarship_applications_path %>" class="mb-3">
+          <div data-controller="export" data-export-url-value="<%= export_csv_admin_applications_path %>" class="mb-3">
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="checkbox" value="applicant_name" id="col-applicant" data-export-target="checkbox" checked>
               <label class="form-check-label" for="col-applicant">Applicant Name</label>
@@ -157,9 +157,9 @@
                       <td><%= application.created_at.strftime("%m/%d/%Y") %></td>
                       <td>
                         <div class="btn-group" role="group">
-                          <%= link_to "View", admin_scholarship_application_path(application), class: "btn btn-sm btn-outline-primary" %>
+                          <%= link_to "View", admin_application_path(application), class: "btn btn-sm btn-outline-primary" %>
                           <% if application.status == 'submitted' %>
-                            <%= link_to "Review", admin_scholarship_application_path(application), class: "btn btn-sm btn-outline-info" %>
+                            <%= link_to "Review", admin_application_path(application), class: "btn btn-sm btn-outline-info" %>
                           <% end %>
                         </div>
                       </td>
@@ -228,17 +228,26 @@
         </div>
         <div class="card-body">
           <div class="d-grid gap-2">
-            <%= link_to admin_scholarship_applications_path, class: "btn btn-outline-primary mb-2" do %>
+            <%= link_to admin_applications_path, class: "btn btn-outline-primary mb-2" do %>
               <i class="fas fa-list mr-2"></i>View All Applications
             <% end %>
-            <%= link_to admin_scholarship_applications_path(status: 'submitted'), class: "btn btn-outline-warning mb-2" do %>
+            <%= link_to admin_applications_path(status: 'submitted'), class: "btn btn-outline-warning mb-2" do %>
               <i class="fas fa-clock mr-2"></i>Pending Applications
             <% end %>
-            <%= link_to "#", class: "btn btn-outline-info mb-2" do %>
-              <i class="fas fa-download mr-2"></i>Export Data
+            <%= link_to admin_verification_workflow_path, class: "btn btn-outline-success mb-2" do %>
+              <i class="fas fa-table mr-2"></i>Verification Workflow
             <% end %>
-            <%= link_to "#", class: "btn btn-outline-secondary" do %>
-              <i class="fas fa-cog mr-2"></i>System Settings
+            <%= link_to admin_verification_overview_path, class: "btn btn-outline-info mb-2" do %>
+              <i class="fas fa-clipboard-check mr-2"></i>Verifications Overview
+            <% end %>
+            <%= link_to admin_students_path, class: "btn btn-outline-info mb-2" do %>
+              <i class="fas fa-users mr-2"></i>Student Profiles
+            <% end %>
+            <%= link_to admin_historical_applications_path, class: "btn btn-outline-secondary mb-2" do %>
+              <i class="fas fa-archive mr-2"></i>Historical Records
+            <% end %>
+            <%= link_to export_csv_admin_applications_path, class: "btn btn-outline-dark" do %>
+              <i class="fas fa-download mr-2"></i>Export Data
             <% end %>
           </div>
         </div>

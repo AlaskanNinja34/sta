@@ -16,7 +16,7 @@
   <!-- Filters and Search -->
   <div class="card mb-4">
     <div class="card-body">
-      <%= form_with url: admin_scholarship_applications_path, method: :get, local: true, class: "row g-3" do |f| %>
+      <%= form_with url: admin_applications_path, method: :get, local: true, class: "row g-3" do |f| %>
         <div class="col-md-4">
           <%= f.text_field :search, placeholder: "Search by name, email, or reference...", 
               value: params[:search], class: "form-control" %>
@@ -30,7 +30,7 @@
         </div>
         <div class="col-md-3">
           <% if params[:search].present? || params[:status].present? %>
-            <%= link_to "Clear Filters", admin_scholarship_applications_path, class: "btn btn-outline-secondary" %>
+            <%= link_to "Clear Filters", admin_applications_path, class: "btn btn-outline-secondary" %>
           <% end %>
         </div>
       <% end %>
@@ -110,19 +110,19 @@
                   </td>
                   <td>
                     <div class="btn-group-vertical" role="group">
-                      <%= link_to "View", admin_scholarship_application_path(application), 
+                      <%= link_to "View", admin_application_path(application), 
                           class: "btn btn-sm btn-outline-primary mb-1" %>
                       
                       <% if application.status == 'submitted' %>
                         <div class="btn-group" role="group">
-                          <%= button_to "Approve", approve_admin_scholarship_application_path(application), 
+                          <%= button_to "Approve", approve_admin_application_path(application), 
                               method: :patch, class: "btn btn-sm btn-success",
                               confirm: "Are you sure you want to approve this application?" %>
-                          <%= button_to "Reject", reject_admin_scholarship_application_path(application), 
+                          <%= button_to "Reject", reject_admin_application_path(application), 
                               method: :patch, class: "btn btn-sm btn-danger",
                               confirm: "Are you sure you want to reject this application?" %>
                         </div>
-                        <%= button_to "Request Info", request_more_info_admin_scholarship_application_path(application), 
+                        <%= button_to "Request Info", request_more_info_admin_application_path(application), 
                             method: :patch, class: "btn btn-sm btn-warning mt-1",
                             confirm: "Request more information from applicant?" %>
                       <% end %>
@@ -139,7 +139,7 @@
           <h5 class="text-muted">No applications found</h5>
           <% if params[:search].present? || params[:status].present? %>
             <p class="text-muted">Try adjusting your search criteria</p>
-            <%= link_to "View All Applications", admin_scholarship_applications_path, class: "btn btn-primary" %>
+            <%= link_to "View All Applications", admin_applications_path, class: "btn btn-primary" %>
           <% end %>
         </div>
       <% end %>

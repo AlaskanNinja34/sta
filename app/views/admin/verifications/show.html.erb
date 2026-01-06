@@ -1,0 +1,193 @@
+<%= render 'shared/admin_navbar' %>
+
+<div class="container-fluid my-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h2 mb-1">Verification: <%= @verification_template.application_key %></h1>
+      <p class="text-muted">
+        <% if @application %>
+          <%= @application.first_name %> <%= @application.last_name %> |
+          Tribal ID: <%= @application.tribal_id %>
+        <% end %>
+      </p>
+    </div>
+    <div>
+      <%= link_to "Back to List", admin_verifications_path, class: "btn btn-outline-secondary" %>
+      <% if @application %>
+        <%= link_to "View Application", admin_application_path(@application), class: "btn btn-outline-primary" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Checklist Column -->
+    <div class="col-lg-8">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+          <h6 class="m-0 font-weight-bold text-primary">Verification Checklist</h6>
+          <span class="badge bg-info"><%= @verification_template.completion_percentage %>% Complete</span>
+        </div>
+        <div class="card-body">
+          <% if @checklist_items.any? %>
+            <% @checklist_items.each do |item| %>
+              <div class="border-bottom py-3">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                           id="check_<%= item[:key] %>"
+                           <%= 'checked' if item[:checked] %>
+                           data-item-key="<%= item[:key] %>"
+                           onchange="updateChecklistItem(this)">
+                    <label class="form-check-label" for="check_<%= item[:key] %>">
+                      <strong><%= item[:label] %></strong>
+                      <% if item[:required] %>
+                        <span class="text-danger">*</span>
+                      <% end %>
+                    </label>
+                  </div>
+                  <% if item[:verified_by].present? %>
+                    <small class="text-muted">
+                      Verified by <%= item[:verified_by] %>
+                      <% if item[:verified_at].present? %>
+                        on <%= Date.parse(item[:verified_at]).strftime("%m/%d/%Y") rescue item[:verified_at] %>
+                      <% end %>
+                    </small>
+                  <% end %>
+                </div>
+                <% if item[:notes].present? %>
+                  <div class="mt-2 ms-4">
+                    <small class="text-muted"><em>Note: <%= item[:notes] %></em></small>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-muted">No checklist items configured.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status & Actions Column -->
+    <div class="col-lg-4">
+      <!-- Status Card -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Status</h6>
+        </div>
+        <div class="card-body">
+          <p><strong>Verification Status:</strong>
+            <span class="badge <%= case @verification_template.verification_status
+              when 'not_started' then 'bg-secondary'
+              when 'in_progress' then 'bg-warning'
+              when 'completed' then 'bg-success'
+              else 'bg-light'
+              end %>">
+              <%= @verification_template.verification_status&.humanize %>
+            </span>
+          </p>
+          <p><strong>Progress:</strong> <%= @verification_template.completion_percentage %>%</p>
+          <% if @verification_template.verification_completed_at.present? %>
+            <p><strong>Completed:</strong> <%= @verification_template.verification_completed_at.strftime("%m/%d/%Y") %></p>
+            <p><strong>Completed By:</strong> <%= @verification_template.completed_by %></p>
+          <% end %>
+
+          <hr>
+
+          <% if @verification_template.verification_status != 'completed' %>
+            <%= button_to "Mark Complete", admin_verification_path(@verification_template, complete: 'true'),
+                          method: :patch, class: "btn btn-success w-100 mb-2",
+                          data: { confirm: "Mark this verification as complete?" } %>
+          <% end %>
+
+          <% if @verification_template.archived %>
+            <%= button_to "Unarchive", admin_verification_path(@verification_template, unarchive: 'true'),
+                          method: :patch, class: "btn btn-outline-secondary w-100" %>
+          <% else %>
+            <%= button_to "Archive", admin_verification_path(@verification_template, archive: 'true'),
+                          method: :patch, class: "btn btn-outline-warning w-100" %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Notes Card -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Staff Notes</h6>
+        </div>
+        <div class="card-body">
+          <%= form_with model: @verification_template, url: admin_verification_path(@verification_template), method: :patch, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.text_area :staff_notes, class: "form-control", rows: 4, placeholder: "Add notes..." %>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Issues Found</label>
+              <%= f.text_area :issues_found, class: "form-control", rows: 2 %>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Save Notes</button>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Award Recommendation Card -->
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Award Recommendation</h6>
+        </div>
+        <div class="card-body">
+          <%= form_with model: @verification_template, url: admin_verification_path(@verification_template), method: :patch, local: true do |f| %>
+            <div class="mb-3">
+              <label class="form-label">Recommended Award</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :recommended_award_amount, class: "form-control", step: "0.01" %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Recommended ARPA Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= f.number_field :recommended_arpa_amount, class: "form-control", step: "0.01" %>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Award Notes</label>
+              <%= f.text_area :award_notes, class: "form-control", rows: 2 %>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Save Recommendation</button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function updateChecklistItem(checkbox) {
+  const key = checkbox.dataset.itemKey;
+  const checked = checkbox.checked;
+
+  fetch('<%= admin_verification_path(@verification_template) %>', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({
+      checklist_item: {
+        key: key,
+        checked: checked.toString()
+      }
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Could update progress bar here
+      console.log('Checklist updated, completion:', data.completion_percentage);
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
+</script>

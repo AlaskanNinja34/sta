@@ -1,0 +1,119 @@
+<%= render 'shared/admin_navbar' %>
+
+<div class="container-fluid my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h2 mb-1">Verifications Overview</h1>
+      <p class="text-muted">Track verification status and progress for all applications</p>
+    </div>
+    <div class="d-flex gap-2">
+      <%= link_to admin_verification_workflow_path, class: "btn btn-primary" do %>
+        <i class="fas fa-table me-1"></i>Open Workflow
+      <% end %>
+      <% if params[:archived] == 'true' %>
+        <%= link_to "View Current", admin_verification_overview_path, class: "btn btn-outline-primary" %>
+      <% else %>
+        <%= link_to "View Archived", admin_verification_overview_path(archived: 'true'), class: "btn btn-outline-secondary" %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <%= form_with url: admin_verification_overview_path, method: :get, local: true, class: "row g-3" do %>
+        <div class="col-md-4">
+          <input type="text" name="search" class="form-control" placeholder="Search by Application Key or Tribal ID..." value="<%= params[:search] %>">
+        </div>
+        <div class="col-md-3">
+          <select name="status" class="form-select">
+            <option value="">All Statuses</option>
+            <% @status_options.each do |label, value| %>
+              <option value="<%= value %>" <%= 'selected' if params[:status] == value %>><%= label %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Verifications Table -->
+  <div class="card shadow">
+    <div class="card-body">
+      <% if @verifications.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Application Key</th>
+                <th>Applicant</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @verifications.each do |verification| %>
+                <tr>
+                  <td><code><%= verification.application_key %></code></td>
+                  <td>
+                    <% if verification.application %>
+                      <%= verification.application.first_name %> <%= verification.application.last_name %>
+                    <% else %>
+                      <span class="text-muted">N/A</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <span class="badge <%= case verification.verification_status
+                      when 'not_started' then 'bg-secondary'
+                      when 'in_progress' then 'bg-warning'
+                      when 'completed' then 'bg-success'
+                      else 'bg-light'
+                      end %>">
+                      <%= verification.verification_status&.humanize || 'Unknown' %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="progress" style="height: 20px; min-width: 100px;">
+                      <div class="progress-bar bg-success" role="progressbar"
+                           style="width: <%= verification.completion_percentage %>%"
+                           aria-valuenow="<%= verification.completion_percentage %>"
+                           aria-valuemin="0" aria-valuemax="100">
+                        <%= verification.completion_percentage %>%
+                      </div>
+                    </div>
+                  </td>
+                  <td><%= verification.updated_at.strftime("%m/%d/%Y") %></td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <%= link_to admin_verification_workflow_path, class: "btn btn-sm btn-outline-secondary", title: "Open Workflow Table" do %>
+                        <i class="fas fa-table"></i> Workflow
+                      <% end %>
+                      <% if verification.application %>
+                        <%= link_to admin_application_path(verification.application), class: "btn btn-sm btn-outline-primary", title: "View Application" do %>
+                          <i class="fas fa-file-alt"></i> Application
+                        <% end %>
+                      <% end %>
+                      <%= link_to admin_verification_path(verification), class: "btn btn-sm btn-outline-success", title: "Review Verification" do %>
+                        <i class="fas fa-clipboard-check"></i> Verify
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="fas fa-clipboard-check fa-3x text-gray-300 mb-3"></i>
+          <p class="text-muted">No verification records found</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

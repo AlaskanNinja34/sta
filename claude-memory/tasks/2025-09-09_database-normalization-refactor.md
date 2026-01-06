@@ -121,13 +121,26 @@ verification_templates (staff workflow)
 # Historical Data Import Tables
 historical_applications (for manual staff entry)
   - id (primary key)
-  - student_id (foreign key -> students)
+  - application_key (unique: "HIST-YYYY-NNN" format for historical imports)
+  - tribal_id (indexed - links to students table)
   - application_year, school_name
   - amount_requested, amount_earned
   - award_type (regular, arpa, combined)
+  - education_level (enum: undergraduate, graduate - for lifetime tracking)
   - entry_date, entered_by_staff_id
   - notes
   - created_at, updated_at
+
+# Auto-Creation Behavior:
+# When staff creates historical_application:
+# 1. System generates application_key as "HIST-{year}-{seq}" (e.g., "HIST-2020-001")
+# 2. System auto-creates student_financial_tracking record:
+#    - tribal_id from historical_application
+#    - application_key linking to this record
+#    - award_year from application_year
+#    - total_award_amount from amount_earned
+#    - award_source = 'historical_import'
+# 3. System updates student lifetime totals based on education_level
 ```
 
 ### Key Design Decisions
@@ -589,15 +602,50 @@ historical_applications (for manual staff entry)
    - Configurable checklist items
    - Status tracking per item (pending/complete)
 
-**2. Bulk Verification Interface**
+**2. Bulk Verification Interface (Default View)**
    - `app/views/admin/verifications/index.html.erb`
-   - Page showing ALL current applications in table format
+   - **Default Settings:**
+     - Shows all NON-ARCHIVED applications (current cycle)
+     - All students displayed (no student filter)
+     - Ordered by submission date (oldest first)
+     - Expected volume: 50-100 applications per window
    - Inline verification checkboxes for each item
    - Work through applications sequentially
    - Auto-save progress (AJAX updates)
    - Completion status indicators
+   - Toggle: "Show Current" (default) | "Show Archived"
    - Filter by status (not_started, in_progress, completed)
    - Pagination for large datasets
+
+**2b. Verification Workflow Navigation**
+
+   **Access from Student Profile:**
+   | User Action | System Behavior |
+   |-------------|-----------------|
+   | Click current app's verification link | Opens template for ONLY that application |
+   | "Show all current" button appears | Expands to ALL current verification templates |
+   | Click archived app's verification link | Opens template for ONLY that archived app |
+   | "Show all archived" button appears | Expands to ALL archived verification templates |
+
+   **Archived Template Editing:**
+   - Archived templates are EDITABLE by default (not read-only)
+   - Alternative: Easy toggle to enable editing on archived templates
+   - Staff may need to correct historical records or add notes
+
+   **Search Functionality - Two Modes:**
+   | Button | Behavior |
+   |--------|----------|
+   | "Find in All" | Scrolls to & highlights matching student, keeps others visible |
+   | "Isolate" | Shows ONLY that student's template, hides all others |
+
+   **Search Fields:** Tribal ID or Application Key (YYYY-NNN or HIST-YYYY-NNN)
+
+**2c. Progress Filtering (PROTOTYPE - Future Implementation)**
+   - Filter by verification progress status
+   - "Show apps not yet at [milestone]" - apps before certain progress point
+   - "Show apps at or beyond [milestone]" - apps that completed FNA or beyond
+   - Multiple status markers highlighted based on filter threshold
+   - **Status:** Deferred until verification workflow structure finalized
 
 **3. Individual Application Verification**
    - `app/views/admin/verifications/show.html.erb`
@@ -615,8 +663,8 @@ historical_applications (for manual staff entry)
 
 **4. Verification History**
    - Student profile shows all verification templates
-   - Historical verification review (read-only for past)
-   - Current verification (editable)
+   - All verification templates are EDITABLE (including archived)
+   - Alternative: Toggle to enable editing on archived templates
    - Audit trail display:
      - Who verified
      - When verified
@@ -850,12 +898,24 @@ historical_applications (for manual staff entry)
 **CRITICAL - Student ID Disambiguation:**
 - **tribal_id:** Permanent person identifier (like SSN), unique, never changes - PRIMARY KEY FOR PERSON
 - **students.id:** Database primary key (auto-increment)
-- **applications.student_id:** Foreign key pointing to students.id (links application to person)
+- **applications.tribal_id:** Links application to person via tribal_id (NOT student_id foreign key)
 - **applications.school_issued_student_id:** School's student ID number (form data, can change between schools)
 
 **Application Identifiers:**
 - **applications.id:** Database primary key
-- **applications.application_key:** Human-readable unique ID (YYYY-NNN format) for staff reference
+- **applications.application_key:** Human-readable unique ID for staff reference
+
+**Two Application Key Formats:**
+| Type | Format | Example | When Generated |
+|------|--------|---------|----------------|
+| Digital Applications | `YYYY-NNN` | "2025-001", "2025-042" | On application submission |
+| Historical Applications | `HIST-YYYY-NNN` | "HIST-2020-001", "HIST-2018-015" | On historical data import |
+
+**Why Historical Applications Need Keys:**
+- Allows file attachments to historical applications (scanned paper records)
+- Required for student_financial_tracking records (links award to specific application)
+- Enables consistent linking across all application-related tables
+- The `HIST-` prefix clearly distinguishes imported records from digital submissions
 
 ---
 
@@ -2627,3 +2687,238 @@ verification_templates
 **Next session should start by reviewing Implementation Plan phases to ensure they align with our comprehensive requirements, then begin actual database development work.**
 
 This comprehensive plan ensures we can safely refactor the database while building the foundation for modern scholarship management with proper student profiles, financial tracking, verification workflows, and historical data integration.
+---
+
+## SESSION 4 COMPLETION SUMMARY - IMPLEMENTATION COMPLETE
+**Date:** 2025-01-05  
+**Status:** Phase 1-3 Complete - Core Implementation Done
+
+### What We Accomplished Today
+
+#### Phase 1: Database Foundation ✅
+Created 6 new database migrations:
+1. `20251231000001_drop_scholarship_applications.rb` - Dropped old monolithic table
+2. `20251231000002_create_applications.rb` - New normalized applications table (275+ fields + application_key + tribal_id)
+3. `20251231000003_create_student_financial_tracking.rb` - Award disbursement tracking
+4. `20251231000004_create_application_files.rb` - Categorized file storage
+5. `20251231000005_create_verification_templates.rb` - JSON checklist workflow
+6. `20251231000006_create_historical_applications.rb` - Paper record imports with HIST-YYYY-NNN keys
+
+#### Phase 2: Models & Controllers ✅
+**6 Models Created:**
+- `Student` - Lifetime tracking, limit warnings, associations via tribal_id
+- `Application` - Auto-generates YYYY-NNN keys, creates verification template on save
+- `StudentFinancialTracking` - Disbursement tracking, semester breakdowns
+- `ApplicationFile` - Categorized file storage with verification status
+- `VerificationTemplate` - JSON checklist, progress tracking, 10 default items
+- `HistoricalApplication` - Auto-generates HIST-YYYY-NNN keys, creates financial record
+
+**5 Controllers Created:**
+- `ApplicationsController` - Student-facing submission
+- `Admin::ApplicationsController` - AppTable, full admin CRUD
+- `Admin::VerificationsController` - Verification workflow
+- `Admin::StudentsController` - Student profiles with recalculate_totals
+- `Admin::HistoricalApplicationsController` - Paper record imports
+
+**Old Files Archived:**
+- `app/models/_archive/scholarship_application.rb.bak`
+- `app/controllers/_archive/scholarship_applications_controller.rb.bak`
+- `app/controllers/admin/_archive/scholarship_applications_controller.rb.bak`
+- `app/helpers/admin/_archive/scholarship_applications_helper.rb.bak`
+
+#### Phase 3: Views & Navigation ✅
+**View Folder Renames:**
+- `app/views/scholarship_applications/` → `app/views/applications/`
+- `app/views/admin/scholarship_applications/` → `app/views/admin/applications/`
+
+**66 Variable Replacements:** `@scholarship_application` → `@application`
+
+**11 Route Replacements:** `scholarship_applications_path` → `applications_path`
+
+**New Views Created:**
+- `admin/verifications/index.html.erb` - List with filters, progress bars
+- `admin/verifications/show.html.erb` - Checklist interface, AJAX updates
+- `admin/students/index.html.erb` - Student list with lifetime totals
+- `admin/students/show.html.erb` - Full profile with applications, financial tracking
+- `admin/students/edit.html.erb` - Edit student contact info
+- `admin/historical_applications/index.html.erb` - List with year/level filters
+- `admin/historical_applications/show.html.erb` - Detail view
+- `admin/historical_applications/new.html.erb` - Import form
+- `admin/historical_applications/edit.html.erb` - Edit form
+- `admin/historical_applications/_form.html.erb` - Shared form partial
+
+**Navigation Updated:**
+- Admin navbar: Added Verifications, Students, Historical links
+- Dashboard: Added quick action buttons for all new sections
+
+### Issues Found & Fixed During Testing
+1. **VerificationTemplate** - Missing `belongs_to :application` association (fixed)
+2. **StudentFinancialTracking** - Table name mismatch singular/plural (fixed with `self.table_name`)
+3. **Student** - Column name aliases needed for views (added `lifetime_undergrad_total` methods)
+
+### Test Data Created
+- Student: `TEST-001` (Test Student)
+- Application: `2025-001` with verification template
+- Historical Application: `HIST-2020-001` ($4,500 award)
+- Financial tracking record linked
+
+### All Tests Passing
+- ✅ Routes load correctly
+- ✅ All 6 models load and work
+- ✅ Database migrations applied
+- ✅ Model associations work
+- ✅ Record creation works
+- ✅ Key auto-generation works (YYYY-NNN and HIST-YYYY-NNN)
+- ✅ All pages accessible in browser
+
+### Working URLs
+- `/` - Home page
+- `/applications/new` - Student application form
+- `/admin/dashboard` - Dashboard with stats
+- `/admin/applications` - Application list
+- `/admin/application_table` - AppTable (Excel-like view)
+- `/admin/verifications` - Verification workflow
+- `/admin/students` - Student profiles
+- `/admin/historical_applications` - Historical records
+
+### What's Next (Future Sessions)
+1. **Test application submission** - Verify the form creates records correctly
+2. **Populate controllers** - Add remaining logic (currently basic scaffolding)
+3. **Connect AppTable** - Update table_view.html.erb to use new Application model
+4. **Add seed data** - Create sample students/applications for testing
+5. **File uploads** - Connect ApplicationFile model to Active Storage
+6. **Export functionality** - Rebuild CSV export with new schema
+
+### Key Architecture Decisions Implemented
+- `tribal_id` is THE primary person identifier (links all person-related data)
+- `application_key` format: `YYYY-NNN` for digital, `HIST-YYYY-NNN` for historical
+- `school_issued_student_id` renamed from `student_id` for clarity
+- Verification templates auto-created when applications are saved
+- Financial tracking auto-created when historical applications are imported
+- Student lifetime totals auto-recalculated when financial records change
+
+**Core foundation is complete. The database is normalized, models are connected, views are functional. Ready for feature refinement in future sessions.**
+
+---
+
+## NAMING UPDATE - AppTable → Verification Workflow
+**Date:** 2025-01-05 (same session)
+
+### Change Summary
+Renamed "AppTable" to "Verification Workflow" throughout the codebase for consistency with new terminology.
+
+### Changes Made
+1. **Routes (`config/routes.rb`):**
+   - `/admin/application_table` now redirects to `/admin/verifications` (backward compatibility)
+   - Added `/admin/verification_workflow` as named route to `verifications#index`
+
+2. **Admin Navbar:**
+   - Removed "AppTable" link
+   - "Workflow" link now points to `admin_verification_workflow_path`
+   - Removed duplicate "Verifications" link
+
+3. **Dashboard Quick Actions:**
+   - Button already labeled "Verification Workflow" - no change needed
+
+### Architecture Clarification
+- **Verification Workflow** = Main staff processing interface (Excel-like bulk view, inline editing, all datapoints)
+- **Applications page** = Simple list for viewing individual applications
+
+### Still To Do (Future Session)
+- Merge AppTable features (Excel-like grid, inline editing) into verification workflow views
+- Delete old `table_view.html.erb` after features are migrated
+- Enhance `admin/verifications/index.html.erb` with bulk processing capabilities
+
+---
+
+## IMPLEMENTATION SESSION - January 6, 2026
+
+### Session Summary
+Continued from previous session. Major updates to financial tracking system and historical imports.
+
+### Key Changes Made
+
+#### 1. Lifetime Award Limits Corrected
+**Previous Understanding:** $50k each for undergrad/grad (incorrect)
+**Actual System:**
+- **Total Lifetime Cap:** $24,000
+- **Undergraduate Allocation:** $15,000
+- **Graduate Base Allocation:** $9,000
+- **Graduate Effective:** Base + unused undergrad (rollover)
+
+**Files Updated:**
+- `app/models/student.rb` - New constants and calculation methods
+- `app/views/admin/students/show.html.erb` - Updated display
+- `app/views/admin/students/index.html.erb` - Updated columns
+
+#### 2. Graduate Display Enhancement
+**Change:** Show graduate allocation in TWO ways:
+1. **Graduate Base** ($9k) - Guaranteed allocation, always shown
+2. **Graduate Effective** (base + unused undergrad) - Only shown when there's rollover
+
+**Rationale:** A student who takes 7+ years for undergrad and maxes out $15k should clearly see they only have $9k base for grad, while a student with unused undergrad sees their increased effective amount.
+
+#### 3. ARPA vs Regular Award Distinction
+**Critical Business Rule:** ARPA awards are tracked but do NOT count toward lifetime limits.
+
+**Implementation:**
+- Award Type dropdown (Regular/ARPA/Combined) replaces free text
+- Regular awards count toward $24k lifetime
+- ARPA awards are tracked separately
+- Combined awards require breakdown entry
+
+**Files Updated:**
+- `app/views/admin/historical_applications/_form.html.erb` - Dropdown with JS
+- `app/models/student.rb` - `recalculate_lifetime_totals!` only counts 'regular'
+- `app/models/student.rb` - Added `total_arpa_awarded` method
+
+#### 4. Combined Awards Split Tracking
+**Change:** Combined awards now have separate `regular_amount` and `arpa_amount` fields.
+
+**Migration:** `20260106000001_add_amount_breakdown_to_historical_applications.rb`
+
+**Form Behavior:**
+- Regular selected: Shows single amount field
+- ARPA selected: Shows single amount field
+- Combined selected: Shows both fields + calculated total
+
+**Model Behavior:**
+- Creates TWO financial tracking records for combined awards
+- One record for regular portion, one for ARPA portion
+- Only regular portion updates lifetime totals
+
+**Files Updated:**
+- `db/migrate/20260106000001_add_amount_breakdown_to_historical_applications.rb` - New columns
+- `app/models/historical_application.rb` - `normalize_amounts`, `create_financial_tracking_records`
+- `app/controllers/admin/historical_applications_controller.rb` - Permit new params
+- `app/views/admin/historical_applications/_form.html.erb` - Dynamic form with JS
+- `app/views/admin/historical_applications/show.html.erb` - Combined breakdown display
+- `app/views/admin/historical_applications/index.html.erb` - Award type column and filter
+
+#### 5. Student Creation from Historical Application
+**Change:** When viewing a historical application with no linked student, staff can now create a student profile directly (pre-fills tribal_id).
+
+**Files Created:**
+- `app/views/admin/students/new.html.erb`
+
+**Files Updated:**
+- `app/controllers/admin/students_controller.rb` - Added `new`, `create` actions
+- `config/routes.rb` - Added `new`, `create` to students resource
+
+#### 6. Enhanced Student Profile Display
+**Changes:**
+- ARPA totals shown separately (if > 0)
+- Financial records show award type badges
+- Education level shown in financial records
+- Progress bars for lifetime tracking
+
+### Bug Fixes
+- Fixed `total_awarded` → `total_award_amount` in multiple views
+- Fixed award_type enum validation error (was accepting free text like "HE")
+
+### Documentation Updates
+- Updated `claude-memory/RFC-001_Full_Project_Overview.md` Section 9 (Financial Tracking)
+- Marked "Award Limit Carryover" question as RESOLVED in Open Questions
+
+### Deferred Items
+- CSV Export functionality - needs work after workflow enhancements

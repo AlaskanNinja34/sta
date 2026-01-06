@@ -168,7 +168,7 @@
             <% end %>
             
             <td class="actions-column">
-              <%= link_to admin_scholarship_application_path(app), 
+              <%= link_to admin_application_path(app), 
                   class: "btn btn-sm btn-outline-primary", title: "View Details" do %>
                 <i class="fas fa-eye"></i>
               <% end %>
@@ -498,11 +498,11 @@ function saveFieldValue(applicationId, fieldName, value) {
     showSavingIndicator();
     
     const data = {
-        scholarship_application: {}
+        application: {}
     };
-    data.scholarship_application[fieldName] = value;
+    data.application[fieldName] = value;
     
-    fetch(`/admin/scholarship_applications/${applicationId}`, {
+    fetch(`/admin/applications/${applicationId}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',

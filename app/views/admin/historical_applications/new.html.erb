@@ -1,0 +1,21 @@
+<%= render 'shared/admin_navbar' %>
+
+<div class="container-fluid my-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Import Historical Application</h6>
+        </div>
+        <div class="card-body">
+          <p class="text-muted mb-4">
+            Use this form to import paper application records into the system.
+            An application key will be automatically generated in the format <code>HIST-YYYY-NNN</code>.
+          </p>
+
+          <%= render 'form', historical_application: @historical_application %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
