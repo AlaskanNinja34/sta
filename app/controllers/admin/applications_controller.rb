@@ -60,7 +60,6 @@ class Admin::ApplicationsController < ApplicationController
       'transcript_overall' => 'Transcript',
       'acceptance_letter' => 'Acceptance',
       'budget_period' => 'Budget',
-      'fna_total_cost' => 'FNA',
       'fafsa' => 'FAFSA',
 
       # Academic
@@ -109,7 +108,7 @@ class Admin::ApplicationsController < ApplicationController
     default_order = %w[
       first_name class_standing
       email_address school_issued_student_id tribal_id application_key
-      sta_enroll transcript_overall acceptance_letter budget_period fna_total_cost fafsa
+      sta_enroll transcript_overall acceptance_letter budget_period fafsa
       gpa field_of_study college_name
       vendor_id
       committee_action amount_awarded term
@@ -264,7 +263,6 @@ class Admin::ApplicationsController < ApplicationController
       amount_awarded arpa_amount_awarded ties_out_year_payments
       distribution_he_fall_2023 distribution_he_spring_2022_2023 distribution_he_summer_2024 distribution_he_summer_2023
       distribution_arpa_fall_2022 distribution_arpa_spring_2022_2023 distribution_arpa_spring_2023 distribution_arpa_summer_2023
-      fna_total_cost
     ]
 
     return ActiveRecord::Type::Boolean.new.cast(val) if booleans.include?(field)
@@ -284,9 +282,46 @@ class Admin::ApplicationsController < ApplicationController
 
   def application_params
     params.require(:application).permit(
+      # Status & Admin
       :status, :board_status, :amount_awarded, :arpa_amount_awarded,
       :gpa, :sta_enroll, :transcript_overall, :acceptance_letter, :fafsa,
-      :vendor_id, :committee_action, :term, :internal_notes,
+      :vendor_id, :committee_action, :term, :internal_notes, :finance_grant_number,
+
+      # Applicant Information
+      :first_name, :middle_initial, :last_name, :previous_maiden_name,
+      :tribal_id, :school_issued_student_id, :date_of_birth, :place_of_birth,
+      :marital_status, :number_of_dependents, :tribe_enrolled,
+      :email_address, :permanent_phone, :school_phone, :preferred_contact,
+
+      # Address
+      :mailing_address_permanent, :city, :state, :zip_code,
+      :mailing_address_school, :city_school, :state_school, :zip_code_school,
+
+      # Education
+      :college_name, :current_degree_program, :class_standing,
+      :field_of_study, :minor, :expected_graduation_date, :college_term_type,
+      :educational_goals, :education_earned, :school_name, :school_city,
+
+      # Financial
+      :amount_requested, :tuition, :fees, :room_board, :books,
+      :transportation, :personal_expenses, :unmet_need,
+
+      # Transcript Tracking
+      :transcript_fall_term, :transcript_winter_term,
+      :transcript_spring_term, :transcript_summer_term,
+
+      # Distributions HE
+      :distribution_he_fall_2023, :distribution_he_spring_2022_2023,
+      :distribution_he_summer_2023, :distribution_he_summer_2024,
+
+      # Distributions ARPA
+      :distribution_arpa_fall_2022, :distribution_arpa_spring_2022_2023,
+      :distribution_arpa_spring_2023, :distribution_arpa_summer_2023,
+
+      # Reconciliation
+      :ties_out_year_payments,
+
+      # Files
       uploaded_files: []
     )
   end

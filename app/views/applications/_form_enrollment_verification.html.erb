@@ -1,18 +1,31 @@
 <!-- Section: Enrollment Verification -->
 <h2 class="mt-5">Enrollment Verification</h2>
 <p>Please verify Tribal Enrollment or Indian Blood Degree:</p>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-6" data-controller="required-field">
+    <%= f.label :tribal_id, "Tribal Enrollment ID" %>
+    <span class="text-danger" data-required-field-target="indicator">*</span>
+    <%= f.text_field :tribal_id, class: "form-control", required: true, placeholder: "Your STA Enrollment Number", data: { action: "input->required-field#update change->required-field#update" } %>
+    <small class="form-text text-muted">Your Sitka Tribe of Alaska enrollment number (required)</small>
+  </div>
+</div>
+
 <div class="row g-3">
-  <div class="col-md-4">
+  <div class="col-md-4" data-controller="optional-field">
     <%= f.label :enrollment_last_name, "Last Name" %>
-    <%= f.text_field :enrollment_last_name, class: "form-control" %>
+    <span class="text-warning" data-optional-field-target="indicator">○</span>
+    <%= f.text_field :enrollment_last_name, class: "form-control", data: { action: "input->optional-field#update change->optional-field#update" } %>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-4" data-controller="optional-field">
     <%= f.label :enrollment_first_name, "First Name" %>
-    <%= f.text_field :enrollment_first_name, class: "form-control" %>
+    <span class="text-warning" data-optional-field-target="indicator">○</span>
+    <%= f.text_field :enrollment_first_name, class: "form-control", data: { action: "input->optional-field#update change->optional-field#update" } %>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-4" data-controller="optional-field">
     <%= f.label :enrollment_middle_name, "Middle Name" %>
-    <%= f.text_field :enrollment_middle_name, class: "form-control" %>
+    <span class="text-warning" data-optional-field-target="indicator">○</span>
+    <%= f.text_field :enrollment_middle_name, class: "form-control", data: { action: "input->optional-field#update change->optional-field#update" } %>
   </div>
 </div>
 <div class="row g-3 mt-3">
@@ -25,9 +38,10 @@
     <%= f.select :enrollment_sex, options_for_select([["Male", "Male"], ["Female", "Female"], ["Other", "Other"]]), {}, class: "form-select" %>
   </div>
 </div>
-<div class="mt-3">
+<div class="mt-3" data-controller="optional-field">
   <%= f.label :enrollment_phone, "Phone Number" %>
-  <%= f.telephone_field :enrollment_phone, class: "form-control" %>
+  <span class="text-warning" data-optional-field-target="indicator">○</span>
+  <%= f.telephone_field :enrollment_phone, class: "form-control", data: { action: "input->optional-field#update change->optional-field#update" } %>
 </div>
 <div class="mt-3">
   <%= f.label :enrollment_place_of_birth, "Place of Birth" %>
@@ -40,7 +54,7 @@
   </div>
   <div class="col-md-4">
     <%= f.label :enrollment_mailing_state, "Mailing State" %>
-    <%= f.text_field :enrollment_mailing_state, class: "form-control" %>
+    <%= f.text_field :enrollment_mailing_state, class: "form-control", list: "us-states-list" %>
   </div>
   <div class="col-md-4">
     <%= f.label :enrollment_mailing_zip, "Mailing Zip Code" %>

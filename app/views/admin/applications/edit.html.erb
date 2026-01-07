@@ -1,0 +1,415 @@
+<%= render 'shared/admin_navbar' %>
+
+<!-- Shared datalists for form autocomplete -->
+<%= render 'shared/us_states_datalist' %>
+
+<div class="container-fluid my-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h2 mb-1">Edit Application: <%= @application.application_key %></h1>
+      <p class="text-muted">
+        <%= @application.first_name %> <%= @application.last_name %> |
+        Tribal ID: <code><%= @application.tribal_id %></code>
+      </p>
+    </div>
+    <div>
+      <%= link_to "Cancel", admin_application_path(@application), class: "btn btn-outline-secondary me-2" %>
+      <button type="submit" form="application-form" class="btn btn-primary">Save Changes</button>
+    </div>
+  </div>
+
+  <%= form_with model: @application, url: admin_application_path(@application), method: :patch, id: "application-form", local: true do |f| %>
+    <% if @application.errors.any? %>
+      <div class="alert alert-danger mb-4">
+        <h6 class="alert-heading">Please fix the following errors:</h6>
+        <ul class="mb-0">
+          <% @application.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Status & Admin Fields -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 bg-primary text-white">
+            <h6 class="m-0 font-weight-bold">Status & Admin Fields</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <%= f.label :status, class: "form-label" %>
+                <%= f.select :status, Application::STATUSES.map { |s| [s.humanize, s] }, {}, class: "form-select" %>
+              </div>
+              <div class="col-md-4 mb-3">
+                <%= f.label :board_status, class: "form-label" %>
+                <%= f.select :board_status, Application::BOARD_STATUSES.map { |s| [s.humanize, s] }, { include_blank: "Not Set" }, class: "form-select" %>
+              </div>
+              <div class="col-md-4 mb-3">
+                <%= f.label :committee_action, class: "form-label" %>
+                <%= f.text_field :committee_action, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :amount_awarded, "Amount Awarded ($)", class: "form-label" %>
+                <%= f.number_field :amount_awarded, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :arpa_amount_awarded, "ARPA Amount ($)", class: "form-label" %>
+                <%= f.number_field :arpa_amount_awarded, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :term, class: "form-label" %>
+                <%= f.text_field :term, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :vendor_id, "Vendor ID", class: "form-label" %>
+                <%= f.text_field :vendor_id, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <%= f.label :gpa, "GPA", class: "form-label" %>
+                <%= f.number_field :gpa, step: 0.01, min: 0, max: 4, class: "form-control" %>
+              </div>
+              <div class="col-md-9 mb-3">
+                <%= f.label :internal_notes, class: "form-label" %>
+                <%= f.text_area :internal_notes, rows: 2, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <label class="form-label">Checklist Items</label>
+                <div class="d-flex flex-wrap gap-4">
+                  <div class="form-check">
+                    <%= f.check_box :sta_enroll, class: "form-check-input" %>
+                    <%= f.label :sta_enroll, "STA Enroll", class: "form-check-label" %>
+                  </div>
+                  <div class="form-check">
+                    <%= f.check_box :transcript_overall, class: "form-check-input" %>
+                    <%= f.label :transcript_overall, "Transcript", class: "form-check-label" %>
+                  </div>
+                  <div class="form-check">
+                    <%= f.check_box :acceptance_letter, class: "form-check-input" %>
+                    <%= f.label :acceptance_letter, "Acceptance Letter", class: "form-check-label" %>
+                  </div>
+                  <div class="form-check">
+                    <%= f.check_box :fafsa, class: "form-check-input" %>
+                    <%= f.label :fafsa, "FAFSA", class: "form-check-label" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Applicant Information -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Applicant Information</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <%= f.label :first_name, class: "form-label" %>
+                <%= f.text_field :first_name, class: "form-control" %>
+              </div>
+              <div class="col-md-2 mb-3">
+                <%= f.label :middle_initial, class: "form-label" %>
+                <%= f.text_field :middle_initial, class: "form-control" %>
+              </div>
+              <div class="col-md-4 mb-3">
+                <%= f.label :last_name, class: "form-label" %>
+                <%= f.text_field :last_name, class: "form-control" %>
+              </div>
+              <div class="col-md-2 mb-3">
+                <%= f.label :previous_maiden_name, "Maiden Name", class: "form-label" %>
+                <%= f.text_field :previous_maiden_name, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :tribal_id, "Tribal ID", class: "form-label" %>
+                <%= f.text_field :tribal_id, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :school_issued_student_id, "Student ID", class: "form-label" %>
+                <%= f.text_field :school_issued_student_id, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :date_of_birth, class: "form-label" %>
+                <%= f.date_field :date_of_birth, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :place_of_birth, class: "form-label" %>
+                <%= f.text_field :place_of_birth, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :marital_status, class: "form-label" %>
+                <%= f.select :marital_status, ["Single", "Married", "Divorced", "Widowed"], { include_blank: true }, class: "form-select" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :number_of_dependents, class: "form-label" %>
+                <%= f.number_field :number_of_dependents, min: 0, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :tribe_enrolled, class: "form-label" %>
+                <%= f.text_field :tribe_enrolled, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :email_address, class: "form-label" %>
+                <%= f.email_field :email_address, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :permanent_phone, class: "form-label" %>
+                <%= f.text_field :permanent_phone, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :school_phone, class: "form-label" %>
+                <%= f.text_field :school_phone, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :preferred_contact, class: "form-label" %>
+                <%= f.select :preferred_contact, ["Email", "Phone", "Mail"], { include_blank: true }, class: "form-select" %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address Information -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Address Information</h6>
+          </div>
+          <div class="card-body">
+            <h6 class="text-muted mb-3">Permanent Address</h6>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :mailing_address_permanent, "Street Address", class: "form-label" %>
+                <%= f.text_field :mailing_address_permanent, class: "form-control" %>
+              </div>
+              <div class="col-md-2 mb-3">
+                <%= f.label :city, class: "form-label" %>
+                <%= f.text_field :city, class: "form-control" %>
+              </div>
+              <div class="col-md-2 mb-3">
+                <%= f.label :state, class: "form-label" %>
+                <%= f.text_field :state, class: "form-control", list: "us-states-list" %>
+              </div>
+              <div class="col-md-2 mb-3">
+                <%= f.label :zip_code, class: "form-label" %>
+                <%= f.text_field :zip_code, class: "form-control" %>
+              </div>
+            </div>
+            <h6 class="text-muted mb-3 mt-3">School Address</h6>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :mailing_address_school, "Street Address", class: "form-label" %>
+                <%= f.text_field :mailing_address_school, class: "form-control" %>
+              </div>
+              <div class="col-md-2 mb-3">
+                <%= f.label :city_school, "City", class: "form-label" %>
+                <%= f.text_field :city_school, class: "form-control" %>
+              </div>
+              <div class="col-md-2 mb-3">
+                <%= f.label :state_school, "State", class: "form-label" %>
+                <%= f.text_field :state_school, class: "form-control", list: "us-states-list" %>
+              </div>
+              <div class="col-md-2 mb-3">
+                <%= f.label :zip_code_school, "Zip", class: "form-label" %>
+                <%= f.text_field :zip_code_school, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education Information -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Education Information</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :college_name, "Current College", class: "form-label" %>
+                <%= f.text_field :college_name, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :current_degree_program, class: "form-label" %>
+                <%= f.text_field :current_degree_program, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :class_standing, class: "form-label" %>
+                <%= f.select :class_standing, ["Freshman", "Sophomore", "Junior", "Senior", "Graduate", "Post-Graduate"], { include_blank: true }, class: "form-select" %>
+              </div>
+              <div class="col-md-4 mb-3">
+                <%= f.label :field_of_study, "Major", class: "form-label" %>
+                <%= f.text_field :field_of_study, class: "form-control" %>
+              </div>
+              <div class="col-md-4 mb-3">
+                <%= f.label :minor, class: "form-label" %>
+                <%= f.text_field :minor, class: "form-control" %>
+              </div>
+              <div class="col-md-4 mb-3">
+                <%= f.label :expected_graduation_date, class: "form-label" %>
+                <%= f.date_field :expected_graduation_date, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :college_term_type, "Term Type", class: "form-label" %>
+                <%= f.select :college_term_type, ["Semester", "Quarter", "Trimester"], { include_blank: true }, class: "form-select" %>
+              </div>
+              <div class="col-md-9 mb-3">
+                <%= f.label :educational_goals, class: "form-label" %>
+                <%= f.text_area :educational_goals, rows: 3, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial Information -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Financial Information</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <%= f.label :amount_requested, "Amount Requested ($)", class: "form-label" %>
+                <%= f.number_field :amount_requested, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :tuition, "Tuition ($)", class: "form-label" %>
+                <%= f.number_field :tuition, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :fees, "Fees ($)", class: "form-label" %>
+                <%= f.number_field :fees, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :room_board, "Room & Board ($)", class: "form-label" %>
+                <%= f.number_field :room_board, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :books, "Books ($)", class: "form-label" %>
+                <%= f.number_field :books, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :transportation, "Transportation ($)", class: "form-label" %>
+                <%= f.number_field :transportation, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :personal_expenses, "Personal ($)", class: "form-label" %>
+                <%= f.number_field :personal_expenses, step: 0.01, class: "form-control" %>
+              </div>
+              <div class="col-md-3 mb-3">
+                <%= f.label :unmet_need, "Unmet Need ($)", class: "form-label" %>
+                <%= f.number_field :unmet_need, step: 0.01, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Distributions & Transcripts -->
+      <div class="col-lg-4">
+        <!-- Transcript Tracking -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Transcript Tracking</h6>
+          </div>
+          <div class="card-body">
+            <div class="form-check mb-2">
+              <%= f.check_box :transcript_fall_term, class: "form-check-input" %>
+              <%= f.label :transcript_fall_term, "Fall Term", class: "form-check-label" %>
+            </div>
+            <div class="form-check mb-2">
+              <%= f.check_box :transcript_winter_term, class: "form-check-input" %>
+              <%= f.label :transcript_winter_term, "Winter Term", class: "form-check-label" %>
+            </div>
+            <div class="form-check mb-2">
+              <%= f.check_box :transcript_spring_term, class: "form-check-input" %>
+              <%= f.label :transcript_spring_term, "Spring Term", class: "form-check-label" %>
+            </div>
+            <div class="form-check mb-2">
+              <%= f.check_box :transcript_summer_term, class: "form-check-input" %>
+              <%= f.label :transcript_summer_term, "Summer Term", class: "form-check-label" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- HE Distributions -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">HE Distributions</h6>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <%= f.label :distribution_he_fall_2023, "Fall 2023 ($)", class: "form-label" %>
+              <%= f.number_field :distribution_he_fall_2023, step: 0.01, class: "form-control form-control-sm" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :distribution_he_spring_2022_2023, "Spring 2022-23 ($)", class: "form-label" %>
+              <%= f.number_field :distribution_he_spring_2022_2023, step: 0.01, class: "form-control form-control-sm" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :distribution_he_summer_2023, "Summer 2023 ($)", class: "form-label" %>
+              <%= f.number_field :distribution_he_summer_2023, step: 0.01, class: "form-control form-control-sm" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :distribution_he_summer_2024, "Summer 2024 ($)", class: "form-label" %>
+              <%= f.number_field :distribution_he_summer_2024, step: 0.01, class: "form-control form-control-sm" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- ARPA Distributions -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">ARPA Distributions</h6>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <%= f.label :distribution_arpa_fall_2022, "Fall 2022 ($)", class: "form-label" %>
+              <%= f.number_field :distribution_arpa_fall_2022, step: 0.01, class: "form-control form-control-sm" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :distribution_arpa_spring_2022_2023, "Spring 2022-23 ($)", class: "form-label" %>
+              <%= f.number_field :distribution_arpa_spring_2022_2023, step: 0.01, class: "form-control form-control-sm" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :distribution_arpa_spring_2023, "Spring 2023 ($)", class: "form-label" %>
+              <%= f.number_field :distribution_arpa_spring_2023, step: 0.01, class: "form-control form-control-sm" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :distribution_arpa_summer_2023, "Summer 2023 ($)", class: "form-label" %>
+              <%= f.number_field :distribution_arpa_summer_2023, step: 0.01, class: "form-control form-control-sm" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reconciliation -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Reconciliation</h6>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <%= f.label :ties_out_year_payments, "Ties Out Year Payments ($)", class: "form-label" %>
+              <%= f.number_field :ties_out_year_payments, step: 0.01, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :finance_grant_number, class: "form-label" %>
+              <%= f.text_field :finance_grant_number, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="d-flex justify-content-end gap-2 mb-4">
+      <%= link_to "Cancel", admin_application_path(@application), class: "btn btn-outline-secondary" %>
+      <%= f.submit "Save Changes", class: "btn btn-primary btn-lg" %>
+    </div>
+  <% end %>
+</div>

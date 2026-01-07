@@ -6,6 +6,9 @@
   <!-- Header and Instructions -->
   <%= render 'applications/form_header' %>
 
+  <!-- Shared datalists for form autocomplete -->
+  <%= render 'shared/us_states_datalist' %>
+
   <%= form_with model: @application, url: applications_path, local: true, html: { class: "needs-validation", multipart: true } do |f| %>
     <%= render 'applications/form_applicant_information', f: f %>
     <%= render 'applications/form_education_history', f: f %>
@@ -14,8 +17,6 @@
     <%= render 'applications/form_budget_forecast', f: f %>
     <%= render 'applications/form_release_of_information', f: f %>
     <%= render 'applications/form_enrollment_verification', f: f %>
-    <%= render 'applications/financial_needs_student', f: f %>
-    <%#= render 'applications/financial_needs_office', f: f %>
     <%= render 'applications/form_photo_release', f: f %>
     <%= render 'applications/form_parental_release', f: f %>
     <%= render 'applications/form_arpa', f: f %>

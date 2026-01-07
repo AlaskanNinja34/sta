@@ -347,12 +347,13 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" data-controller="required-field">
           <%= f.label :amount_requested, "Amount Requested", class: "form-label fw-bold" %>
+          <span class="text-danger" data-required-field-target="indicator">*</span>
           <p class="form-text text-muted">(max $1500/Semester or $1000/quarter)</p>
           <div class="input-group">
             <span class="input-group-text">$</span>
-            <%= f.number_field :amount_requested, class: "form-control", step: "0.01", min: "0", max: "3000" %>
+            <%= f.number_field :amount_requested, class: "form-control", step: "0.01", min: "0", max: "3000", required: true, data: { action: "input->required-field#update change->required-field#update" } %>
           </div>
         </div>
       </div>

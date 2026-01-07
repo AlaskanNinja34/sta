@@ -4,8 +4,8 @@
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-      <h1 class="h2 mb-1">Admin Dashboard</h1>
-      <p class="text-muted">Sitka Tribe of Alaska Scholarship Program Administration</p>
+      <h1 class="h2 mb-1">Staff Dashboard</h1>
+      <p class="text-muted">Sitka Tribe of Alaska Scholarship Program</p>
     </div>
     <div>
       <%= link_to "View All Applications", admin_applications_path, class: "btn btn-primary" %>
@@ -90,7 +90,7 @@
   <!-- Content Row -->
   <div class="row">
     <!-- Recent Applications -->
-    <div class="col-lg-8 mb-4">
+    <div class="col-12 mb-4">
       <div class="card shadow">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
           <h6 class="m-0 font-weight-bold text-primary">Recent Applications</h6>
@@ -118,50 +118,84 @@
           </div>
           <% if @recent_applications.any? %>
             <div class="table-responsive">
-              <table class="table table-bordered" width="100%" cellspacing="0">
-                <thead>
+              <table class="table table-bordered table-sm" width="100%" cellspacing="0">
+                <thead class="table-light">
                   <tr>
-                    <th>Reference #</th>
+                    <th>Tribal ID</th>
                     <th>Applicant</th>
                     <th>Status</th>
-                    <th>Amount Requested</th>
+                    <th>Verification</th>
+                    <th>Amount</th>
                     <th>Submitted</th>
+                    <th>School</th>
+                    <th>Class</th>
+                    <th>GPA</th>
+                    <th>Timeline</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% @recent_applications.each do |application| %>
+                    <% verification = application.verification_template %>
+                    <% days_pending = ((Time.current - application.created_at) / 1.day).round %>
                     <tr>
-                      <td><%= application.reference_number %></td>
+                      <td><code class="small"><%= application.tribal_id %></code></td>
                       <td>
-                        <strong><%= application.first_name %> <%= application.last_name %></strong><br>
-                        <small class="text-muted"><%= application.email_address %></small>
+                        <strong><%= application.first_name %> <%= application.last_name %></strong>
                       </td>
                       <td>
                         <span class="badge <%= case application.status
-                          when 'submitted' then 'badge-warning'
-                          when 'under_review' then 'badge-info'
-                          when 'approved' then 'badge-success'
-                          when 'rejected' then 'badge-danger'
-                          when 'more_info_needed' then 'badge-secondary'
-                          else 'badge-light'
-                          end %>"><%= application.status.humanize %></span>
+                          when 'submitted' then 'bg-warning text-dark'
+                          when 'under_review' then 'bg-info'
+                          when 'approved' then 'bg-success'
+                          when 'rejected' then 'bg-danger'
+                          when 'more_info_needed' then 'bg-secondary'
+                          else 'bg-light text-dark'
+                          end %>"><%= application.status&.humanize %></span>
+                      </td>
+                      <td>
+                        <% if verification %>
+                          <% pct = verification.completion_percentage.to_i %>
+                          <div class="d-flex align-items-center">
+                            <div class="progress flex-grow-1" style="height: 6px; min-width: 40px;">
+                              <div class="progress-bar <%= pct == 100 ? 'bg-success' : 'bg-info' %>" style="width: <%= pct %>%"></div>
+                            </div>
+                            <small class="ms-1"><%= pct %>%</small>
+                          </div>
+                        <% else %>
+                          <span class="text-muted small">-</span>
+                        <% end %>
                       </td>
                       <td>
                         <% if application.amount_requested.present? %>
-                          $<%= number_with_delimiter(application.amount_requested) %>
+                          <span class="<%= application.amount_requested > 3000 ? 'text-danger fw-bold' : '' %>">
+                            $<%= number_with_delimiter(application.amount_requested.to_i) %>
+                          </span>
                         <% else %>
-                          <span class="text-muted">Not specified</span>
+                          <span class="text-muted">-</span>
                         <% end %>
                       </td>
-                      <td><%= application.created_at.strftime("%m/%d/%Y") %></td>
+                      <td class="small"><%= application.created_at.strftime("%m/%d/%y") %></td>
+                      <td class="small"><%= truncate(application.college_name, length: 20) || '-' %></td>
+                      <td class="small"><%= application.class_standing || '-' %></td>
                       <td>
-                        <div class="btn-group" role="group">
-                          <%= link_to "View", admin_application_path(application), class: "btn btn-sm btn-outline-primary" %>
-                          <% if application.status == 'submitted' %>
-                            <%= link_to "Review", admin_application_path(application), class: "btn btn-sm btn-outline-info" %>
-                          <% end %>
-                        </div>
+                        <% if application.gpa.present? %>
+                          <span class="<%= application.gpa < 2.0 ? 'text-danger' : '' %>"><%= application.gpa %></span>
+                        <% else %>
+                          <span class="text-muted">-</span>
+                        <% end %>
+                      </td>
+                      <td>
+                        <% if days_pending > 14 %>
+                          <span class="text-danger fw-bold"><%= days_pending %>d</span>
+                        <% elsif days_pending > 7 %>
+                          <span class="text-warning"><%= days_pending %>d</span>
+                        <% else %>
+                          <span class="text-muted"><%= days_pending %>d</span>
+                        <% end %>
+                      </td>
+                      <td>
+                        <%= link_to "View", admin_application_path(application), class: "btn btn-sm btn-outline-primary" %>
                       </td>
                     </tr>
                   <% end %>
@@ -176,80 +210,137 @@
           <% end %>
         </div>
       </div>
-    </div>
 
-    <!-- Application Status Overview -->
-    <div class="col-lg-4 mb-4">
-      <div class="card shadow">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Application Status Overview</h6>
+      <!-- Recent Student Profiles -->
+      <div class="card shadow mt-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+          <h6 class="m-0 font-weight-bold text-primary">Recent Student Profiles</h6>
+          <%= link_to "View All", admin_students_path, class: "btn btn-sm btn-primary" %>
         </div>
         <div class="card-body">
-          <% if @applications_by_status.any? %>
-            <% @applications_by_status.each do |status, count| %>
-              <div class="mb-3">
-                <div class="d-flex justify-content-between">
-                  <small class="font-weight-bold"><%= status.humanize %></small>
-                  <small><%= count %></small>
-                </div>
-                <% percentage = (@total_applications > 0) ? (count.to_f / @total_applications * 100).round(1) : 0 %>
-                <div class="progress" style="height: 10px;">
-                  <div class="progress-bar <%= case status
-                    when 'submitted' then 'bg-warning'
-                    when 'under_review' then 'bg-info'
-                    when 'approved' then 'bg-success'
-                    when 'rejected' then 'bg-danger'
-                    when 'more_info_needed' then 'bg-secondary'
-                    else 'bg-light'
-                    end %>" 
-                    role="progressbar" 
-                    style="width: <%= percentage %>%"
-                    aria-valuenow="<%= percentage %>" 
-                    aria-valuemin="0" 
-                    aria-valuemax="100">
-                  </div>
-                </div>
-                <small class="text-muted"><%= percentage %>%</small>
-              </div>
-            <% end %>
+          <% if @recent_students.any? %>
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm" width="100%" cellspacing="0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Tribal ID</th>
+                    <th>Name</th>
+                    <th>Undergrad</th>
+                    <th>Grad</th>
+                    <th>Lifetime</th>
+                    <th>Level</th>
+                    <th>Apps</th>
+                    <th>Status</th>
+                    <th>Verification</th>
+                    <th>Limit</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @recent_students.each do |student| %>
+                    <% recent_app = student.applications.order(created_at: :desc).first %>
+                    <% verification = recent_app&.verification_template %>
+                    <%
+                      # Determine education level from most recent app
+                      edu_level = if recent_app&.current_degree_program&.downcase&.match?(/graduate|master|doctoral|phd|mba/)
+                        'Graduate'
+                      elsif recent_app&.class_standing&.downcase&.match?(/graduate|grad/)
+                        'Graduate'
+                      else
+                        'Undergrad'
+                      end
+                      is_grad = edu_level == 'Graduate'
+                    %>
+                    <tr>
+                      <td><code class="small"><%= student.tribal_id %></code></td>
+                      <td><strong><%= student.first_name %> <%= student.last_name %></strong></td>
+                      <td>
+                        <% undergrad_pct = (student.lifetime_undergrad_total / Student::UNDERGRAD_ALLOCATION.to_f * 100).round(0) %>
+                        <small class="<%= undergrad_pct > 80 ? 'text-warning fw-bold' : '' %>">
+                          $<%= number_with_delimiter(student.lifetime_undergrad_total.to_i) %>
+                        </small>
+                        <div class="progress" style="height: 4px;">
+                          <div class="progress-bar <%= undergrad_pct > 80 ? 'bg-warning' : 'bg-primary' %>" style="width: <%= undergrad_pct %>%"></div>
+                        </div>
+                      </td>
+                      <td>
+                        <% grad_pct = student.effective_grad_allocation > 0 ? (student.lifetime_grad_total / student.effective_grad_allocation.to_f * 100).round(0) : 0 %>
+                        <small class="<%= grad_pct > 80 ? 'text-warning fw-bold' : '' %>">
+                          $<%= number_with_delimiter(student.lifetime_grad_total.to_i) %>
+                        </small>
+                        <div class="progress" style="height: 4px;">
+                          <div class="progress-bar <%= grad_pct > 80 ? 'bg-warning' : 'bg-info' %>" style="width: <%= [grad_pct, 100].min %>%"></div>
+                        </div>
+                      </td>
+                      <td>
+                        <% lifetime_pct = (student.lifetime_total_awarded / Student::TOTAL_LIFETIME_LIMIT.to_f * 100).round(0) %>
+                        <small class="<%= lifetime_pct > 80 ? 'text-danger fw-bold' : '' %>">
+                          $<%= number_with_delimiter(student.lifetime_total_awarded.to_i) %>/<%= number_with_delimiter(Student::TOTAL_LIFETIME_LIMIT.to_i) %>
+                        </small>
+                        <div class="progress" style="height: 4px;">
+                          <div class="progress-bar <%= lifetime_pct > 80 ? 'bg-danger' : 'bg-success' %>" style="width: <%= lifetime_pct %>%"></div>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge <%= is_grad ? 'bg-info' : 'bg-secondary' %>"><%= edu_level %></span>
+                      </td>
+                      <td class="text-center"><%= student.applications.count %></td>
+                      <td>
+                        <% if recent_app %>
+                          <span class="badge <%= case recent_app.status
+                            when 'submitted' then 'bg-warning text-dark'
+                            when 'under_review' then 'bg-info'
+                            when 'approved' then 'bg-success'
+                            when 'rejected' then 'bg-danger'
+                            when 'more_info_needed' then 'bg-secondary'
+                            else 'bg-light text-dark'
+                            end %>"><%= recent_app.status&.humanize %></span>
+                        <% else %>
+                          <span class="text-muted">-</span>
+                        <% end %>
+                      </td>
+                      <td>
+                        <% if verification %>
+                          <% pct = verification.completion_percentage.to_i %>
+                          <div class="d-flex align-items-center">
+                            <div class="progress flex-grow-1" style="height: 6px; min-width: 30px;">
+                              <div class="progress-bar <%= pct == 100 ? 'bg-success' : 'bg-info' %>" style="width: <%= pct %>%"></div>
+                            </div>
+                            <small class="ms-1"><%= pct %>%</small>
+                          </div>
+                        <% else %>
+                          <span class="text-muted small">-</span>
+                        <% end %>
+                      </td>
+                      <td>
+                        <%
+                          # Check if approaching limit based on current education level
+                          if is_grad
+                            approaching = student.approaching_lifetime_limit?
+                          else
+                            approaching = student.approaching_undergrad_limit?
+                          end
+                        %>
+                        <% if approaching %>
+                          <span class="badge bg-danger">Near Limit</span>
+                        <% else %>
+                          <span class="text-success small">OK</span>
+                        <% end %>
+                      </td>
+                      <td>
+                        <%= link_to "View", admin_student_path(student), class: "btn btn-sm btn-outline-primary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
           <% else %>
             <div class="text-center py-3">
-              <i class="fas fa-chart-pie fa-2x text-gray-300 mb-2"></i>
-              <p class="text-muted">No data available</p>
+              <i class="fas fa-users fa-2x text-gray-300 mb-2"></i>
+              <p class="text-muted mb-0">No student profiles for recent applications</p>
             </div>
           <% end %>
-        </div>
-      </div>
-
-      <!-- Quick Actions Card -->
-      <div class="card shadow mt-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
-        </div>
-        <div class="card-body">
-          <div class="d-grid gap-2">
-            <%= link_to admin_applications_path, class: "btn btn-outline-primary mb-2" do %>
-              <i class="fas fa-list mr-2"></i>View All Applications
-            <% end %>
-            <%= link_to admin_applications_path(status: 'submitted'), class: "btn btn-outline-warning mb-2" do %>
-              <i class="fas fa-clock mr-2"></i>Pending Applications
-            <% end %>
-            <%= link_to admin_verification_workflow_path, class: "btn btn-outline-success mb-2" do %>
-              <i class="fas fa-table mr-2"></i>Verification Workflow
-            <% end %>
-            <%= link_to admin_verification_overview_path, class: "btn btn-outline-info mb-2" do %>
-              <i class="fas fa-clipboard-check mr-2"></i>Verifications Overview
-            <% end %>
-            <%= link_to admin_students_path, class: "btn btn-outline-info mb-2" do %>
-              <i class="fas fa-users mr-2"></i>Student Profiles
-            <% end %>
-            <%= link_to admin_historical_applications_path, class: "btn btn-outline-secondary mb-2" do %>
-              <i class="fas fa-archive mr-2"></i>Historical Records
-            <% end %>
-            <%= link_to export_csv_admin_applications_path, class: "btn btn-outline-dark" do %>
-              <i class="fas fa-download mr-2"></i>Export Data
-            <% end %>
-          </div>
         </div>
       </div>
     </div>
@@ -306,7 +397,11 @@
   .border-left-danger {
     border-left: 0.25rem solid #e74a3b !important;
   }
-  
+
+  .border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+  }
+
   .text-xs {
     font-size: .7rem;
   }

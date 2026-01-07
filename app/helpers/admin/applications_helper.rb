@@ -6,7 +6,7 @@ module Admin::ApplicationsHelper
   COLUMN_GROUPS = [
     ["C", %w[first_name class_standing]],
     ["", %w[email_address school_issued_student_id]],
-    ["STUDENT REQUIREMENTS", %w[sta_enroll transcript_overall acceptance_letter budget_period fna_total_cost fafsa]],
+    ["STUDENT REQUIREMENTS", %w[sta_enroll transcript_overall acceptance_letter budget_period fafsa]],
     ["GPA", %w[gpa]],
     ["SCHOOL AND MAJOR/AREA OF STUDY", %w[field_of_study college_name]],
     ["", %w[vendor_id]],
@@ -87,7 +87,6 @@ module Admin::ApplicationsHelper
       )/x,
       "Release of Information" => /^release_/,
       "Enrollment Verification" => /^enrollment_/,
-      "Financial Needs Analysis" => /^(financial_|fna_|budget_period_|fao_|student_resources)/,
       "Photo Release Form" => /^photo_release_/,
       "Parental/Spousal Release Form (Optional)" => /^parental_release_/,
       "ARPA Higher Education Scholarship" => /^arpa_/

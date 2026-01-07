@@ -109,7 +109,7 @@
                 <% when 'class_standing' %>
                   <span class="cell-value editable" data-type="text"><%= app.class_standing %></span>
                 <% when 'amount_requested' %>
-                  <span class="cell-value editable" data-type="number">
+                  <span class="cell-value editable <%= app.amount_requested.to_i > 3000 ? 'text-danger fw-bold' : '' %>" data-type="number">
                     <%= app.amount_requested ? "$#{number_with_delimiter(app.amount_requested)}" : "" %>
                   </span>
                 <% when 'status' %>

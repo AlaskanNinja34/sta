@@ -1,7 +1,8 @@
 <h2 class="mt-5">Educational Goals</h2>
-<div class="mt-3">
+<div class="mt-3" data-controller="required-field">
   <%= f.label :educational_goals, "Please State Your Educational Objective" %>
-  <%= f.text_area :educational_goals, class: "form-control", rows: 25 %>
+  <span class="text-danger" data-required-field-target="indicator">*</span>
+  <%= f.text_area :educational_goals, class: "form-control", rows: 25, required: true, data: { action: "input->required-field#update change->required-field#update" } %>
 </div>
 <div class="mt-3">
   <p class="fw-bold">Certification:</p>

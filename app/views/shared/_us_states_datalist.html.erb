@@ -1,0 +1,5 @@
+<datalist id="us-states-list">
+  <% Application::US_STATES.each do |code, name| %>
+    <option value="<%= name %>"><%= code %> - <%= name %></option>
+  <% end %>
+</datalist>

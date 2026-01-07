@@ -1,21 +1,137 @@
-<div class="mb-3">
-  <label class="form-label"><strong>Upload Transcripts, FAFSA, and Any Other Required Files Here</strong></label>
-  <p class="form-text">
-    Please upload all required documents. You can select multiple files at once.
-  </p>
-  <%= f.file_field :uploaded_files, multiple: true, direct_upload: true, class: "form-control" %>
+<h2 class="mt-5">Document Uploads</h2>
+<p class="text-muted">Please upload the required documents below. Accepted formats: PDF, Word documents, and images (JPG, PNG).</p>
 
-  <% if object.uploaded_files.attached? %>
-    <div class="mt-3">
-      <strong>Already Uploaded Files:</strong>
+<!-- Transcripts Section -->
+<div class="card mb-4" data-controller="file-upload" data-file-upload-category-value="transcript">
+  <div class="card-header bg-primary text-white">
+    <strong><i class="fas fa-file-alt"></i> Transcripts</strong>
+  </div>
+  <div class="card-body">
+    <p class="form-text text-muted mb-3">
+      Upload your official or unofficial transcripts. If you have transcripts from multiple schools, you can add additional files.
+    </p>
+    <div data-file-upload-target="container">
+      <div class="input-group mb-2">
+        <input type="file"
+               name="application[uploaded_files][]"
+               class="form-control"
+               data-category="transcript"
+               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+      </div>
+    </div>
+    <button type="button"
+            class="btn btn-outline-secondary btn-sm"
+            data-action="click->file-upload#addFile">
+      <i class="fas fa-plus"></i> Add Another Transcript
+    </button>
+  </div>
+</div>
+
+<!-- FAFSA Section -->
+<div class="card mb-4" data-controller="file-upload" data-file-upload-category-value="fafsa">
+  <div class="card-header bg-success text-white">
+    <strong><i class="fas fa-file-invoice-dollar"></i> FAFSA / Student Aid Report</strong>
+  </div>
+  <div class="card-body">
+    <p class="form-text text-muted mb-3">
+      Upload your FAFSA confirmation or Student Aid Report (SAR). This helps verify your financial aid status.
+    </p>
+    <div data-file-upload-target="container">
+      <div class="input-group mb-2">
+        <input type="file"
+               name="application[uploaded_files][]"
+               class="form-control"
+               data-category="fafsa"
+               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+      </div>
+    </div>
+    <button type="button"
+            class="btn btn-outline-secondary btn-sm"
+            data-action="click->file-upload#addFile">
+      <i class="fas fa-plus"></i> Add Another FAFSA Document
+    </button>
+  </div>
+</div>
+
+<!-- Acceptance Letter Section -->
+<div class="card mb-4" data-controller="file-upload" data-file-upload-category-value="acceptance_letter">
+  <div class="card-header bg-info text-white">
+    <strong><i class="fas fa-envelope-open-text"></i> Acceptance Letter</strong>
+  </div>
+  <div class="card-body">
+    <p class="form-text text-muted mb-3">
+      Upload your acceptance letter or enrollment verification from your school.
+    </p>
+    <div data-file-upload-target="container">
+      <div class="input-group mb-2">
+        <input type="file"
+               name="application[uploaded_files][]"
+               class="form-control"
+               data-category="acceptance_letter"
+               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+      </div>
+    </div>
+    <button type="button"
+            class="btn btn-outline-secondary btn-sm"
+            data-action="click->file-upload#addFile">
+      <i class="fas fa-plus"></i> Add Another Acceptance Letter
+    </button>
+  </div>
+</div>
+
+<!-- Other Documents Section -->
+<div class="card mb-4" data-controller="labeled-file-upload" data-labeled-file-upload-category-value="other">
+  <div class="card-header bg-secondary text-white">
+    <strong><i class="fas fa-folder-open"></i> Other Supporting Documents</strong>
+  </div>
+  <div class="card-body">
+    <p class="form-text text-muted mb-3">
+      Upload any additional documents that support your application. Please label each document so we can identify it.
+    </p>
+    <div data-labeled-file-upload-target="container">
+      <div class="row mb-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label">Document Label</label>
+          <input type="text"
+                 name="application[file_labels][]"
+                 class="form-control"
+                 placeholder="e.g., High School Transcript">
+        </div>
+        <div class="col-md-8">
+          <label class="form-label">File</label>
+          <input type="file"
+                 name="application[uploaded_files][]"
+                 class="form-control"
+                 data-category="other"
+                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+        </div>
+      </div>
+    </div>
+    <button type="button"
+            class="btn btn-outline-secondary btn-sm"
+            data-action="click->labeled-file-upload#addFile">
+      <i class="fas fa-plus"></i> Add Another Document
+    </button>
+  </div>
+</div>
+
+<% if object.uploaded_files.attached? %>
+  <div class="card mb-4">
+    <div class="card-header bg-light">
+      <strong><i class="fas fa-check-circle text-success"></i> Previously Uploaded Files</strong>
+    </div>
+    <div class="card-body">
       <ul class="list-group">
         <% object.uploaded_files.each do |file| %>
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            <%= link_to file.filename, rails_blob_path(file, disposition: "attachment"), target: "_blank" %>
+            <span>
+              <i class="fas fa-file"></i>
+              <%= link_to file.filename, rails_blob_path(file, disposition: "attachment"), target: "_blank" %>
+            </span>
             <span class="badge bg-secondary"><%= number_to_human_size(file.byte_size) %></span>
           </li>
         <% end %>
       </ul>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

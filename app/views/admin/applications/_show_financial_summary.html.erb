@@ -5,10 +5,10 @@
   <div class="card-body">
     <% if application.amount_requested.present? %>
       <div class="text-center mb-3">
-        <h3 class="text-primary">
+        <h3 class="<%= application.amount_requested > 3000 ? 'text-danger' : 'text-primary' %>">
           $<%= number_with_delimiter(application.amount_requested) %>
         </h3>
-        <small class="text-muted">Amount Requested</small>
+        <small class="text-muted">Amount Requested<%= ' (exceeds $3,000 limit)' if application.amount_requested > 3000 %></small>
       </div>
     <% end %>
 

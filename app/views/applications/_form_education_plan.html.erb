@@ -1,11 +1,13 @@
 <h2 class="mt-5">Education Plan</h2>
-<div class="mt-3">
+<div class="mt-3" data-controller="required-field">
   <%= f.label :college_name, "Name of College/University" %>
-  <%= f.text_field :college_name, class: "form-control" %>
+  <span class="text-danger" data-required-field-target="indicator">*</span>
+  <%= f.text_field :college_name, class: "form-control", required: true, data: { action: "input->required-field#update change->required-field#update" } %>
 </div>
-<div class="mt-3">
+<div class="mt-3" data-controller="optional-field">
   <%= f.label :college_financial_aid_office, "College Financial Aid Office Email | Please ensure email is correct | Scholarship check will be mailed to this address" %>
-  <%= f.text_field :college_financial_aid_office, class: "form-control" %>
+  <span class="text-warning" data-optional-field-target="indicator">○</span>
+  <%= f.text_field :college_financial_aid_office, class: "form-control", data: { action: "input->optional-field#update change->optional-field#update" } %>
 </div>
 <div class="row g-3 mt-3">
   <div class="col-md-6">
@@ -28,18 +30,19 @@
   </div>
   <div class="col-md-4">
     <%= f.label :college_state, "State" %>
-    <%= f.text_field :college_state, class: "form-control" %>
+    <%= f.text_field :college_state, class: "form-control", list: "us-states-list" %>
   </div>
   <div class="col-md-4">
     <%= f.label :college_zip_code, "Zip Code" %>
     <%= f.text_field :college_zip_code, class: "form-control" %>
   </div>
 </div>
-<div class="mt-3">
-  <%= f.label :college_term_type, "College/University Term Type" %><br>
+<div class="mt-3" data-controller="optional-field">
+  <%= f.label :college_term_type, "College/University Term Type" %>
+  <span class="text-warning" data-optional-field-target="indicator">○</span><br>
   <% ["Quarter", "Trimester", "Semester"].each_with_index do |term, index| %>
     <div class="form-check form-check-inline">
-      <%= f.radio_button :college_term_type, term, id: "term_#{index}" %>
+      <%= f.radio_button :college_term_type, term, id: "term_#{index}", data: { action: "change->optional-field#update" } %>
       <%= f.label "term_#{index}", term, class: "form-check-label" %>
     </div>
   <% end %>
@@ -80,35 +83,48 @@
     <%= f.number_field :credits_taking_summer, class: "form-control", min: 0 %>
   </div>
 </div>
-<div class="mt-3">
-  <%= f.label :current_degree_program, "Current Degree Program" %><br>
+<div class="mt-3" data-controller="required-field">
+  <%= f.label :current_degree_program, "Current Degree Program" %>
+  <span class="text-danger" data-required-field-target="indicator">*</span><br>
   <% ["Associates", "Bachelors (B.S./B.A.)", "Masters", "Doctorate", "Juris Doctorate", "Other"].each_with_index do |degree, index| %>
     <div class="form-check form-check-inline">
-      <%= f.radio_button :current_degree_program, degree, id: "degree_#{index}" %>
+      <%= f.radio_button :current_degree_program, degree, id: "degree_#{index}", data: { action: "change->required-field#update" } %>
       <%= f.label "degree_#{index}", degree, class: "form-check-label" %>
     </div>
   <% end %>
 </div>
-<div class="mt-3">
+<div class="mt-3" data-controller="optional-field">
   <%= f.label :expected_graduation_date, "Expected Date of Graduation" %>
-  <%= f.date_field :expected_graduation_date, class: "form-control" %>
-</div>
-<div class="mt-3">
-  <%= f.label :class_standing, "Class Standing for Next Academic Year" %><br>
-  <% ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"].each_with_index do |standing, index| %>
-    <div class="form-check form-check-inline">
-      <%= f.radio_button :class_standing, standing, id: "standing_#{index}" %>
-      <%= f.label "standing_#{index}", standing, class: "form-check-label" %>
-    </div>
-  <% end %>
+  <span class="text-warning" data-optional-field-target="indicator">○</span>
+  <%= f.date_field :expected_graduation_date, class: "form-control", data: { action: "input->optional-field#update change->optional-field#update" } %>
 </div>
 <div class="row g-3 mt-3">
-  <div class="col-md-6">
-    <%= f.label :field_of_study, "Field of Study/Major" %>
-    <%= f.text_field :field_of_study, class: "form-control" %>
+  <div class="col-md-8" data-controller="required-field">
+    <%= f.label :class_standing, "Class Standing for Next Academic Year" %>
+    <span class="text-danger" data-required-field-target="indicator">*</span><br>
+    <% ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"].each_with_index do |standing, index| %>
+      <div class="form-check form-check-inline">
+        <%= f.radio_button :class_standing, standing, id: "standing_#{index}", data: { action: "change->required-field#update" } %>
+        <%= f.label "standing_#{index}", standing, class: "form-check-label" %>
+      </div>
+    <% end %>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-4" data-controller="optional-field">
+    <%= f.label :gpa, "Current GPA" %>
+    <span class="text-warning" data-optional-field-target="indicator">○</span>
+    <%= f.number_field :gpa, class: "form-control", step: "0.01", min: "0", max: "4.0", placeholder: "0.00 - 4.00", data: { action: "input->optional-field#update change->optional-field#update" } %>
+    <small class="form-text text-muted">Leave blank if incoming freshman</small>
+  </div>
+</div>
+<div class="row g-3 mt-3">
+  <div class="col-md-6" data-controller="required-field">
+    <%= f.label :field_of_study, "Field of Study/Major" %>
+    <span class="text-danger" data-required-field-target="indicator">*</span>
+    <%= f.text_field :field_of_study, class: "form-control", required: true, data: { action: "input->required-field#update change->required-field#update" } %>
+  </div>
+  <div class="col-md-6" data-controller="optional-field">
     <%= f.label :minor, "Minor" %>
-    <%= f.text_field :minor, class: "form-control" %>
+    <span class="text-warning" data-optional-field-target="indicator">○</span>
+    <%= f.text_field :minor, class: "form-control", data: { action: "input->optional-field#update change->optional-field#update" } %>
   </div>
 </div>

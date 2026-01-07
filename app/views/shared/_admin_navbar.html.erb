@@ -1,3 +1,13 @@
+<style>
+  /* Hover dropdown for navbar */
+  @media (min-width: 992px) {
+    .navbar .nav-item.dropdown:hover .dropdown-menu {
+      display: block;
+      margin-top: 0;
+    }
+  }
+</style>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="color:#05292e;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/admin/dashboard">Sitka Tribe of Alaska</a>
@@ -13,20 +23,36 @@
         <li class="nav-item">
           <%= link_to 'Dashboard', admin_dashboard_path, class: 'nav-link' %>
         </li>
+
+        <!-- Applications Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Applications
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><%= link_to 'View Recent', admin_dashboard_path(anchor: 'recent-applications'), class: 'dropdown-item' %></li>
+            <li><%= link_to 'View All Applications', admin_applications_path, class: 'dropdown-item' %></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><%= link_to 'Pending Applications', admin_applications_path(status: 'submitted'), class: 'dropdown-item' %></li>
+          </ul>
+        </li>
+
+        <!-- Verifications Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Verifications
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><%= link_to 'Verification Workflow', admin_verification_workflow_path, class: 'dropdown-item' %></li>
+            <li><%= link_to 'Verification Overview', admin_verification_overview_path, class: 'dropdown-item' %></li>
+          </ul>
+        </li>
+
         <li class="nav-item">
-          <%= link_to 'Workflow', admin_verification_workflow_path, class: 'nav-link' %>
+          <%= link_to 'Student Profiles', admin_students_path, class: 'nav-link' %>
         </li>
         <li class="nav-item">
-          <%= link_to 'Verifications', admin_verification_overview_path, class: 'nav-link' %>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Applications', admin_applications_path, class: 'nav-link' %>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Students', admin_students_path, class: 'nav-link' %>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Historical', admin_historical_applications_path, class: 'nav-link' %>
+          <%= link_to 'Historical Records', admin_historical_applications_path, class: 'nav-link' %>
         </li>
       </ul>
     </div>
