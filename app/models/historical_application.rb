@@ -15,6 +15,8 @@ class HistoricalApplication < ApplicationRecord
 
   # === VALIDATIONS ===
   validates :tribal_id, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
   validates :application_year, presence: true
   validates :application_key, uniqueness: true, allow_nil: true
 
@@ -32,6 +34,34 @@ class HistoricalApplication < ApplicationRecord
   # Display name combining year and school
   def display_name
     "#{application_year} - #{school_name || 'Unknown School'}"
+  end
+
+  # Get the best available name for this student
+  # Priority: 1) Most recent digital application, 2) Most recent historical application, 3) This record
+  def display_student_name
+    # First check for a linked student with digital applications
+    if student.present?
+      # Check for most recent digital application
+      recent_app = Application.where(tribal_id: tribal_id).order(created_at: :desc).first
+      if recent_app.present? && recent_app.first_name.present?
+        return [recent_app.first_name, recent_app.last_name].compact.join(' ')
+      end
+
+      # Fall back to student profile name
+      return student.full_name if student.first_name.present?
+    end
+
+    # Check for most recent historical application (by year)
+    recent_hist = HistoricalApplication.where(tribal_id: tribal_id)
+                                        .where.not(first_name: nil)
+                                        .order(application_year: :desc)
+                                        .first
+    if recent_hist.present? && recent_hist.first_name.present?
+      return [recent_hist.first_name, recent_hist.last_name].compact.join(' ')
+    end
+
+    # Fall back to this record's name
+    [first_name, last_name].compact.join(' ').presence || 'Unknown'
   end
 
   private

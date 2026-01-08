@@ -43,7 +43,26 @@ class Student < ApplicationRecord
   end
 
   # Full name for display
+  # Priority: 1) Most recent digital application, 2) Most recent historical application, 3) Student record
   def full_name
+    # Check for most recent digital application
+    recent_app = applications.where.not(first_name: nil).order(created_at: :desc).first
+    if recent_app.present? && recent_app.first_name.present?
+      return [recent_app.first_name, recent_app.middle_initial, recent_app.last_name].compact.join(' ')
+    end
+
+    # Check for most recent historical application (by year)
+    recent_hist = historical_applications.where.not(first_name: nil).order(application_year: :desc).first
+    if recent_hist.present? && recent_hist.first_name.present?
+      return [recent_hist.first_name, recent_hist.last_name].compact.join(' ')
+    end
+
+    # Fall back to student record's own name
+    [first_name, middle_initial, last_name].compact.join(' ').presence || 'Unknown'
+  end
+
+  # Raw name from student record (without lookup)
+  def stored_name
     [first_name, middle_initial, last_name].compact.join(' ')
   end
 

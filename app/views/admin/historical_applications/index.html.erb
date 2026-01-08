@@ -16,9 +16,9 @@
     <div class="card-body">
       <%= form_with url: admin_historical_applications_path, method: :get, local: true, class: "row g-3" do %>
         <div class="col-md-4">
-          <input type="text" name="search" class="form-control" placeholder="Search by Tribal ID, School, or App Key..." value="<%= params[:search] %>">
+          <input type="text" name="search" class="form-control" placeholder="Search by Tribal ID, Name, or School..." value="<%= params[:search] %>">
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <select name="year" class="form-select">
             <option value="">All Years</option>
             <% @available_years.each do |year| %>
@@ -26,7 +26,7 @@
             <% end %>
           </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <select name="education_level" class="form-select">
             <option value="">All Levels</option>
             <option value="undergraduate" <%= 'selected' if params[:education_level] == 'undergraduate' %>>Undergraduate</option>
@@ -34,14 +34,6 @@
           </select>
         </div>
         <div class="col-md-2">
-          <select name="award_type" class="form-select">
-            <option value="">All Types</option>
-            <option value="regular" <%= 'selected' if params[:award_type] == 'regular' %>>Regular (HE)</option>
-            <option value="arpa" <%= 'selected' if params[:award_type] == 'arpa' %>>ARPA</option>
-            <option value="combined" <%= 'selected' if params[:award_type] == 'combined' %>>Combined</option>
-          </select>
-        </div>
-        <div class="col-md-1">
           <button type="submit" class="btn btn-primary w-100">Filter</button>
         </div>
       <% end %>
@@ -56,22 +48,19 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>App Key</th>
-                <th>Year</th>
                 <th>Tribal ID</th>
+                <th>Name</th>
+                <th>Year</th>
                 <th>School</th>
                 <th>Level</th>
-                <th>Type</th>
-                <th>Awarded</th>
-                <th>Entry Date</th>
+                <th>Amount (HE)</th>
+                <th>Notes</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <% @historical_applications.each do |hist| %>
                 <tr>
-                  <td><code><%= hist.application_key %></code></td>
-                  <td><%= hist.application_year %></td>
                   <td>
                     <% if hist.student %>
                       <%= link_to hist.tribal_id, admin_student_path(hist.student), class: "text-decoration-none" %>
@@ -79,22 +68,15 @@
                       <code><%= hist.tribal_id %></code>
                     <% end %>
                   </td>
+                  <td><%= hist.display_student_name %></td>
+                  <td><%= hist.application_year %></td>
                   <td><%= hist.school_name %></td>
                   <td><%= hist.education_level&.humanize %></td>
-                  <td>
-                    <% case hist.award_type %>
-                    <% when 'arpa' %>
-                      <span class="badge bg-info">ARPA</span>
-                    <% when 'combined' %>
-                      <span class="badge bg-secondary">Combined</span>
-                    <% else %>
-                      <span class="badge bg-success">Regular</span>
-                    <% end %>
+                  <td><strong>$<%= number_with_delimiter(hist.regular_amount || hist.amount_awarded || 0) %></strong></td>
+                  <td class="text-truncate" style="max-width: 200px;" title="<%= hist.notes %>">
+                    <%= truncate(hist.notes, length: 50) %>
                   </td>
-                  <td><strong>$<%= number_with_delimiter(hist.amount_awarded || 0) %></strong></td>
-                  <td><%= hist.entry_date&.strftime("%m/%d/%Y") %></td>
                   <td>
-                    <%= link_to "View", admin_historical_application_path(hist), class: "btn btn-sm btn-outline-primary" %>
                     <%= link_to "Edit", edit_admin_historical_application_path(hist), class: "btn btn-sm btn-outline-secondary" %>
                   </td>
                 </tr>

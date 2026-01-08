@@ -5,15 +5,17 @@ class Admin::HistoricalApplicationsController < ApplicationController
   before_action :set_historical_application, only: %i[show edit update destroy]
 
   def index
-    @historical_applications = HistoricalApplication.all
+    @historical_applications = HistoricalApplication.includes(:student)
 
-    # Search by tribal_id or school name
+    # Search by tribal_id, school name, or student name
     if params[:search].present?
       term = "%#{params[:search]}%"
-      @historical_applications = @historical_applications.where(
-        'tribal_id ILIKE :t OR school_name ILIKE :t OR application_key ILIKE :t',
-        t: term
-      )
+      @historical_applications = @historical_applications
+        .left_joins(:student)
+        .where(
+          'historical_applications.tribal_id ILIKE :t OR historical_applications.school_name ILIKE :t OR students.first_name ILIKE :t OR students.last_name ILIKE :t',
+          t: term
+        )
     end
 
     # Filter by year
@@ -24,11 +26,6 @@ class Admin::HistoricalApplicationsController < ApplicationController
     # Filter by education level
     if params[:education_level].present?
       @historical_applications = @historical_applications.where(education_level: params[:education_level])
-    end
-
-    # Filter by award type
-    if params[:award_type].present?
-      @historical_applications = @historical_applications.where(award_type: params[:award_type])
     end
 
     @historical_applications = @historical_applications.order(application_year: :desc, created_at: :desc)
@@ -52,6 +49,9 @@ class Admin::HistoricalApplicationsController < ApplicationController
     @historical_application = HistoricalApplication.new(historical_application_params)
     @historical_application.entry_date = Date.current
     @historical_application.entered_by_staff_id = current_staff_identifier
+
+    # Find or create student by tribal_id
+    find_or_create_student
 
     if @historical_application.save
       redirect_to admin_historical_application_path(@historical_application),
@@ -97,6 +97,8 @@ class Admin::HistoricalApplicationsController < ApplicationController
   def historical_application_params
     params.require(:historical_application).permit(
       :tribal_id,
+      :first_name,
+      :last_name,
       :application_year,
       :school_name,
       :education_level,
@@ -105,9 +107,25 @@ class Admin::HistoricalApplicationsController < ApplicationController
       :regular_amount,
       :arpa_amount,
       :award_type,
-      :original_reference,
       :notes
     )
+  end
+
+  # Find existing student by tribal_id or create a new one
+  def find_or_create_student
+    return if @historical_application.tribal_id.blank?
+
+    student = Student.find_by(tribal_id: @historical_application.tribal_id)
+
+    unless student
+      # Create new student profile from historical application data
+      student = Student.create(
+        tribal_id: @historical_application.tribal_id,
+        first_name: @historical_application.first_name,
+        last_name: @historical_application.last_name,
+        status: 'active'
+      )
+    end
   end
 
   def current_staff_identifier

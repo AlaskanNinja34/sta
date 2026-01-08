@@ -1,4 +1,4 @@
-<%= form_with model: [:admin, historical_application], local: true, html: { id: 'historical-application-form' } do |f| %>
+<%= form_with model: [:admin, historical_application], local: true do |f| %>
   <% if historical_application.errors.any? %>
     <div class="alert alert-danger">
       <h6>Please fix the following errors:</h6>
@@ -11,24 +11,39 @@
   <% end %>
 
   <div class="row mb-3">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <label class="form-label">Tribal ID <span class="text-danger">*</span></label>
       <%= f.text_field :tribal_id, class: "form-control", required: true,
                        placeholder: "Enter student's tribal ID" %>
-      <small class="text-muted">This links the record to a student profile</small>
+      <small class="text-muted">Links to existing student or creates new profile</small>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
+      <label class="form-label">First Name <span class="text-danger">*</span></label>
+      <%= f.text_field :first_name, class: "form-control", required: true,
+                       placeholder: "Student's first name" %>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Last Name <span class="text-danger">*</span></label>
+      <%= f.text_field :last_name, class: "form-control", required: true,
+                       placeholder: "Student's last name" %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-4">
       <label class="form-label">Application Year <span class="text-danger">*</span></label>
       <%= f.number_field :application_year, class: "form-control", required: true,
                          min: 1990, max: Date.current.year,
                          value: historical_application.application_year || Date.current.year - 1 %>
     </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-8">
-      <label class="form-label">School Name</label>
-      <%= f.text_field :school_name, class: "form-control", placeholder: "e.g., University of Alaska Southeast" %>
+    <div class="col-md-4">
+      <label class="form-label">Amount Received (HE) <span class="text-danger">*</span></label>
+      <div class="input-group">
+        <span class="input-group-text">$</span>
+        <%= f.number_field :amount_awarded, class: "form-control", step: "0.01", min: 0, required: true,
+                           value: historical_application.amount_awarded || historical_application.regular_amount %>
+      </div>
+      <small class="text-muted">Higher Education scholarship amount</small>
     </div>
     <div class="col-md-4">
       <label class="form-label">Education Level <span class="text-danger">*</span></label>
@@ -40,82 +55,9 @@
     </div>
   </div>
 
-  <hr>
-
-  <!-- Award Type Selection -->
-  <div class="row mb-3">
-    <div class="col-md-4">
-      <label class="form-label">Amount Requested</label>
-      <div class="input-group">
-        <span class="input-group-text">$</span>
-        <%= f.number_field :amount_requested, class: "form-control", step: "0.01", min: 0 %>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <label class="form-label">Award Type <span class="text-danger">*</span></label>
-      <%= f.select :award_type,
-                   options_for_select([
-                     ['Regular (HE) - Counts toward lifetime', 'regular'],
-                     ['ARPA - Does NOT count toward lifetime', 'arpa'],
-                     ['Combined (Regular + ARPA)', 'combined']
-                   ], historical_application.award_type || 'regular'),
-                   {},
-                   class: "form-select", id: "award_type_select" %>
-    </div>
-  </div>
-
-  <!-- Amount Fields - shown based on award type -->
-  <div class="row mb-3">
-    <!-- Regular Amount (for regular and combined) -->
-    <div class="col-md-4" id="regular_amount_field">
-      <label class="form-label">Regular Amount <span class="text-danger">*</span></label>
-      <div class="input-group">
-        <span class="input-group-text">$</span>
-        <%= f.number_field :regular_amount, class: "form-control amount-input", step: "0.01", min: 0,
-                           id: "regular_amount_input",
-                           value: historical_application.regular_amount || historical_application.amount_awarded %>
-      </div>
-      <small class="text-muted">Counts toward lifetime limits</small>
-    </div>
-
-    <!-- ARPA Amount (for arpa and combined) -->
-    <div class="col-md-4" id="arpa_amount_field" style="display: none;">
-      <label class="form-label">ARPA Amount <span class="text-danger">*</span></label>
-      <div class="input-group">
-        <span class="input-group-text">$</span>
-        <%= f.number_field :arpa_amount, class: "form-control amount-input", step: "0.01", min: 0,
-                           id: "arpa_amount_input",
-                           value: historical_application.arpa_amount %>
-      </div>
-      <small class="text-muted">Does NOT count toward lifetime limits</small>
-    </div>
-
-    <!-- Total Display (for combined) -->
-    <div class="col-md-4" id="total_display_field" style="display: none;">
-      <label class="form-label">Total Awarded</label>
-      <div class="input-group">
-        <span class="input-group-text">$</span>
-        <input type="text" class="form-control" id="total_display" readonly>
-      </div>
-      <small class="text-muted">Regular + ARPA</small>
-    </div>
-  </div>
-
-  <!-- Hidden field for amount_awarded (calculated for combined) -->
-  <%= f.hidden_field :amount_awarded, id: "amount_awarded_hidden" %>
-
-  <div class="alert alert-info" id="award_type_info" style="display: none;">
-    <i class="fas fa-info-circle"></i>
-    <span id="award_type_info_text"></span>
-  </div>
-
-  <hr>
-
   <div class="mb-3">
-    <label class="form-label">Original Reference</label>
-    <%= f.text_field :original_reference, class: "form-control",
-                     placeholder: "Original paper file reference number (if applicable)" %>
-    <small class="text-muted">Reference to original paper documentation</small>
+    <label class="form-label">School Name</label>
+    <%= f.text_field :school_name, class: "form-control", placeholder: "e.g., University of Alaska Southeast" %>
   </div>
 
   <div class="mb-3">
@@ -123,6 +65,10 @@
     <%= f.text_area :notes, class: "form-control", rows: 4,
                     placeholder: "Any additional notes about this historical record..." %>
   </div>
+
+  <!-- Hidden fields to maintain data integrity -->
+  <%= f.hidden_field :award_type, value: 'regular' %>
+  <%= f.hidden_field :regular_amount, id: 'regular_amount_hidden' %>
 
   <div class="d-flex justify-content-between">
     <% if historical_application.persisted? %>
@@ -138,86 +84,19 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const awardTypeSelect = document.getElementById('award_type_select');
-  const regularAmountField = document.getElementById('regular_amount_field');
-  const arpaAmountField = document.getElementById('arpa_amount_field');
-  const totalDisplayField = document.getElementById('total_display_field');
-  const regularAmountInput = document.getElementById('regular_amount_input');
-  const arpaAmountInput = document.getElementById('arpa_amount_input');
-  const totalDisplay = document.getElementById('total_display');
-  const amountAwardedHidden = document.getElementById('amount_awarded_hidden');
-  const infoBox = document.getElementById('award_type_info');
-  const infoText = document.getElementById('award_type_info_text');
+  // Sync amount_awarded to regular_amount for HE tracking
+  const amountInput = document.querySelector('input[name="historical_application[amount_awarded]"]');
+  const regularHidden = document.getElementById('regular_amount_hidden');
 
-  function updateFieldsVisibility() {
-    const awardType = awardTypeSelect.value;
-
-    // Reset all
-    regularAmountField.style.display = 'none';
-    arpaAmountField.style.display = 'none';
-    totalDisplayField.style.display = 'none';
-    infoBox.style.display = 'none';
-
-    if (awardType === 'regular') {
-      regularAmountField.style.display = 'block';
-      regularAmountField.querySelector('label').innerHTML = 'Amount Awarded <span class="text-danger">*</span>';
-      regularAmountField.querySelector('small').textContent = 'Counts toward lifetime limits';
-      arpaAmountInput.value = '';
-      infoBox.style.display = 'block';
-      infoText.textContent = 'Regular awards count toward the student\'s $24,000 lifetime limit.';
-    } else if (awardType === 'arpa') {
-      arpaAmountField.style.display = 'block';
-      arpaAmountField.querySelector('label').innerHTML = 'Amount Awarded <span class="text-danger">*</span>';
-      regularAmountInput.value = '';
-      infoBox.style.display = 'block';
-      infoBox.classList.remove('alert-info');
-      infoBox.classList.add('alert-warning');
-      infoText.textContent = 'ARPA awards are tracked but do NOT count toward lifetime limits.';
-    } else if (awardType === 'combined') {
-      regularAmountField.style.display = 'block';
-      arpaAmountField.style.display = 'block';
-      totalDisplayField.style.display = 'block';
-      regularAmountField.querySelector('label').innerHTML = 'Regular Amount <span class="text-danger">*</span>';
-      regularAmountField.querySelector('small').textContent = 'Counts toward lifetime limits';
-      infoBox.style.display = 'block';
-      infoText.textContent = 'Combined awards: Only the Regular portion counts toward lifetime limits.';
+  function syncAmount() {
+    if (regularHidden && amountInput) {
+      regularHidden.value = amountInput.value;
     }
-
-    updateTotal();
   }
 
-  function updateTotal() {
-    const awardType = awardTypeSelect.value;
-    let total = 0;
-
-    if (awardType === 'regular') {
-      total = parseFloat(regularAmountInput.value) || 0;
-      arpaAmountInput.value = '';
-    } else if (awardType === 'arpa') {
-      total = parseFloat(arpaAmountInput.value) || 0;
-      regularAmountInput.value = '';
-    } else if (awardType === 'combined') {
-      const regular = parseFloat(regularAmountInput.value) || 0;
-      const arpa = parseFloat(arpaAmountInput.value) || 0;
-      total = regular + arpa;
-      totalDisplay.value = total.toFixed(2);
-    }
-
-    amountAwardedHidden.value = total.toFixed(2);
+  if (amountInput) {
+    amountInput.addEventListener('input', syncAmount);
+    syncAmount(); // Initial sync
   }
-
-  // Event listeners
-  awardTypeSelect.addEventListener('change', function() {
-    // Reset info box classes
-    infoBox.classList.remove('alert-warning');
-    infoBox.classList.add('alert-info');
-    updateFieldsVisibility();
-  });
-
-  regularAmountInput.addEventListener('input', updateTotal);
-  arpaAmountInput.addEventListener('input', updateTotal);
-
-  // Initialize on page load
-  updateFieldsVisibility();
 });
 </script>
